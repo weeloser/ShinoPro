@@ -41,37 +41,16 @@
         .animate-pulse-slow {
             animation: pulse-slow 2.5s infinite ease-in-out;
         }
-        
-        .quiz-step {
-            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+
+        @keyframes pulse-cta {
+          50% {
+            transform: scale(1.04);
+          }
         }
-        .quiz-step.hidden {
-            opacity: 0;
-            transform: translateX(30px);
-            pointer-events: none;
-            position: absolute;
+        .animate-pulse-cta {
+            animation: pulse-cta 2s infinite ease-in-out;
         }
-        .quiz-step.active {
-            opacity: 1;
-            transform: translateX(0);
-            position: static;
-        }
-        .quiz-step.hidden-left {
-            opacity: 0;
-            transform: translateX(-30px);
-            pointer-events: none;
-            position: absolute;
-        }
-        
-        .quiz-option-btn:active, .quiz-back-btn:active, #quiz-to-confirm:active, #quiz-confirm:active, #complex-btn:active, #complex-reset-btn:active {
-            transform: scale(0.97);
-            transition-duration: 0.1s;
-        }
-        
-        #quiz-container {
-            transition: height 0.3s ease-in-out;
-        }
-        
+
         .custom-select {
             appearance: none;
             -webkit-appearance: none;
@@ -121,7 +100,7 @@
         }
         
         .glass-modal {
-             background-color: rgba(31, 41, 55, 0.8); 
+             background-color: rgba(31, 41, 55, 0.9); 
             backdrop-filter: blur(12px);
             border: 1px solid rgba(75, 85, 99, 0.5); 
         }
@@ -152,6 +131,55 @@
             animation: spin 5s linear infinite;
         }
         
+        @keyframes pop {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.05); }
+          100% { transform: scale(1); }
+        }
+        .animate-pop {
+            animation: pop 0.3s ease-out;
+        }
+        
+        @keyframes shake {
+          0%, 100% { transform: translateX(0); }
+          10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+          20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        .input-error {
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+            animation: shake 0.5s ease-in-out;
+        }
+
+        .btn-disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: scale(1) !important;
+            background-color: #4b5563 !important;
+            hover:background-color: #4b5563 !important;
+        }
+
+        #calc-individual-services label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 0.6rem 0.5rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.2s ease;
+        }
+        #calc-individual-services label:hover {
+            background-color: rgba(55, 65, 81, 0.7);
+        }
+        #calc-individual-services input[type="checkbox"] {
+            transform: scale(1.2);
+            flex-shrink: 0;
+        }
+        #calc-individual-services .service-label-text {
+            margin-left: 0.75rem;
+            display: block;
+            flex-grow: 1;
+        }
+
         .bg-gray-900 { background-color: #111827; }
         .bg-gray-800 { background-color: #1f2937; }
         .text-cyan-400 { color: #22d3ee; }
@@ -250,7 +278,7 @@
                     <h2 class="text-4xl font-bold mb-12 pt-16" data-aos="fade-in">Наш подход</h2>
                     <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 items-center text-left">
                         <div class="mt-8 md:mt-0">
-                            <div class="flex items-center gap-4 mb-3" data-aos="fade-right" data-aos-delay="100">
+                            <div class="flex items-center gap-4 mb-3 transition-transform duration-300 transform hover:scale-105" data-aos="fade-right" data-aos-delay="100">
                                 <i data-lucide="clock" class="h-8 w-8 text-cyan-400"></i>
                                 <h3 class="text-2xl font-bold">Работаем быстро</h3>
                             </div>
@@ -387,11 +415,11 @@
                 <p class="text-2xl text-gray-300 mb-10" data-aos="fade-up" data-aos-delay="100">Выберите удобный способ связи и запишитесь сейчас.</p>
                 
                 <div class="flex flex-col sm:flex-row justify-center gap-4 max-w-4xl mx-auto" data-aos="fade-up" data-aos-delay="200">
-                    <a href="https://wa.me/79027513964" target="_blank" class="bg-green-500 text-white font-bold py-4 px-8 rounded-lg shadow-xl hover:bg-green-400 transition duration-300 transform hover:scale-105 flex items-center justify-center gap-2 text-lg">
+                    <a href="https://wa.me/79027513964" target="_blank" class="bg-green-500 text-white font-bold py-4 px-8 rounded-lg shadow-xl hover:bg-green-400 transition duration-300 transform hover:scale-105 flex items-center justify-center gap-2 text-lg animate-pulse-cta">
                         <i data-lucide="smartphone"></i>
                         Написать в WhatsApp
                     </a>
-                    <a href="https://t.me/+79027513964" target="_blank" class="bg-blue-500 text-white font-bold py-4 px-8 rounded-lg shadow-xl hover:bg-blue-400 transition duration-300 transform hover:scale-105 flex items-center justify-center gap-2 text-lg">
+                    <a href="https://t.me/+79027513964" target="_blank" class="bg-blue-500 text-white font-bold py-4 px-8 rounded-lg shadow-xl hover:bg-blue-400 transition duration-300 transform hover:scale-105 flex items-center justify-center gap-2 text-lg animate-pulse-cta">
                         <i data-lucide="send"></i>
                         Написать в Telegram
                     </a>
@@ -441,176 +469,121 @@
     </footer>
 
     <div id="priceModal" class="fixed inset-0 z-[60] flex items-center justify-center bg-black bg-opacity-70 backdrop-blur-sm p-4 hidden opacity-0 transition-opacity duration-300 ease-in-out">
-        <div class="glass-modal w-full max-w-3xl rounded-2xl shadow-2xl p-6 md:p-8 relative overflow-hidden" data-aos="zoom-in" data-aos-duration="300">
+        <div class="glass-modal w-full max-w-sm md:max-w-3xl rounded-2xl shadow-2xl p-6 md:p-8 relative overflow-hidden" data-aos="zoom-in" data-aos-duration="300">
             <button id="closeModal" class="absolute top-4 right-4 text-gray-400 hover:text-cyan-400 transition-colors z-10">
                 <i data-lucide="x" class="h-8 w-8"></i>
             </button>
             
-            <div id="quiz-container" class="relative">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-6 text-cyan-400">Калькулятор услуг</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                 
-                <div class="w-full bg-gray-700 rounded-full h-2.5 mb-6 overflow-hidden">
-                    <div id="quiz-progress" class="bg-cyan-400 h-2.5 rounded-full transition-all duration-500 ease-out" style="width: 20%"></div>
-                </div>
-
-                <div id="quiz-step-1" class="quiz-step active">
-                    <h3 class="text-2xl md:text-3xl font-bold text-center mb-6 text-cyan-400">1. Что у вас за аппарат?</h3>
-                    <div id="car-type-options" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <button class="quiz-option-btn glass-button p-5 border-2 rounded-lg text-lg" data-value="Легковые машины">Легковые машины</button>
-                        <button class="quiz-option-btn glass-button p-5 border-2 rounded-lg text-lg" data-value="Паркетники / Кроссоверы">Паркетники / Кроссоверы</button>
-                        <button class="quiz-option-btn glass-button p-5 border-2 rounded-lg text-lg" data-value="Внедорожники / Джипы">Внедорожники / Джипы</button>
-                        <button class="quiz-option-btn glass-button p-5 border-2 rounded-lg text-lg" data-value="Низкий профиль / RunFlat">Низкий профиль / RunFlat</button>
-                        <button class="quiz-option-btn glass-button p-5 border-2 rounded-lg text-lg" data-value="Газель">Газель</button>
+                <div class="space-y-4">
+                    <div>
+                        <label for="calc-car-type" class="block text-sm font-bold text-cyan-400 mb-2">1. ВАШ ТРАНСПОРТ</label>
+                        <select id="calc-car-type" class="custom-select block w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-white focus:border-cyan-400 focus:ring-cyan-400 text-lg transition-all">
+                            <option value="">-- Выберите тип --</option>
+                            <option value="Легковые машины">Легковые машины</option>
+                            <option value="Паркетники / Кроссоверы">Паркетники / Кроссоверы</option>
+                            <option value="Внедорожники / Джипы">Внедорожники / Джипы</option>
+                            <option value="Низкий профиль / RunFlat">Низкий профиль / RunFlat</option>
+                            <option value="Газель">Газель</option>
+                        </select>
                     </div>
-                </div>
-
-                <div id="quiz-step-2" class="quiz-step hidden">
-                    <h3 class="text-2xl md:text-3xl font-bold text-center mb-6 text-cyan-400">2. Какой размер колес?</h3>
-                    <div id="tire-size-options" class="flex flex-wrap justify-center gap-3">
-                    </div>
-                    <div class="flex justify-start mt-6">
-                        <button class="quiz-back-btn p-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors flex items-center gap-2" data-target="1">
-                            <i data-lucide="arrow-left" class="h-5 w-5"></i>
-                            Назад
-                        </button>
-                    </div>
-                </div>
-
-                <div id="quiz-step-3" class="quiz-step hidden">
-                    <h3 class="text-2xl md:text-3xl font-bold text-center mb-6 text-cyan-400">3. Выберите услуги</h3>
                     
-                    <div class="space-y-5">
-                        <div>
-                            <label for="wheelCount" class="block text-lg font-medium text-gray-300 mb-2">А сколько колес <span id="wheel-size-label" class="font-bold text-cyan-400"></span>?</label>
-                            <input type="number" id="wheelCount" value="4" min="1" max="8" class="block w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-white focus:border-cyan-400 focus:ring-cyan-400 text-lg">
-                        </div>
-
-                        <div class="relative">
-                            <button id="complex-btn" class="w-full bg-cyan-400 text-gray-900 font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-cyan-300 transition duration-300 transform hover:scale-105 flex items-center justify-center gap-2 text-lg">
-                                <i data-lucide="star"></i>
-                                Выбрать "Комплекс" (4 колеса)
-                            </button>
-                            <button id="complex-reset-btn" class="w-full bg-gray-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-gray-500 transition duration-300 flex items-center justify-center gap-2 text-lg hidden">
-                                <i data-lucide="x-circle"></i>
-                                Сбросить комплекс
-                            </button>
-                        </div>
-                        
-                        <div class="flex items-center">
-                           <span class="flex-grow border-t border-gray-700"></span>
-                           <span class="px-3 text-gray-400">ИЛИ</span>
-                           <span class="flex-grow border-t border-gray-700"></span>
-                        </div>
-
-                        <div id="individualServices" class="space-y-3 p-4 glass-card rounded-lg">
-                            <p class="text-lg font-medium text-gray-300 mb-3">Выберите услуги:</p>
-                            <div class="flex items-center border-b border-gray-700 pb-3 mb-3">
-                                <input id="check-all-services" type="checkbox" class="h-5 w-5 text-cyan-400 bg-gray-700 border-gray-600 rounded focus:ring-cyan-500">
-                                <label for="check-all-services" class="ml-3 block text-md font-bold text-white">Выбрать все</label>
-                            </div>
-                            <div class="flex items-center">
-                                <input id="check-moyka" name="service" type="checkbox" class="h-5 w-5 text-cyan-400 bg-gray-700 border-gray-600 rounded focus:ring-cyan-500">
-                                <label for="check-moyka" class="ml-3 block text-md text-gray-300">Мойка колеса (улучшает точность)</label>
-                            </div>
-                            <div class="flex items-center">
-                                <input id="check-shinomontazh" name="service" type="checkbox" class="h-5 w-5 text-cyan-400 bg-gray-700 border-gray-600 rounded focus:ring-cyan-500">
-                                <label for="check-shinomontazh" class="ml-3 block text-md text-gray-300">Шиномонтаж (за 1 колесо)</label>
-                            </div>
-                            <div class="flex items-center">
-                                <input id="check-balansirovka" name="service" type="checkbox" class="h-5 w-5 text-cyan-400 bg-gray-700 border-gray-600 rounded focus:ring-cyan-500">
-                                <label for="check-balansirovka" class="ml-3 block text-md text-gray-300">Балансировка (за 1 колесо)</label>
-                            </div>
-                            <div class="flex items-center">
-                                <input id="check-snyatie" name="service" type="checkbox" class="h-5 w-5 text-cyan-400 bg-gray-700 border-gray-600 rounded focus:ring-cyan-500">
-                                <label for="check-snyatie" class="ml-3 block text-md text-gray-300">Снятие/Установка (за 1 колесо)</label>
-                            </div>
-                        </div>
+                    <div>
+                        <label for="calc-tire-size" class="block text-sm font-bold text-cyan-400 mb-2">2. РАЗМЕР КОЛЕС</label>
+                        <select id="calc-tire-size" class="custom-select block w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-white focus:border-cyan-400 focus:ring-cyan-400 text-lg transition-all" disabled>
+                            <option value="">-- Сначала выберите тип --</option>
+                        </select>
                     </div>
-
-                    <div class="flex justify-between mt-6">
-                        <button class="quiz-back-btn p-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors flex items-center gap-2" data-target="2">
-                            <i data-lucide="arrow-left" class="h-5 w-5"></i>
-                            Назад
-                        </button>
-                        <button id="quiz-to-confirm" class="p-3 px-6 bg-green-500 hover:bg-green-400 rounded-lg transition-colors flex items-center gap-2 text-lg font-bold">
-                            Далее
-                            <i data-lucide="arrow-right" class="h-5 w-5"></i>
-                        </button>
+                    
+                    <div>
+                        <label for="calc-wheel-count" class="block text-sm font-bold text-cyan-400 mb-2">3. КОЛИЧЕСТВО КОЛЕС</label>
+                        <input type="number" id="calc-wheel-count" value="4" min="1" max="8" class="block w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-white focus:border-cyan-400 focus:ring-cyan-400 text-lg">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-bold text-cyan-400 mb-2">4. УСЛУГИ</label>
+                        <div class="space-y-3">
+                            <div id="calc-individual-services" class="space-y-1 p-3 glass-card rounded-lg">
+                                <label for="calc-check-all">
+                                    <input id="calc-check-all" type="checkbox" class="h-5 w-5 text-cyan-400 bg-gray-700 border-gray-600 rounded focus:ring-cyan-500">
+                                    <span class="service-label-text block text-md font-bold text-white">Выбрать все</span>
+                                </label>
+                                <hr class="border-gray-600 my-2">
+                                <label for="calc-check-snyatie">
+                                    <input id="calc-check-snyatie" name="service" type="checkbox" class="h-5 w-5 text-cyan-400 bg-gray-700 border-gray-600 rounded focus:ring-cyan-500" checked>
+                                    <span class="service-label-text block text-md text-gray-300">Снятие/Установка</span>
+                                </label>
+                                <label for="calc-check-moyka">
+                                    <input id="calc-check-moyka" name="service" type="checkbox" class="h-5 w-5 text-cyan-400 bg-gray-700 border-gray-600 rounded focus:ring-cyan-500">
+                                    <span class="service-label-text block text-md text-gray-300">Мойка</span>
+                                </label>
+                                <label for="calc-check-shinomontazh">
+                                    <input id="calc-check-shinomontazh" name="service" type="checkbox" class="h-5 w-5 text-cyan-400 bg-gray-700 border-gray-600 rounded focus:ring-cyan-500">
+                                    <span class="service-label-text block text-md text-gray-300">Шиномонтаж</span>
+                                </label>
+                                <label for="calc-check-balansirovka">
+                                    <input id="calc-check-balansirovka" name="service" type="checkbox" class="h-5 w-5 text-cyan-400 bg-gray-700 border-gray-600 rounded focus:ring-cyan-500">
+                                    <span class="service-label-text block text-md text-gray-300">Балансировка</span>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
-                <div id="quiz-step-4" class="quiz-step hidden">
-                    <h3 class="text-2xl md:text-3xl font-bold text-center mb-6 text-cyan-400">4. Проверьте ваш выбор</h3>
-                    <div class="glass-card rounded-lg p-5 space-y-3 text-lg">
+                <div class="glass-card rounded-lg p-6 flex flex-col">
+                    <h4 class="text-2xl font-bold text-white mb-4">Ваш расчет</h4>
+                    <div class="space-y-2 text-lg flex-grow">
                         <div class="flex justify-between">
-                            <span class="text-gray-400">Аппарат:</span>
-                            <span id="summary-car-type" class="font-bold"></span>
+                            <span class="text-gray-400">Транспорт:</span>
+                            <span id="summary-car-type" class="font-bold text-right">-</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-gray-400">Размер:</span>
-                            <span id="summary-tire-size" class="font-bold"></span>
+                            <span id="summary-tire-size" class="font-bold text-right">-</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-gray-400">Количество:</span>
-                            <span id="summary-wheel-count" class="font-bold"></span>
+                            <span id="summary-wheel-count" class="font-bold text-right">0</span>
                         </div>
                         <hr class="border-gray-700">
                         <div>
                             <span class="text-gray-400">Услуги:</span>
-                            <ul id="summary-services" class="list-disc list-inside pl-2 font-bold mt-2">
+                            <ul id="summary-services" class="list-none list-inside font-bold mt-2 text-right">
+                                <li>-</li>
                             </ul>
                         </div>
                     </div>
-                    <div class="flex justify-between mt-6">
-                        <button class="quiz-back-btn p-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors flex items-center gap-2" data-target="3">
-                            <i data-lucide="arrow-left" class="h-5 w-5"></i>
-                            Назад
-                        </button>
-                        <button id="quiz-confirm" class="p-3 px-6 bg-cyan-400 text-gray-900 hover:bg-cyan-300 rounded-lg transition-colors flex items-center gap-2 text-lg font-bold">
-                            Подтвердить
-                            <i data-lucide="check" class="h-5 w-5"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <div id="quiz-step-5" class="quiz-step hidden">
-                    <h3 class="text-2xl md:text-3xl font-bold text-center mb-6 text-cyan-400">Итоговая стоимость</h3>
                     
-                    <div class="text-center py-8">
-                        <p class="text-5xl md:text-6xl font-black text-cyan-400">
+                    <div class="text-center mt-6">
+                        <p class="text-sm text-gray-400">Итоговая стоимость:</p>
+                        <p class="text-5xl md:text-6xl font-black text-cyan-400 my-2">
                             <span id="priceResult">0</span> ₽
                         </p>
-                        <p id="priceNote" class="text-lg text-gray-400 mt-2"></p>
+                        <p id="priceNote" class="text-base text-red-400 h-6"></p>
                     </div>
                     
-                    <div class="pt-4 space-y-3">
-                        <p class="text-center text-lg text-gray-300">Отлично! Свяжитесь с нами для записи:</p>
+                    <div class="pt-4 space-y-3 mt-auto">
+                        <p class="text-center text-lg text-gray-300">Свяжитесь с нами для записи:</p>
                         <div class="flex flex-col sm:flex-row justify-center gap-3">
-                            <a href="tel:+79029093879" class="w-full sm:w-auto flex-1 bg-cyan-400 text-gray-900 font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-cyan-300 transition duration-300 transform hover:scale-105 flex items-center justify-center gap-2">
-                                <i data-lucide="phone-call"></i>
+                            <a href="tel:+79029093879" class="w-full sm:w-auto flex-1 bg-cyan-400 text-gray-900 font-bold py-3 px-4 rounded-lg shadow-lg hover:bg-cyan-300 transition duration-300 transform hover:scale-105 flex items-center justify-center gap-2 animate-pulse-cta">
+                                <i data-lucide="phone-call" class="h-5 w-5"></i>
                                 Позвонить
                             </a>
-                            <a href="https://wa.me/79027513964" target="_blank" class="w-full sm:w-auto flex-1 bg-green-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-green-400 transition duration-300 transform hover:scale-105 flex items-center justify-center gap-2">
-                                <i data-lucide="smartphone"></i>
+                            <a id="whatsappLink" href="#" target="_blank" class="w-full sm:w-auto flex-1 bg-green-500 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:bg-green-400 transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 animate-pulse-cta">
+                                <i data-lucide="smartphone" class="h-5 w-5"></i>
                                 WhatsApp
                             </a>
-                            <a href="https://t.me/+79027513964" target="_blank" class="w-full sm:w-auto flex-1 bg-blue-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-blue-400 transition duration-300 transform hover:scale-105 flex items-center justify-center gap-2">
-                                <i data-lucide="send"></i>
-                                Telegram
-                            </a>
                         </div>
-                    </div>
-                    
-                    <div class="flex justify-start mt-8">
-                        <button class="quiz-back-btn p-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors flex items-center gap-2" data-target="4">
-                            <i data-lucide="arrow-left" class="h-5 w-5"></i>
-                            Назад
-                        </button>
                     </div>
                 </div>
 
             </div>
         </div>
     </div>
+    
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         const lenis = new Lenis()
@@ -624,6 +597,32 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             
+            const header = document.querySelector('header.fixed');
+            
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    const headerHeight = header ? header.offsetHeight : 0;
+                    const href = this.getAttribute('href');
+                    let target;
+
+                    if (href === '#') {
+                        target = 0;
+                    } else {
+                        target = document.querySelector(href);
+                    }
+                    
+                    if (target !== null && target !== undefined) {
+                        lenis.scrollTo(target, {
+                            offset: href === '#' ? 0 : -headerHeight,
+                            duration: 1.2,
+                            easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t))
+                        });
+                    }
+                });
+            });
+
             const progressBar = document.getElementById('scroll-progress-bar');
             
             const wheel = document.getElementById('wheel');
@@ -679,15 +678,23 @@
 
                 if (wheelElementsFound) {
                     
-                    if (hasWheelRolledAway) {
-                        return;
-                    }
-
                     let animProgress = 0;
                     if (scrollTop >= animStart) {
                         animProgress = (scrollTop - animStart) / animDuration;
                     } else {
                         animProgress = 0;
+                    }
+                    
+                    if (scrollTop < animStart && hasWheelRolledAway) {
+                        hasWheelRolledAway = false;
+                        wheelGroup.classList.remove('spinning-group');
+                        wheel.style.transition = 'none'; 
+                        wheel.style.opacity = 0;
+                        wheel.style.transform = `scale(${startScale}) rotateX(${startRotateX}deg) rotateZ(${startRotateZInitial}deg)`;
+                    }
+
+                    if (hasWheelRolledAway) {
+                        return;
                     }
 
                     if (animProgress <= 1.0) {
@@ -761,48 +768,37 @@
                     "R16": { "shinomontazh": 280, "balansirovka": 280, "snyatie": 220, "moyka": 320, "complex": 4320 }
                 }
             };
+            
+            const serviceLabels = {
+                moyka: 'Мойка',
+                shinomontazh: 'Шиномонтаж',
+                balansirovka: 'Балансировка',
+                snyatie: 'Снятие/Установка'
+            };
 
             let quizState = {
                 carType: null,
                 tireSize: null,
                 wheelCount: 4,
-                isComplex: false,
-                services: []
+                services: ['snyatie']
             };
 
             const modal = document.getElementById('priceModal');
             const openBtn = document.getElementById('openPriceCalculator');
             const closeBtn = document.getElementById('closeModal');
-            const quizProgress = document.getElementById('quiz-progress');
-            
-            const steps = {
-                1: document.getElementById('quiz-step-1'),
-                2: document.getElementById('quiz-step-2'),
-                3: document.getElementById('quiz-step-3'),
-                4: document.getElementById('quiz-step-4'),
-                5: document.getElementById('quiz-step-5'),
-            };
 
-            const carTypeOptions = document.getElementById('car-type-options');
-            const tireSizeOptions = document.getElementById('tire-size-options');
-            const wheelCountInput = document.getElementById('wheelCount');
-            const wheelSizeLabel = document.getElementById('wheel-size-label');
+            const carTypeSelect = document.getElementById('calc-car-type');
+            const tireSizeSelect = document.getElementById('calc-tire-size');
+            const wheelCountInput = document.getElementById('calc-wheel-count');
             
-            const complexBtn = document.getElementById('complex-btn');
-            const complexResetBtn = document.getElementById('complex-reset-btn');
-            
-            const checkAllServices = document.getElementById('check-all-services');
+            const checkAllServices = document.getElementById('calc-check-all');
             const serviceChecks = {
-                moyka: document.getElementById('check-moyka'),
-                shinomontazh: document.getElementById('check-shinomontazh'),
-                balansirovka: document.getElementById('check-balansirovka'),
-                snyatie: document.getElementById('check-snyatie')
+                moyka: document.getElementById('calc-check-moyka'),
+                shinomontazh: document.getElementById('calc-check-shinomontazh'),
+                balansirovka: document.getElementById('calc-check-balansirovka'),
+                snyatie: document.getElementById('calc-check-snyatie')
             };
             
-            const toConfirmBtn = document.getElementById('quiz-to-confirm');
-            const confirmBtn = document.getElementById('quiz-confirm');
-            const backBtns = document.querySelectorAll('.quiz-back-btn');
-
             const summary = {
                 carType: document.getElementById('summary-car-type'),
                 tireSize: document.getElementById('summary-tire-size'),
@@ -812,38 +808,23 @@
 
             const priceResultEl = document.getElementById('priceResult');
             const priceNoteEl = document.getElementById('priceNote');
+            const whatsappLink = document.getElementById('whatsappLink');
 
-            function showStep(stepNum, direction = 'forward') {
-                Object.values(steps).forEach(step => {
-                    step.classList.remove('active', 'hidden-left');
-                    step.classList.add('hidden');
-                });
-
-                if (direction === 'forward') {
-                    steps[stepNum].classList.remove('hidden');
-                    steps[stepNum].classList.add('active');
-                } else {
-                    Object.values(steps).forEach(step => step.classList.remove('active'));
-                    steps[stepNum].classList.remove('hidden');
-                    steps[stepNum].classList.add('active');
-                    
-                    if(steps[stepNum+1]) {
-                        steps[stepNum+1].classList.add('hidden-left');
-                    }
-                }
-                
-                const progress = (stepNum / 5) * 100;
-                quizProgress.style.width = `${progress}%`;
-            }
-            
             function resetQuiz() {
-                quizState = { carType: null, tireSize: null, wheelCount: 4, isComplex: false, services: [] };
+                quizState = { carType: null, tireSize: null, wheelCount: 4, services: ['snyatie'] };
+                carTypeSelect.value = "";
+                tireSizeSelect.innerHTML = '<option value="">-- Сначала выберите тип --</option>';
+                tireSizeSelect.disabled = true;
                 wheelCountInput.value = 4;
-                resetComplex();
                 
-                document.querySelectorAll('.quiz-option-btn.selected').forEach(btn => btn.classList.remove('selected'));
-                tireSizeOptions.innerHTML = '';
-                showStep(1);
+                Object.values(serviceChecks).forEach(check => {
+                    check.checked = false;
+                });
+                serviceChecks.snyatie.checked = true;
+                checkAllServices.checked = false;
+                
+                updateSummary();
+                calculatePrice();
             }
 
             openBtn.addEventListener('click', () => {
@@ -865,52 +846,65 @@
                 }
             });
 
-            carTypeOptions.addEventListener('click', (e) => {
-                const target = e.target.closest('.quiz-option-btn');
-                if (target) {
-                    quizState.carType = target.dataset.value;
-                    
-                    document.querySelectorAll('#car-type-options .quiz-option-btn').forEach(btn => btn.classList.remove('selected'));
-                    target.classList.add('selected');
-                    
-                    updateTireSizes();
-                    showStep(2);
-                }
+            carTypeSelect.addEventListener('change', () => {
+                quizState.carType = carTypeSelect.value;
+                updateTireSizes();
+                updateSummary();
+                calculatePrice();
             });
-            
+
             function updateTireSizes() {
-                tireSizeOptions.innerHTML = '';
+                tireSizeSelect.innerHTML = '';
                 if (quizState.carType && priceData[quizState.carType]) {
                     const sizes = Object.keys(priceData[quizState.carType]);
+                    
+                    if (sizes.length > 1) {
+                         tireSizeSelect.innerHTML = '<option value="">-- Выберите размер --</option>';
+                    }
+                    
                     sizes.forEach(size => {
-                        const btn = document.createElement('button');
-                        btn.type = 'button';
-                        btn.className = 'quiz-option-btn glass-button p-4 border-2 rounded-lg text-md';
-                        btn.dataset.value = size;
-                        btn.textContent = size;
-                        tireSizeOptions.appendChild(btn);
+                        const option = document.createElement('option');
+                        option.value = size;
+                        option.textContent = size;
+                        tireSizeSelect.appendChild(option);
                     });
+                    
+                    tireSizeSelect.disabled = false;
+                    tireSizeSelect.classList.remove('input-error');
+                    
+                    if (quizState.carType === 'Газель' && sizes.length === 1) {
+                        tireSizeSelect.value = sizes[0];
+                        tireSizeSelect.disabled = true;
+                    } else if (sizes.length === 1) {
+                         tireSizeSelect.value = sizes[0];
+                    } else {
+                        tireSizeSelect.value = "";
+                    }
+                    
+                    quizState.tireSize = tireSizeSelect.value;
+                    
+                } else {
+                    tireSizeSelect.innerHTML = '<option value="">-- Сначала выберите тип --</option>';
+                    tireSizeSelect.disabled = true;
+                    quizState.tireSize = null;
                 }
             }
 
-            tireSizeOptions.addEventListener('click', (e) => {
-                const target = e.target.closest('.quiz-option-btn');
-                if (target) {
-                    quizState.tireSize = target.dataset.value;
-                    
-                    document.querySelectorAll('#tire-size-options .quiz-option-btn').forEach(btn => btn.classList.remove('selected'));
-                    target.classList.add('selected');
-
-                    wheelSizeLabel.textContent = quizState.tireSize;
-                    showStep(3);
-                }
+            tireSizeSelect.addEventListener('change', () => {
+                quizState.tireSize = tireSizeSelect.value;
+                updateSummary();
+                calculatePrice();
             });
             
-            backBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const targetStep = parseInt(btn.dataset.target);
-                    showStep(targetStep, 'backward');
-                });
+            wheelCountInput.addEventListener('change', () => {
+                let count = parseInt(wheelCountInput.value);
+                if (isNaN(count) || count < 1) {
+                    count = 1;
+                    wheelCountInput.value = 1;
+                }
+                quizState.wheelCount = count;
+                updateSummary();
+                calculatePrice();
             });
 
             checkAllServices.addEventListener('click', () => {
@@ -918,6 +912,7 @@
                 Object.values(serviceChecks).forEach(check => {
                     check.checked = isChecked;
                 });
+                updateServicesFromCheckboxes();
             });
 
             Object.values(serviceChecks).forEach(check => {
@@ -930,106 +925,38 @@
                             checkAllServices.checked = true;
                         }
                     }
+                    updateServicesFromCheckboxes();
                 });
-            });
-
-            complexBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                quizState.isComplex = true;
-                
-                let currentCount = parseInt(wheelCountInput.value) || 0;
-                if (currentCount < 4) {
-                    wheelCountInput.value = 4;
-                }
-                quizState.wheelCount = parseInt(wheelCountInput.value);
-                
-                if (quizState.wheelCount < 4) {
-                    quizState.wheelCount = 4;
-                    wheelCountInput.value = 4;
-                }
-
-                wheelCountInput.disabled = true;
-                
-                quizState.services = ['moyka', 'shinomontazh', 'balansirovka', 'snyatie'];
-                Object.values(serviceChecks).forEach(check => {
-                    check.checked = true;
-                    check.disabled = true;
-                    check.parentElement.classList.add('opacity-50');
-                });
-                
-                checkAllServices.checked = true;
-                checkAllServices.disabled = true;
-                checkAllServices.parentElement.classList.add('opacity-50');
-                
-                complexBtn.classList.add('hidden');
-                complexResetBtn.classList.remove('hidden');
             });
             
-            function resetComplex() {
-                quizState.isComplex = false;
-                wheelCountInput.disabled = false;
+            function updateServicesFromCheckboxes() {
                 quizState.services = [];
-                Object.values(serviceChecks).forEach(check => {
-                    check.checked = false;
-                    check.disabled = false;
-                    check.parentElement.classList.remove('opacity-50');
-                });
-                
-                checkAllServices.checked = false;
-                checkAllServices.disabled = false;
-                checkAllServices.parentElement.classList.remove('opacity-50');
-                
-                complexBtn.classList.remove('hidden');
-                complexResetBtn.classList.add('hidden');
-            }
-
-            complexResetBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                resetComplex();
-            });
-
-            toConfirmBtn.addEventListener('click', () => {
-                if (!quizState.isComplex) {
-                    quizState.wheelCount = parseInt(wheelCountInput.value) || 0;
-                    quizState.services = [];
-                    if(serviceChecks.moyka.checked) quizState.services.push('moyka');
-                    if(serviceChecks.shinomontazh.checked) quizState.services.push('shinomontazh');
-                    if(serviceChecks.balansirovka.checked) quizState.services.push('balansirovka');
-                    if(serviceChecks.snyatie.checked) quizState.services.push('snyatie');
-                }
-                
+                if(serviceChecks.moyka.checked) quizState.services.push('moyka');
+                if(serviceChecks.shinomontazh.checked) quizState.services.push('shinomontazh');
+                if(serviceChecks.balansirovka.checked) quizState.services.push('balansirovka');
+                if(serviceChecks.snyatie.checked) quizState.services.push('snyatie');
                 updateSummary();
-                showStep(4);
-            });
+                calculatePrice();
+            }
             
             function updateSummary() {
-                summary.carType.textContent = quizState.carType;
-                summary.tireSize.textContent = quizState.tireSize;
-                summary.wheelCount.textContent = quizState.wheelCount;
+                summary.carType.textContent = quizState.carType || '-';
+                summary.tireSize.textContent = quizState.tireSize || '-';
+                summary.wheelCount.textContent = quizState.wheelCount || 0;
                 
                 summary.services.innerHTML = '';
-                if (quizState.isComplex) {
-                    const li = document.createElement('li');
-                    li.textContent = `Комплекс (${quizState.wheelCount} колеса)`;
-                    summary.services.appendChild(li);
-                } else if (quizState.services.length > 0) {
+                if (quizState.services.length > 0) {
                     quizState.services.forEach(serviceKey => {
                         const li = document.createElement('li');
-                        const label = document.querySelector(`label[for="check-${serviceKey}"]`);
-                        li.textContent = label ? label.textContent.split('(')[0].trim() : serviceKey;
+                        li.textContent = serviceLabels[serviceKey] || serviceKey;
                         summary.services.appendChild(li);
                     });
                 } else {
                      const li = document.createElement('li');
-                    li.textContent = 'Услуги не выбраны';
+                    li.textContent = '-';
                     summary.services.appendChild(li);
                 }
             }
-
-            confirmBtn.addEventListener('click', () => {
-                calculatePrice();
-                showStep(5);
-            });
 
             function animateValue(obj, start, end, duration) {
                 let startTimestamp = null;
@@ -1039,55 +966,97 @@
                     obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString('ru-RU');
                     if (progress < 1) {
                         window.requestAnimationFrame(step);
+                    } else {
+                        obj.classList.remove('animate-pop');
+                        void obj.offsetWidth; 
+                        obj.classList.add('animate-pop');
                     }
                 };
                 window.requestAnimationFrame(step);
             }
+            
+            function updateWhatsAppLink(totalPrice) {
+                const { carType, tireSize, wheelCount, services } = quizState;
+                
+                let text = '';
+                const defaultText = 'Здравствуйте! Пишу по поводу Шиномонтажа "ШинаДом"\nСейчас распишу детали...';
+
+                if (carType && tireSize) {
+                    const selectedServicesText = services.length > 0
+                        ? services.map(key => `  - ${serviceLabels[key]}`).join('\n')
+                        : '  - (услуги не выбраны)';
+                    
+                    text = `Здравствуйте!
+Хочу записаться на шиномонтаж.
+
+Детали расчета:
+- Тип машины: ${carType}
+- Размер колес: ${tireSize}
+- Количество: ${wheelCount}
+- Выбранные услуги:
+${selectedServicesText}
+
+- Общая цена: ${totalPrice} ₽
+`;
+                } else {
+                    text = defaultText;
+                }
+
+                whatsappLink.classList.remove('btn-disabled');
+                const encodedText = encodeURIComponent(text);
+                whatsappLink.href = `https://wa.me/79027513964?text=${encodedText}`;
+            }
 
             const calculatePrice = () => {
-                const { carType, tireSize, wheelCount, isComplex, services } = quizState;
-                priceResultEl.textContent = '0';
+                const { carType, tireSize, wheelCount, services } = quizState;
                 
-                if (!carType || !tireSize) {
-                    priceResultEl.textContent = 'N/A';
-                    priceNoteEl.textContent = 'Ошибка в данных';
+                carTypeSelect.classList.remove('input-error');
+                tireSizeSelect.classList.remove('input-error');
+
+                if (!carType) {
+                    animateValue(priceResultEl, parseInt(priceResultEl.textContent.replace(/ /g, '')) || 0, 0, 200);
+                    priceNoteEl.textContent = 'Выберите тип транспорта';
+                    carTypeSelect.classList.add('input-error');
+                    updateWhatsAppLink(0);
+                    return;
+                }
+                
+                if (!tireSize) {
+                    animateValue(priceResultEl, parseInt(priceResultEl.textContent.replace(/ /g, '')) || 0, 0, 200);
+                    priceNoteEl.textContent = 'Выберите размер колес';
+                    tireSizeSelect.classList.add('input-error');
+                    updateWhatsAppLink(0);
                     return;
                 }
                 
                 const prices = priceData[carType][tireSize];
                 if (!prices) {
-                    priceResultEl.textContent = 'N/A';
+                    animateValue(priceResultEl, parseInt(priceResultEl.textContent.replace(/ /g, '')) || 0, 0, 200);
                     priceNoteEl.textContent = 'Данные не найдены';
+                    updateWhatsAppLink(0);
                     return;
                 }
 
                 let totalPrice = 0;
                 
-                if (isComplex) {
-                    if (prices.complex && wheelCount === 4) {
-                        totalPrice = prices.complex;
-                        priceNoteEl.textContent = `Цена за "Комплекс" (4 колеса)`;
-                    } else {
-                        totalPrice += (prices.shinomontazh || 0) * wheelCount;
-                        totalPrice += (prices.balansirovka || 0) * wheelCount;
-                        totalPrice += (prices.snyatie || 0) * wheelCount;
-                        totalPrice += (prices.moyka || 0) * wheelCount;
-                        priceNoteEl.textContent = `Цена за ${wheelCount} колес(а) (все услуги)`;
-                    }
-                } else {
-                    if (services.includes('shinomontazh')) totalPrice += (prices.shinomontazh || 0) * wheelCount;
-                    if (services.includes('balansirovka')) totalPrice += (prices.balansirovka || 0) * wheelCount;
-                    if (services.includes('snyatie')) totalPrice += (prices.snyatie || 0) * wheelCount;
-                    if (services.includes('moyka')) totalPrice += (prices.moyka || 0) * wheelCount;
+                if (services.includes('shinomontazh')) totalPrice += (prices.shinomontazh || 0) * wheelCount;
+                if (services.includes('balansirovka')) totalPrice += (prices.balansirovka || 0) * wheelCount;
+                if (services.includes('snyatie')) totalPrice += (prices.snyatie || 0) * wheelCount;
+                if (services.includes('moyka')) totalPrice += (prices.moyka || 0) * wheelCount;
+                
+                if (services.length > 0) {
                     priceNoteEl.textContent = `Цена за ${wheelCount} колес(а)`;
+                } else {
+                     priceNoteEl.textContent = ``;
                 }
                 
-                if(wheelCount === 0 || (!isComplex && services.length === 0)) {
+                if(wheelCount === 0 || services.length === 0) {
                     totalPrice = 0;
-                    priceNoteEl.textContent = 'Услуги или количество не выбраны';
+                    priceNoteEl.textContent = 'Выберите услуги';
                 }
                 
-                animateValue(priceResultEl, 0, totalPrice, 500);
+                animateValue(priceResultEl, parseInt(priceResultEl.textContent.replace(/ /g, '')) || 0, totalPrice, 300);
+                updateWhatsAppLink(totalPrice);
             };
             
         });
