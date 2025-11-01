@@ -898,11 +898,15 @@
                 resetQuiz();
                 modal.classList.remove('hidden');
                 setTimeout(() => modal.classList.remove('opacity-0'), 10);
+                lenis.stop();
+                document.body.style.overflow = 'hidden';
             });
             
             function closeModal() {
                  modal.classList.add('opacity-0');
                 setTimeout(() => modal.classList.add('hidden'), 300);
+                lenis.start();
+                document.body.style.overflow = '';
             }
             
             closeBtn.addEventListener('click', closeModal);
@@ -1137,3 +1141,4 @@ ${selectedServicesText}
     </script>
 </body>
 </html>
+
