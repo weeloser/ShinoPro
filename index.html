@@ -68,6 +68,70 @@
             transform: translateY(-4px) scale(1.05);
         }
         
+        @keyframes shimmering-glow {
+          0% { 
+            box-shadow: 0 0 10px rgba(34, 211, 238, 0.2);
+            border-color: rgba(55, 65, 81, 0.5);
+          }
+          50% { 
+            box-shadow: 0 0 25px rgba(34, 211, 238, 0.6);
+            border-color: rgba(34, 211, 238, 0.8);
+          }
+          100% { 
+            box-shadow: 0 0 10px rgba(34, 211, 238, 0.2);
+            border-color: rgba(55, 65, 81, 0.5);
+          }
+        }
+        
+        .service-card {
+            transition: transform 0.3s ease;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-8px);
+            animation: shimmering-glow 2.5s infinite ease-in-out;
+        }
+
+        @keyframes shimmering-glow-price {
+          0% { 
+            box-shadow: 0 0 10px rgba(34, 211, 238, 0.2);
+            border-color: rgba(55, 65, 81, 0.5);
+          }
+          50% { 
+            box-shadow: 0 0 25px rgba(34, 211, 238, 0.6);
+            border-color: rgba(34, 211, 238, 0.7);
+          }
+          100% { 
+            box-shadow: 0 0 10px rgba(34, 211, 238, 0.2);
+            border-color: rgba(55, 65, 81, 0.5);
+          }
+        }
+        
+        .price-glow-card {
+            transition: transform 0.3s ease;
+        }
+        
+        .price-glow-card:hover {
+            animation: shimmering-glow-price 2.5s infinite ease-in-out;
+            transform: translateY(-4px);
+        }
+
+        @keyframes pulse-glow-btn {
+          0%, 100% {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(34, 211, 238, 0.5);
+          }
+          50% {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(34, 211, 238, 0.8);
+          }
+        }
+        
+        .animate-pulse-glow-btn {
+            animation: pulse-glow-btn 2s infinite ease-in-out;
+            transform: scale(1.05);
+        }
+
         .price-list-item {
             transition: background-color 0.2s ease, transform 0.2s ease;
         }
@@ -96,7 +160,6 @@
         }
         .glass-card:hover {
             background-color: rgba(31, 41, 55, 0.7); 
-            border-color: rgba(34, 211, 238, 0.5); 
         }
         
         .glass-modal {
@@ -163,7 +226,7 @@
             display: flex;
             align-items: center;
             cursor: pointer;
-            padding: 0.6rem 0.5rem;
+            padding: 0.5rem;
             border-radius: 0.5rem;
             transition: background-color 0.2s ease;
         }
@@ -247,21 +310,21 @@
             <div class="container mx-auto px-6">
                 <h2 class="text-4xl font-bold text-center mb-12" data-aos="fade-up">Наши Услуги</h2>
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="glass-card p-8 rounded-xl shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:shadow-lg hover:shadow-cyan-400/30 service-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="glass-card p-8 rounded-xl shadow-2xl transition-all duration-300 service-card flex flex-col" data-aos="fade-up" data-aos-delay="100">
                         <div class="text-cyan-400 mb-4 service-icon">
                             <i data-lucide="replace" class="h-12 w-12"></i>
                         </div>
                         <h3 class="text-2xl font-bold mb-3">Сезонная "переобувка"</h3>
                         <p class="text-gray-400">Полный комплекс: снятие, мойка, демонтаж, монтаж, балансировка и установка.</p>
                     </div>
-                    <div class="glass-card p-8 rounded-xl shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:shadow-lg hover:shadow-cyan-400/30 service-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="glass-card p-8 rounded-xl shadow-2xl transition-all duration-300 service-card flex flex-col" data-aos="fade-up" data-aos-delay="200">
                         <div class="text-cyan-400 mb-4 service-icon">
                             <i data-lucide="wrench" class="h-12 w-12"></i> 
                         </div>
                         <h3 class="text-2xl font-bold mb-3">Ремонт проколов и порезов</h3>
                         <p class="text-gray-400">Ремонтируем боковые порезы и проколы любой сложности. Быстро и надежно.</p>
                     </div>
-                    <div class="glass-card p-8 rounded-xl shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:shadow-lg hover:shadow-cyan-400/30 service-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="glass-card p-8 rounded-xl shadow-2xl transition-all duration-300 service-card flex flex-col" data-aos="fade-up" data-aos-delay="300">
                         <div class="text-cyan-400 mb-4 service-icon">
                             <i data-lucide="circle-dashed" class="h-12 w-12"></i>
                         </div>
@@ -375,14 +438,14 @@
                         Узнайте точную стоимость услуг для вашего автомобиля. 
                         Воспользуйтесь нашим калькулятором или посмотрите цены на дополнительные услуги ниже.
                     </p>
-                    <button id="openPriceCalculator" class="bg-cyan-400 text-gray-900 font-bold py-4 px-10 rounded-lg shadow-xl hover:bg-cyan-300 transition duration-300 transform hover:scale-105 text-xl">
+                    <button id="openPriceCalculator" class="bg-cyan-400 text-gray-900 font-bold py-4 px-10 rounded-lg shadow-xl hover:bg-cyan-300 transition duration-300 transform hover:scale-105 text-xl animate-pulse-glow-btn">
                         <i data-lucide="calculator" class="inline-block -mt-1 mr-2"></i>
                         Открыть калькулятор
                     </button>
                 </div>
 
                 <div class="max-w-5xl mx-auto mt-20 grid md:grid-cols-2 gap-12 text-left">
-                    <div class="glass-card p-8 rounded-xl shadow-2xl transition-all duration-300 hover:shadow-lg hover:shadow-cyan-400/30" data-aos="fade-up">
+                    <div class="glass-card p-8 rounded-xl shadow-2xl transition-all duration-300 price-glow-card" data-aos="fade-up">
                         <h3 class="text-2xl font-bold text-cyan-400 mb-6">Расходные материалы и Доп. Услуги</h3>
                         <ul class="space-y-4 text-lg">
                             <li class="flex justify-between border-b border-gray-700 py-3 price-list-item"><span>Дошиповка зимних шин</span><span class="font-bold">20 ₽ / шип</span></li>
@@ -397,7 +460,7 @@
                             <li class="flex justify-between pt-3 price-list-item"><span>Заплатка кордовая (25)</span><span class="font-bold">520 ₽</span></li>
                         </ul>
                     </div>
-                    <div class="glass-card p-8 rounded-xl shadow-2xl transition-all duration-300 hover:shadow-lg hover:shadow-cyan-400/30" data-aos="fade-up" data-aos-delay="200">
+                    <div class="glass-card p-8 rounded-xl shadow-2xl transition-all duration-300 price-glow-card" data-aos="fade-up" data-aos-delay="200">
                         <h3 class="text-2xl font-bold text-cyan-400 mb-6">Правка и сварка дисков</h3>
                          <ul class="space-y-4 text-lg">
                             <li class="flex justify-between border-b border-gray-700 py-3 price-list-item"><span>Правка диска штамп. (R13-R16)</span><span class="font-bold">420 ₽</span></li>
@@ -464,122 +527,126 @@
         <div class="container mx-auto px-6 text-center text-gray-500">
             <p>&copy; 2025 "ШинаДом". Все права защищены.</p>
             <p class="text-sm mt-2">Сайт: ШинаДом.рф</p>
-            <p class="text-sm mt-2">Информация на сайте не является публичной офертой.</p>
+            <p class="text-sm mt-2">Информациа на сайте не является публичной офертой.</p>
         </div>
     </footer>
 
-    <div id="priceModal" class="fixed inset-0 z-[60] flex items-center justify-center bg-black bg-opacity-70 backdrop-blur-sm p-4 hidden opacity-0 transition-opacity duration-300 ease-in-out">
-        <div class="glass-modal w-full max-w-sm md:max-w-3xl rounded-2xl shadow-2xl p-6 md:p-8 relative overflow-hidden" data-aos="zoom-in" data-aos-duration="300">
-            <button id="closeModal" class="absolute top-4 right-4 text-gray-400 hover:text-cyan-400 transition-colors z-10">
-                <i data-lucide="x" class="h-8 w-8"></i>
-            </button>
+    <div id="priceModal" class="fixed inset-0 z-[60] flex items-start sm:items-center justify-center bg-black bg-opacity-70 backdrop-blur-sm p-4 sm:p-6 md:p-8 overflow-y-auto hidden opacity-0 transition-opacity duration-300 ease-in-out">
+        <div class="glass-modal w-full max-w-sm md:max-w-3xl rounded-2xl shadow-2xl relative overflow-hidden flex flex-col max-h-[95vh] sm:max-h-[90vh] my-auto" data-aos="zoom-in" data-aos-duration="300">
             
-            <h3 class="text-2xl md:text-3xl font-bold text-center mb-6 text-cyan-400">Калькулятор услуг</h3>
+            <div class="flex-shrink-0 p-6 pb-4 md:p-8 md:pb-6 relative">
+                <button id="closeModal" class="absolute top-4 right-4 text-gray-400 hover:text-cyan-400 transition-colors z-10">
+                    <i data-lucide="x" class="h-8 w-8"></i>
+                </button>
+                <h3 class="text-2xl md:text-3xl font-bold text-center text-cyan-400">Калькулятор услуг</h3>
+            </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                
-                <div class="space-y-4">
-                    <div>
-                        <label for="calc-car-type" class="block text-sm font-bold text-cyan-400 mb-2">1. ВАШ ТРАНСПОРТ</label>
-                        <select id="calc-car-type" class="custom-select block w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-white focus:border-cyan-400 focus:ring-cyan-400 text-lg transition-all">
-                            <option value="">-- Выберите тип --</option>
-                            <option value="Легковые машины">Легковые машины</option>
-                            <option value="Паркетники / Кроссоверы">Паркетники / Кроссоверы</option>
-                            <option value="Внедорожники / Джипы">Внедорожники / Джипы</option>
-                            <option value="Низкий профиль / RunFlat">Низкий профиль / RunFlat</option>
-                            <option value="Газель">Газель</option>
-                        </select>
-                    </div>
+            <div class="flex-grow overflow-y-auto p-6 pt-0 md:p-8 md:pt-0">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                     
-                    <div>
-                        <label for="calc-tire-size" class="block text-sm font-bold text-cyan-400 mb-2">2. РАЗМЕР КОЛЕС</label>
-                        <select id="calc-tire-size" class="custom-select block w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-white focus:border-cyan-400 focus:ring-cyan-400 text-lg transition-all" disabled>
-                            <option value="">-- Сначала выберите тип --</option>
-                        </select>
-                    </div>
-                    
-                    <div>
-                        <label for="calc-wheel-count" class="block text-sm font-bold text-cyan-400 mb-2">3. КОЛИЧЕСТВО КОЛЕС</label>
-                        <input type="number" id="calc-wheel-count" value="4" min="1" max="8" class="block w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-white focus:border-cyan-400 focus:ring-cyan-400 text-lg">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-bold text-cyan-400 mb-2">4. УСЛУГИ</label>
-                        <div class="space-y-3">
-                            <div id="calc-individual-services" class="space-y-1 p-3 glass-card rounded-lg">
-                                <label for="calc-check-all">
-                                    <input id="calc-check-all" type="checkbox" class="h-5 w-5 text-cyan-400 bg-gray-700 border-gray-600 rounded focus:ring-cyan-500">
-                                    <span class="service-label-text block text-md font-bold text-white">Выбрать все</span>
-                                </label>
-                                <hr class="border-gray-600 my-2">
-                                <label for="calc-check-snyatie">
-                                    <input id="calc-check-snyatie" name="service" type="checkbox" class="h-5 w-5 text-cyan-400 bg-gray-700 border-gray-600 rounded focus:ring-cyan-500" checked>
-                                    <span class="service-label-text block text-md text-gray-300">Снятие/Установка</span>
-                                </label>
-                                <label for="calc-check-moyka">
-                                    <input id="calc-check-moyka" name="service" type="checkbox" class="h-5 w-5 text-cyan-400 bg-gray-700 border-gray-600 rounded focus:ring-cyan-500">
-                                    <span class="service-label-text block text-md text-gray-300">Мойка</span>
-                                </label>
-                                <label for="calc-check-shinomontazh">
-                                    <input id="calc-check-shinomontazh" name="service" type="checkbox" class="h-5 w-5 text-cyan-400 bg-gray-700 border-gray-600 rounded focus:ring-cyan-500">
-                                    <span class="service-label-text block text-md text-gray-300">Шиномонтаж</span>
-                                </label>
-                                <label for="calc-check-balansirovka">
-                                    <input id="calc-check-balansirovka" name="service" type="checkbox" class="h-5 w-5 text-cyan-400 bg-gray-700 border-gray-600 rounded focus:ring-cyan-500">
-                                    <span class="service-label-text block text-md text-gray-300">Балансировка</span>
-                                </label>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="calc-car-type" class="block text-sm font-bold text-cyan-400 mb-2">1. ВАШ ТРАНСПОРТ</label>
+                            <select id="calc-car-type" class="custom-select block w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-white focus:border-cyan-400 focus:ring-cyan-400 text-lg transition-all">
+                                <option value="">-- Выберите тип --</option>
+                                <option value="Легковые машины">Легковые машины</option>
+                                <option value="Паркетники / Кроссоверы">Паркетники / Кроссоверы</option>
+                                <option value="Внедорожники / Джипы">Внедорожники / Джипы</option>
+                                <option value="Низкий профиль / RunFlat">Низкий профиль / RunFlat</option>
+                                <option value="Газель">Газель</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label for="calc-tire-size" class="block text-sm font-bold text-cyan-400 mb-2">2. РАЗМЕР КОЛЕС</label>
+                            <select id="calc-tire-size" class="custom-select block w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-white focus:border-cyan-400 focus:ring-cyan-400 text-lg transition-all" disabled>
+                                <option value="">-- Сначала выберите тип --</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label for="calc-wheel-count" class="block text-sm font-bold text-cyan-400 mb-2">3. КОЛИЧЕСТВО КОЛЕС</label>
+                            <input type="number" id="calc-wheel-count" value="4" min="1" max="8" class="block w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-white focus:border-cyan-400 focus:ring-cyan-400 text-lg">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-bold text-cyan-400 mb-2">4. УСЛУГИ</label>
+                            <div class="space-y-3">
+                                <div id="calc-individual-services" class="space-y-1 p-3 glass-card rounded-lg">
+                                    <label for="calc-check-all">
+                                        <input id="calc-check-all" type="checkbox" class="h-5 w-5 text-cyan-400 bg-gray-700 border-gray-600 rounded focus:ring-cyan-500">
+                                        <span class="service-label-text block text-md font-bold text-white">Выбрать все</span>
+                                    </label>
+                                    <hr class="border-gray-600 my-2">
+                                    <label for="calc-check-snyatie">
+                                        <input id="calc-check-snyatie" name="service" type="checkbox" class="h-5 w-5 text-cyan-400 bg-gray-700 border-gray-600 rounded focus:ring-cyan-500" checked>
+                                        <span class="service-label-text block text-md text-gray-300">Снятие/Установка</span>
+                                    </label>
+                                    <label for="calc-check-moyka">
+                                        <input id="calc-check-moyka" name="service" type="checkbox" class="h-5 w-5 text-cyan-400 bg-gray-700 border-gray-600 rounded focus:ring-cyan-500">
+                                        <span class="service-label-text block text-md text-gray-300">Мойка</span>
+                                    </label>
+                                    <label for="calc-check-shinomontazh">
+                                        <input id="calc-check-shinomontazh" name="service" type="checkbox" class="h-5 w-5 text-cyan-400 bg-gray-700 border-gray-600 rounded focus:ring-cyan-500">
+                                        <span class="service-label-text block text-md text-gray-300">Шиномонтаж</span>
+                                    </label>
+                                    <label for="calc-check-balansirovka">
+                                        <input id="calc-check-balansirovka" name="service" type="checkbox" class="h-5 w-5 text-cyan-400 bg-gray-700 border-gray-600 rounded focus:ring-cyan-500">
+                                        <span class="service-label-text block text-md text-gray-300">Балансировка</span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="glass-card rounded-lg p-6 flex flex-col">
-                    <h4 class="text-2xl font-bold text-white mb-4">Ваш расчет</h4>
-                    <div class="space-y-2 text-lg flex-grow">
-                        <div class="flex justify-between">
-                            <span class="text-gray-400">Транспорт:</span>
-                            <span id="summary-car-type" class="font-bold text-right">-</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-400">Размер:</span>
-                            <span id="summary-tire-size" class="font-bold text-right">-</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-400">Количество:</span>
-                            <span id="summary-wheel-count" class="font-bold text-right">0</span>
-                        </div>
-                        <hr class="border-gray-700">
-                        <div>
-                            <span class="text-gray-400">Услуги:</span>
-                            <ul id="summary-services" class="list-none list-inside font-bold mt-2 text-right">
-                                <li>-</li>
-                            </ul>
-                        </div>
-                    </div>
                     
-                    <div class="text-center mt-6">
-                        <p class="text-sm text-gray-400">Итоговая стоимость:</p>
-                        <p class="text-5xl md:text-6xl font-black text-cyan-400 my-2">
-                            <span id="priceResult">0</span> ₽
-                        </p>
-                        <p id="priceNote" class="text-base text-red-400 h-6"></p>
-                    </div>
-                    
-                    <div class="pt-4 space-y-3 mt-auto">
-                        <p class="text-center text-lg text-gray-300">Свяжитесь с нами для записи:</p>
-                        <div class="flex flex-col sm:flex-row justify-center gap-3">
-                            <a href="tel:+79029093879" class="w-full sm:w-auto flex-1 bg-cyan-400 text-gray-900 font-bold py-3 px-4 rounded-lg shadow-lg hover:bg-cyan-300 transition duration-300 transform hover:scale-105 flex items-center justify-center gap-2 animate-pulse-cta">
-                                <i data-lucide="phone-call" class="h-5 w-5"></i>
-                                Позвонить
-                            </a>
-                            <a id="whatsappLink" href="#" target="_blank" class="w-full sm:w-auto flex-1 bg-green-500 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:bg-green-400 transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 animate-pulse-cta">
-                                <i data-lucide="smartphone" class="h-5 w-5"></i>
-                                WhatsApp
-                            </a>
+                    <div class="glass-card rounded-lg p-6 flex flex-col md:sticky md:top-0">
+                        <h4 class="text-2xl font-bold text-white mb-4">Ваш расчет</h4>
+                        <div class="space-y-2 text-lg flex-grow">
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Транспорт:</span>
+                                <span id="summary-car-type" class="font-bold text-right">-</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Размер:</span>
+                                <span id="summary-tire-size" class="font-bold text-right">-</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Количество:</span>
+                                <span id="summary-wheel-count" class="font-bold text-right">0</span>
+                            </div>
+                            <hr class="border-gray-700">
+                            <div>
+                                <span class="text-gray-400">Услуги:</span>
+                                <ul id="summary-services" class="list-none list-inside font-bold mt-2 text-right">
+                                    <li>-</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-6">
+                            <p class="text-sm text-gray-400">Итоговая стоимость:</p>
+                            <p class="text-5xl md:text-6xl font-black text-cyan-400 my-2">
+                                <span id="priceResult">0</span> ₽
+                            </p>
+                            <p id="priceNote" class="text-base text-red-400 h-6"></p>
+                        </div>
+                        
+                        <div class="pt-4 space-y-3 mt-auto">
+                            <p class="text-center text-lg text-gray-300">Свяжитесь с нами для записи:</p>
+                            <div class="flex flex-col sm:flex-row justify-center gap-3">
+                                <a href="tel:+79029093879" class="w-full sm:w-auto flex-1 bg-cyan-400 text-gray-900 font-bold py-3 px-4 rounded-lg shadow-lg hover:bg-cyan-300 transition duration-300 transform hover:scale-105 flex items-center justify-center gap-2 animate-pulse-cta">
+                                    <i data-lucide="phone-call" class="h-5 w-5"></i>
+                                    Позвонить
+                                </a>
+                                <a id="whatsappLink" href="#" target="_blank" class="w-full sm:w-auto flex-1 bg-green-500 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:bg-green-400 transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 animate-pulse-cta">
+                                    <i data-lucide="smartphone" class="h-5 w-5"></i>
+                                    WhatsApp
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
 
+                </div>
             </div>
         </div>
     </div>
@@ -1070,5 +1137,3 @@ ${selectedServicesText}
     </script>
 </body>
 </html>
-
-
