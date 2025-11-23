@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SHINADOM | EST. 2025</title>
-    <link rel="icon" href="https://i.postimg.cc/C1hpVcxb/image.png">
+    <!-- FAVICON -->
+    <link rel="icon" href="https://i.postimg.cc/BZPV0C6F/1763922392546.png">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Unbounded:wght@300;400;500;700;900&display=swap" rel="stylesheet">
@@ -12,7 +14,6 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://unpkg.com/split-type"></script>
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 
     <script>
@@ -24,9 +25,10 @@
                         display: ['Unbounded', 'sans-serif'],
                     },
                     colors: {
-                        accent: '#3b82f6', // Electric Blue for subtle hints
+                        accent: '#ffffff',
                         dark: '#050505',
-                        light: '#f2f2f2'
+                        light: '#f2f2f2',
+                        'gray-custom': '#1a1a1a'
                     },
                     backgroundImage: {
                         'noise': "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%221%22/%3E%3C/svg%3E')",
@@ -37,36 +39,37 @@
     </script>
     <style>
         :root { --cursor-size: 20px; }
-        body { background-color: #050505; color: #f2f2f2; overflow-x: hidden; cursor: none; }
+        body { background-color: #050505; color: #f2f2f2; overflow-x: hidden; }
         
         /* Custom Scrollbar Hide */
         ::-webkit-scrollbar { width: 0px; background: transparent; }
         
         /* Noise Overlay */
-        .noise-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; opacity: 0.05; background-image: var(--tw-bg-noise); }
+        .noise-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; opacity: 0.04; background-image: var(--tw-bg-noise); }
 
-        /* Custom Cursor */
-        #cursor {
-            position: fixed; top: 0; left: 0; width: var(--cursor-size); height: var(--cursor-size);
-            background: #fff; border-radius: 50%; pointer-events: none; z-index: 99999;
-            transform: translate(-50%, -50%); mix-blend-mode: exclusion;
-            transition: width 0.3s cubic-bezier(0.19, 1, 0.22, 1), height 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+        /* Custom Cursor - Desktop Only */
+        @media (pointer: fine) {
+            body { cursor: none; }
+            #cursor {
+                position: fixed; top: 0; left: 0; width: var(--cursor-size); height: var(--cursor-size);
+                background: #fff; border-radius: 50%; pointer-events: none; z-index: 99999;
+                transform: translate(-50%, -50%); mix-blend-mode: exclusion;
+                transition: width 0.3s cubic-bezier(0.19, 1, 0.22, 1), height 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+            }
+            #cursor.hovered { width: 80px; height: 80px; background: #fff; mix-blend-mode: exclusion; }
         }
-        #cursor.hovered { width: 80px; height: 80px; background: #fff; mix-blend-mode: exclusion; }
 
-        /* Typography & Reveal */
-        .char { display: inline-block; transform-origin: 50% 100%; }
-        .reveal-cover { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #050505; transform-origin: bottom; z-index: 2; }
-        
+        @media (pointer: coarse) {
+            #cursor { display: none !important; }
+        }
+
         /* Utility */
-        .clip-text-image { background-clip: text; -webkit-background-clip: text; color: transparent; background-image: url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=2000'); background-size: cover; background-position: center; }
-        
         .magnetic-wrap { display: inline-block; }
         
-        /* Toggle Switch */
-        .toggle-checkbox:checked { right: 0; border-color: #fff; }
-        .toggle-checkbox:checked + .toggle-label { background-color: #fff; }
-        .toggle-checkbox:checked + .toggle-label:before { transform: translateX(100%); background-color: #000; }
+        /* Custom Checkbox */
+        .custom-checkbox:checked + div { background-color: white; border-color: white; }
+        .custom-checkbox:checked + div span { color: black; }
+        .custom-checkbox:checked + div svg { color: black; opacity: 1; }
     </style>
 </head>
 <body class="antialiased selection:bg-white selection:text-black">
@@ -83,13 +86,13 @@
     <div class="noise-overlay"></div>
 
     <!-- Header -->
-    <header class="fixed top-0 w-full z-50 mix-blend-difference text-white py-6 px-6 md:px-12 flex justify-between items-center">
-        <a href="#" class="font-display font-bold text-xl tracking-tighter z-50 magnetic-wrap" data-strength="20">SHINADOM®</a>
+    <header class="fixed top-0 w-full z-50 mix-blend-difference text-white py-6 px-6 md:px-12 flex justify-between items-center transition-all duration-500" id="header">
+        <a href="https://шинадом.рф" class="font-display font-bold text-xl tracking-tighter z-50 magnetic-wrap" data-strength="20">SHINADOM®</a>
         
         <nav class="hidden md:flex gap-12 font-sans text-xs font-medium uppercase tracking-widest">
-            <a href="#services" class="hover:underline decoration-2 underline-offset-4 magnetic-wrap">Услуги</a>
-            <a href="#calculator" class="hover:underline decoration-2 underline-offset-4 magnetic-wrap">Расчет</a>
-            <a href="#contacts" class="hover:underline decoration-2 underline-offset-4 magnetic-wrap">Контакты</a>
+            <a href="#services" class="hover:text-gray-400 transition-colors magnetic-wrap">Услуги</a>
+            <a href="#calculator" class="hover:text-gray-400 transition-colors magnetic-wrap">Расчет</a>
+            <a href="#contacts" class="hover:text-gray-400 transition-colors magnetic-wrap">Контакты</a>
         </nav>
 
         <button id="menu-btn" class="md:hidden z-50 magnetic-wrap">
@@ -109,19 +112,24 @@
     <main>
         <!-- Hero Section -->
         <section class="relative h-screen w-full flex flex-col justify-center items-center px-4 overflow-hidden" id="hero">
-            <div class="absolute inset-0 z-0 opacity-40">
-                <img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?q=80&w=2670&auto=format&fit=crop" class="w-full h-full object-cover grayscale" data-speed="0.5">
+            <div class="absolute inset-0 z-0 opacity-60">
+                <!-- UPDATED HERO IMAGE -->
+                <img src="https://i.postimg.cc/mr4dNxyT/Picsart-25-11-23-21-36-32-574.png" class="w-full h-full object-cover grayscale" data-speed="0.5">
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-dark/20 to-dark"></div>
             </div>
             
-            <div class="relative z-10 text-center mix-blend-difference text-white">
-                <div class="overflow-hidden mb-2">
-                    <p class="font-sans text-xs md:text-sm uppercase tracking-[0.5em] reveal-text">Professional Service</p>
+            <div class="relative z-10 text-center mix-blend-difference text-white mt-12">
+                <div class="overflow-hidden mb-4">
+                    <div class="inline-flex items-center gap-3 px-4 py-2 border border-white/30 rounded-full backdrop-blur-md reveal-text">
+                        <div class="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                        <span class="font-mono text-[10px] uppercase tracking-[0.2em]">System Online</span>
+                    </div>
                 </div>
-                <h1 class="font-display font-black text-[12vw] leading-[0.8] tracking-tighter mb-6 mix-blend-difference" id="hero-title">
+                <h1 class="font-display font-black text-[13vw] leading-[0.8] tracking-tighter mb-8" id="hero-title">
                     SHINA<br>DOM
                 </h1>
-                <div class="flex flex-col md:flex-row gap-6 justify-center items-center mt-12 opacity-0" id="hero-btns">
-                    <a href="#calculator" class="px-8 py-4 bg-white text-black font-display font-bold text-sm uppercase tracking-widest hover:scale-105 transition-transform duration-300 magnetic-wrap">
+                <div class="flex flex-col md:flex-row gap-6 justify-center items-center mt-8 opacity-0" id="hero-btns">
+                    <a href="#calculator" class="px-10 py-4 bg-white text-black font-display font-bold text-sm uppercase tracking-widest hover:scale-105 transition-transform duration-300 magnetic-wrap">
                         Рассчитать
                     </a>
                     <a href="https://wa.me/79027513964" class="flex items-center gap-2 font-sans text-sm uppercase tracking-widest hover:text-gray-300 transition-colors magnetic-wrap">
@@ -132,145 +140,153 @@
             </div>
         </section>
 
-        <!-- Marquee -->
-        <div class="py-8 border-y border-white/10 bg-dark overflow-hidden whitespace-nowrap">
-            <div class="inline-flex gap-12 animate-marquee">
-                <span class="text-4xl md:text-6xl font-display font-bold text-transparent stroke-text opacity-30">ШИНОМОНТАЖ /// БАЛАНСИРОВКА /// ПРАВКА ДИСКОВ /// СВАРКА АРГОНОМ ///</span>
-                <span class="text-4xl md:text-6xl font-display font-bold text-transparent stroke-text opacity-30">ШИНОМОНТАЖ /// БАЛАНСИРОВКА /// ПРАВКА ДИСКОВ /// СВАРКА АРГОНОМ ///</span>
-            </div>
-        </div>
-        <style>.stroke-text { -webkit-text-stroke: 1px white; } .animate-marquee { animation: marquee 20s linear infinite; } @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }</style>
-
-        <!-- Services (Horizontal Scroll) -->
-        <section id="services" class="bg-light text-dark relative">
-            <div class="container mx-auto px-6 py-24">
-                <div class="flex justify-between items-end mb-24">
-                    <h2 class="font-display font-black text-5xl md:text-7xl tracking-tighter uppercase">Услуги</h2>
+        <!-- Services -->
+        <section id="services" class="bg-light text-dark relative pt-32 pb-24">
+            <div class="container mx-auto px-6">
+                <div class="flex justify-between items-end mb-20 border-b border-black/10 pb-8">
+                    <h2 class="font-display font-black text-6xl md:text-8xl tracking-tighter uppercase">Услуги</h2>
                     <p class="hidden md:block max-w-xs font-sans text-sm text-gray-500 text-right">
-                        Используем оборудование Hofmann и материалы Tech. Точность до 1 грамма.
+                        Точность оборудования до 1 грамма.<br>Гарантия качества.
                     </p>
                 </div>
 
-                <div class="flex flex-col gap-2">
+                <div class="flex flex-col">
                     <!-- Item 1 -->
-                    <div class="service-item group border-t border-black/10 py-12 cursor-pointer transition-colors hover:bg-white relative overflow-hidden">
+                    <div class="service-item group border-b border-black/10 py-16 cursor-pointer transition-colors hover:bg-white relative overflow-hidden">
                         <div class="absolute inset-0 bg-black translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out z-0"></div>
                         <div class="relative z-10 flex justify-between items-center px-4 group-hover:text-white transition-colors duration-300">
                             <span class="font-mono text-xs opacity-50">01</span>
-                            <h3 class="font-display font-bold text-3xl md:text-5xl uppercase">Сезонная Смена</h3>
-                            <i data-lucide="arrow-right" class="w-8 h-8 -rotate-45 group-hover:rotate-0 transition-transform duration-500"></i>
+                            <h3 class="font-display font-bold text-4xl md:text-6xl uppercase tracking-tight ml-8 md:ml-32">Сезонная Смена</h3>
+                            <i data-lucide="arrow-right" class="w-10 h-10 -rotate-45 group-hover:rotate-0 transition-transform duration-500"></i>
                         </div>
-                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-40 bg-[url('https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=1000&auto=format&fit=crop')] bg-cover opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-300 z-10 hidden md:block rotate-6 mix-blend-difference"></div>
                     </div>
                     
                     <!-- Item 2 -->
-                    <div class="service-item group border-t border-black/10 py-12 cursor-pointer transition-colors hover:bg-white relative overflow-hidden">
+                    <div class="service-item group border-b border-black/10 py-16 cursor-pointer transition-colors hover:bg-white relative overflow-hidden">
                         <div class="absolute inset-0 bg-black translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out z-0"></div>
                         <div class="relative z-10 flex justify-between items-center px-4 group-hover:text-white transition-colors duration-300">
                             <span class="font-mono text-xs opacity-50">02</span>
-                            <h3 class="font-display font-bold text-3xl md:text-5xl uppercase">Правка Дисков</h3>
-                            <i data-lucide="arrow-right" class="w-8 h-8 -rotate-45 group-hover:rotate-0 transition-transform duration-500"></i>
+                            <h3 class="font-display font-bold text-4xl md:text-6xl uppercase tracking-tight ml-8 md:ml-32">Правка Дисков</h3>
+                            <i data-lucide="arrow-right" class="w-10 h-10 -rotate-45 group-hover:rotate-0 transition-transform duration-500"></i>
                         </div>
                     </div>
 
                     <!-- Item 3 -->
-                    <div class="service-item group border-t border-black/10 border-b py-12 cursor-pointer transition-colors hover:bg-white relative overflow-hidden">
+                    <div class="service-item group border-b border-black/10 py-16 cursor-pointer transition-colors hover:bg-white relative overflow-hidden">
                         <div class="absolute inset-0 bg-black translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out z-0"></div>
                         <div class="relative z-10 flex justify-between items-center px-4 group-hover:text-white transition-colors duration-300">
                             <span class="font-mono text-xs opacity-50">03</span>
-                            <h3 class="font-display font-bold text-3xl md:text-5xl uppercase">Сварка Аргоном</h3>
-                            <i data-lucide="arrow-right" class="w-8 h-8 -rotate-45 group-hover:rotate-0 transition-transform duration-500"></i>
+                            <h3 class="font-display font-bold text-4xl md:text-6xl uppercase tracking-tight ml-8 md:ml-32">Сварка Аргоном</h3>
+                            <i data-lucide="arrow-right" class="w-10 h-10 -rotate-45 group-hover:rotate-0 transition-transform duration-500"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Calculator -->
-        <section id="calculator" class="py-32 px-6 bg-[#080808] relative overflow-hidden">
-            <div class="container mx-auto max-w-6xl">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
-                    
-                    <!-- Controls -->
-                    <div class="space-y-12">
-                        <div>
-                            <h2 class="font-display font-bold text-4xl mb-2">Калькулятор</h2>
-                            <p class="text-gray-500 text-sm font-sans">Выберите параметры вашего автомобиля</p>
-                        </div>
+        <!-- Calculator Redesigned -->
+        <section id="calculator" class="py-32 bg-dark relative">
+            <div class="container mx-auto px-4 md:px-6 max-w-7xl">
+                <div class="mb-16 text-center">
+                    <span class="text-gray-500 font-mono text-xs tracking-[0.5em] uppercase">System Interface</span>
+                    <h2 class="text-5xl md:text-7xl font-display font-black mt-4 uppercase tracking-tighter">Калькулятор</h2>
+                </div>
 
-                        <div class="space-y-8">
-                            <!-- Type -->
-                            <div class="relative">
-                                <label class="block text-xs uppercase tracking-widest text-gray-500 mb-3">Тип кузова</label>
-                                <select id="car-type" class="w-full bg-transparent border-b border-white/20 py-4 text-xl font-display focus:outline-none focus:border-white transition-colors appearance-none rounded-none">
-                                    <option value="" class="bg-black text-gray-500">/// Выберите тип</option>
-                                    <option value="Легковые машины" class="bg-black">Легковой (Sedan)</option>
-                                    <option value="Паркетники / Кроссоверы" class="bg-black">Кроссовер (SUV)</option>
-                                    <option value="Внедорожники / Джипы" class="bg-black">Джип (4x4)</option>
-                                    <option value="Низкий профиль / RunFlat" class="bg-black">RunFlat / Low Profile</option>
-                                    <option value="Газель" class="bg-black">Коммерческий (Газель)</option>
-                                </select>
+                <!-- New Layout -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 border border-white/10 bg-[#0a0a0a]">
+                    
+                    <!-- Left: Inputs -->
+                    <div class="lg:col-span-7 p-8 md:p-12 border-b lg:border-b-0 lg:border-r border-white/10">
+                        <div class="grid grid-cols-1 gap-8">
+                            
+                            <!-- Row 1 -->
+                            <div class="group">
+                                <label class="block text-[10px] font-mono text-gray-500 mb-3 uppercase tracking-widest">Класс автомобиля</label>
+                                <div class="relative">
+                                    <select id="car-type" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white p-5 font-display text-lg focus:border-white outline-none transition-all appearance-none cursor-pointer rounded-none">
+                                        <option value="" class="bg-dark text-gray-500">/// ВЫБРАТЬ КЛАСС</option>
+                                        <option value="Легковые машины" class="bg-dark">Легковой (Sedan)</option>
+                                        <option value="Паркетники / Кроссоверы" class="bg-dark">Кроссовер (SUV)</option>
+                                        <option value="Внедорожники / Джипы" class="bg-dark">Джип (4x4)</option>
+                                        <option value="Низкий профиль / RunFlat" class="bg-dark">RunFlat / Low Profile</option>
+                                        <option value="Газель" class="bg-dark">Коммерческий (Газель)</option>
+                                    </select>
+                                    <i data-lucide="chevron-down" class="absolute right-5 top-6 w-5 h-5 text-gray-500 pointer-events-none"></i>
+                                </div>
                             </div>
 
-                            <div class="grid grid-cols-2 gap-8">
-                                <!-- Size -->
-                                <div class="relative">
-                                    <label class="block text-xs uppercase tracking-widest text-gray-500 mb-3">Радиус (R)</label>
-                                    <select id="tire-size" class="w-full bg-transparent border-b border-white/20 py-4 text-xl font-display focus:outline-none focus:border-white transition-colors appearance-none rounded-none disabled:opacity-30">
-                                        <option value="" class="bg-black">—</option>
-                                    </select>
+                            <!-- Row 2 -->
+                            <div class="grid grid-cols-2 gap-6">
+                                <div class="group">
+                                    <label class="block text-[10px] font-mono text-gray-500 mb-3 uppercase tracking-widest">Радиус (R)</label>
+                                    <div class="relative">
+                                        <select id="tire-size" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white p-5 font-display text-lg focus:border-white outline-none transition-all appearance-none cursor-pointer rounded-none disabled:opacity-50">
+                                            <option value="" class="bg-dark">—</option>
+                                        </select>
+                                        <i data-lucide="chevron-down" class="absolute right-5 top-6 w-5 h-5 text-gray-500 pointer-events-none"></i>
+                                    </div>
                                 </div>
-                                <!-- Count -->
-                                <div class="relative">
-                                    <label class="block text-xs uppercase tracking-widest text-gray-500 mb-3">Количество</label>
-                                    <div class="flex items-center justify-between border-b border-white/20 py-4">
-                                        <button onclick="changeWheels(-1)" class="text-xl hover:text-accent transition-colors">-</button>
-                                        <span id="wheel-display" class="text-xl font-display">4</span>
-                                        <button onclick="changeWheels(1)" class="text-xl hover:text-accent transition-colors">+</button>
+                                <div class="group">
+                                    <label class="block text-[10px] font-mono text-gray-500 mb-3 uppercase tracking-widest">Количество</label>
+                                    <div class="flex items-center bg-white/5 border border-white/10">
+                                        <button onclick="changeWheels(-1)" class="w-16 p-5 hover:bg-white hover:text-black transition-colors text-xl font-display">-</button>
+                                        <div class="flex-grow text-center font-display text-xl p-5" id="wheel-display">4</div>
+                                        <button onclick="changeWheels(1)" class="w-16 p-5 hover:bg-white hover:text-black transition-colors text-xl font-display">+</button>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Toggles -->
-                            <div class="grid grid-cols-1 gap-6 pt-6">
-                                <label class="flex items-center justify-between group cursor-pointer">
-                                    <span class="font-sans text-sm text-gray-400 group-hover:text-white transition-colors">Комплекс (Снятие, Монтаж, Балансировка)</span>
-                                    <div class="relative inline-block w-12 h-6 align-middle select-none transition duration-200 ease-in">
-                                        <input type="checkbox" id="check-complex" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-all duration-300 left-0" checked disabled>
-                                        <label for="check-complex" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-800 cursor-pointer transition-colors duration-300"></label>
+                            <!-- Row 3: Checkboxes as Buttons -->
+                            <div class="pt-6 border-t border-white/5 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <label class="cursor-pointer relative group">
+                                    <input type="checkbox" class="sr-only custom-checkbox" id="check-complex" checked disabled>
+                                    <div class="p-5 border border-white/10 bg-transparent transition-all flex items-center justify-between group-hover:border-white/30">
+                                        <span class="text-xs text-gray-400 font-mono uppercase tracking-wide transition-colors">Комплекс (База)</span>
+                                        <i data-lucide="check" class="w-4 h-4 text-gray-600 opacity-50 transition-all"></i>
                                     </div>
                                 </label>
-                                <label class="flex items-center justify-between group cursor-pointer">
-                                    <span class="font-sans text-sm text-gray-400 group-hover:text-white transition-colors">Техническая Мойка</span>
-                                    <div class="relative inline-block w-12 h-6 align-middle select-none transition duration-200 ease-in">
-                                        <input type="checkbox" id="check-moyka" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-black border-4 border-gray-600 appearance-none cursor-pointer transition-all duration-300 left-0">
-                                        <label for="check-moyka" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-800 cursor-pointer transition-colors duration-300"></label>
+                                <label class="cursor-pointer relative group">
+                                    <input type="checkbox" class="sr-only custom-checkbox" id="check-moyka">
+                                    <div class="p-5 border border-white/10 bg-transparent transition-all flex items-center justify-between group-hover:border-white/30">
+                                        <span class="text-xs text-gray-400 font-mono uppercase tracking-wide transition-colors">Тех. Мойка</span>
+                                        <i data-lucide="plus" class="w-4 h-4 text-gray-600 opacity-0 transition-all"></i>
                                     </div>
                                 </label>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Display -->
-                    <div class="relative bg-[#111] p-8 md:p-12 flex flex-col justify-between border border-white/5">
-                        <div class="flex justify-between items-start">
-                            <i data-lucide="activity" class="text-white/20 w-8 h-8"></i>
-                            <span class="font-mono text-xs text-white/30">ESTIMATION</span>
-                        </div>
+                    <!-- Right: Output -->
+                    <div class="lg:col-span-5 bg-[#0f0f0f] p-8 md:p-12 flex flex-col justify-between relative overflow-hidden">
+                        <!-- Background Decoration -->
+                        <div class="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.02)_50%,transparent_75%,transparent_100%)] bg-[length:250%_250%] animate-[shine_10s_linear_infinite] pointer-events-none"></div>
                         
-                        <div class="text-right my-12">
-                            <div class="text-8xl md:text-9xl font-display font-bold tracking-tighter leading-none" id="final-price">0</div>
-                            <div class="text-xl text-gray-500 font-display">RUB</div>
+                        <div class="relative z-10">
+                            <div class="flex justify-between items-start border-b border-white/10 pb-6 mb-8">
+                                <div>
+                                    <p class="text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-1">Модель</p>
+                                    <p id="res-car" class="text-white font-display text-sm truncate max-w-[200px]">-</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-1">Размер</p>
+                                    <p id="res-size" class="text-white font-display text-sm">-</p>
+                                </div>
+                            </div>
+
+                            <div class="text-center py-8">
+                                <div class="text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-4">Итоговая стоимость</div>
+                                <div class="flex justify-center items-baseline gap-3">
+                                    <span id="final-price" class="text-7xl md:text-8xl font-display font-bold text-white tracking-tighter leading-none">0</span>
+                                    <span class="text-xl text-gray-600 font-display">₽</span>
+                                </div>
+                            </div>
                         </div>
 
-                        <a href="#" id="whatsapp-btn" class="w-full py-6 bg-white text-black font-display font-bold text-center uppercase tracking-widest hover:bg-gray-200 transition-colors relative overflow-hidden group">
-                            <span class="relative z-10 group-hover:hidden">Записаться</span>
-                            <span class="absolute inset-0 flex items-center justify-center translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-black text-white z-20">
-                                Открыть WhatsApp
-                            </span>
+                        <a href="#" id="whatsapp-btn" class="relative z-10 w-full py-5 bg-white text-black font-display font-bold text-center uppercase tracking-widest hover:bg-[#e5e5e5] transition-all group mt-auto flex items-center justify-center gap-3">
+                            <span>Записаться</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                         </a>
                     </div>
-
                 </div>
             </div>
         </section>
@@ -278,43 +294,43 @@
         <!-- Contacts -->
         <section id="contacts" class="min-h-screen bg-white text-black flex flex-col justify-between relative z-10">
             <div class="container mx-auto px-6 pt-24 flex-grow">
-                <h2 class="font-display font-black text-[10vw] leading-[0.8] tracking-tighter mb-12 border-b-2 border-black pb-8">
+                <h2 class="font-display font-black text-[12vw] leading-[0.8] tracking-tighter mb-16 border-b-2 border-black pb-8">
                     СВЯЗЬ
                 </h2>
                 
-                <div class="grid md:grid-cols-2 gap-12">
-                    <div class="space-y-8">
+                <div class="grid md:grid-cols-2 gap-16">
+                    <div class="space-y-12">
                         <div class="group">
-                            <p class="text-xs uppercase tracking-widest text-gray-500 mb-2">Адрес</p>
-                            <p class="font-display text-2xl md:text-3xl font-bold group-hover:underline decoration-2">
+                            <p class="text-xs uppercase tracking-widest text-gray-500 mb-2">Адрес Центра</p>
+                            <p class="font-display text-2xl md:text-4xl font-bold group-hover:underline decoration-2">
                                 Тульская обл., с. Поповка<br>ул. Полевая, 2
                             </p>
                         </div>
                         <div class="group">
-                            <p class="text-xs uppercase tracking-widest text-gray-500 mb-2">Телефон</p>
-                            <a href="tel:+79029093879" class="font-display text-2xl md:text-3xl font-bold group-hover:underline decoration-2 block">
+                            <p class="text-xs uppercase tracking-widest text-gray-500 mb-2">Прямая линия</p>
+                            <a href="tel:+79029093879" class="font-display text-2xl md:text-4xl font-bold group-hover:underline decoration-2 block">
                                 +7 (902) 909-38-79
                             </a>
                         </div>
-                        <div class="flex gap-4 pt-8">
-                            <a href="https://wa.me/79027513964" class="w-16 h-16 rounded-full border border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors magnetic-wrap">
-                                <i data-lucide="message-circle"></i>
+                        <div class="flex gap-4 pt-4">
+                            <a href="https://wa.me/79027513964" class="w-20 h-20 rounded-full border border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors magnetic-wrap">
+                                <i data-lucide="message-circle" class="w-8 h-8"></i>
                             </a>
-                            <a href="https://t.me/+79027513964" class="w-16 h-16 rounded-full border border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors magnetic-wrap">
-                                <i data-lucide="send"></i>
+                            <a href="https://t.me/+79027513964" class="w-20 h-20 rounded-full border border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors magnetic-wrap">
+                                <i data-lucide="send" class="w-8 h-8"></i>
                             </a>
                         </div>
                     </div>
                     
-                    <div class="h-[400px] bg-gray-100 grayscale hover:grayscale-0 transition-all duration-700 relative overflow-hidden">
+                    <div class="h-[500px] bg-gray-100 grayscale hover:grayscale-0 transition-all duration-700 relative overflow-hidden border border-black/10">
                         <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3Acc7ed495ed6ddacaeab60edcc7b1c414c118b74ccdccf0d0943bf3296302b918&amp;source=constructor" width="100%" height="100%" frameborder="0"></iframe>
                     </div>
                 </div>
             </div>
 
-            <footer class="container mx-auto px-6 py-8 flex flex-col md:flex-row justify-between items-end gap-4 border-t border-black/10 mt-12">
+            <footer class="container mx-auto px-6 py-12 flex flex-col md:flex-row justify-between items-end gap-4 border-t border-black/10 mt-24">
                 <p class="font-sans text-xs text-gray-500">© 2025 SHINADOM.</p>
-                <div class="flex gap-6 font-sans text-xs font-bold uppercase tracking-widest">
+                <div class="flex gap-8 font-sans text-xs font-bold uppercase tracking-widest">
                     <button onclick="openModal('offer')" class="hover:underline">Оферта</button>
                     <button onclick="openModal('policy')" class="hover:underline">Политика</button>
                 </div>
@@ -328,7 +344,7 @@
             <button onclick="closeModal()" class="absolute top-8 right-8 p-2 hover:bg-black hover:text-white transition-colors rounded-full">
                 <i data-lucide="x" class="w-6 h-6"></i>
             </button>
-            <div class="mt-12">
+            <div class="mt-16">
                 <h3 id="modal-title" class="font-display font-bold text-3xl mb-8 uppercase"></h3>
                 <div id="modal-body" class="font-sans text-sm leading-relaxed space-y-4 text-gray-600 h-[70vh] overflow-y-auto pr-4 custom-scrollbar"></div>
             </div>
@@ -351,7 +367,7 @@
         function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
         requestAnimationFrame(raf);
 
-        // Preloader
+        // Preloader & Hero Animations
         window.addEventListener('load', () => {
             const tl = gsap.timeline();
             tl.to('#preloader-text', { y: 0, duration: 1, ease: 'power4.out' })
@@ -361,51 +377,62 @@
               .to('#hero-btns', { opacity: 1, y: 0, duration: 1 }, "-=1");
         });
 
-        // Custom Cursor
+        // Custom Cursor Logic (Double check JS side)
         const cursor = document.getElementById('cursor');
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
-
-        // Magnetic Buttons
-        document.querySelectorAll('.magnetic-wrap').forEach(el => {
-            el.addEventListener('mousemove', (e) => {
-                const rect = el.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                gsap.to(el, { x: x * 0.5, y: y * 0.5, duration: 0.3 });
-                cursor.classList.add('hovered');
-            });
-            el.addEventListener('mouseleave', () => {
-                gsap.to(el, { x: 0, y: 0, duration: 0.3 });
-                cursor.classList.remove('hovered');
-            });
-        });
         
-        // General Hover for Links
-        document.querySelectorAll('a, button, .service-item, label').forEach(el => {
-            if(!el.classList.contains('magnetic-wrap')) {
+        // Only enable mousemove listener if pointer is fine (mouse)
+        if (window.matchMedia("(pointer: fine)").matches) {
+            document.addEventListener('mousemove', (e) => {
+                // Using requestAnimationFrame for smoother performance
+                requestAnimationFrame(() => {
+                    cursor.style.left = e.clientX + 'px';
+                    cursor.style.top = e.clientY + 'px';
+                });
+            });
+
+            document.querySelectorAll('a, button, .service-item, label, select').forEach(el => {
                 el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
                 el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
-            }
-        });
+            });
+        }
+
+        // Magnetic Buttons
+        if (window.matchMedia("(pointer: fine)").matches) {
+            document.querySelectorAll('.magnetic-wrap').forEach(el => {
+                el.addEventListener('mousemove', (e) => {
+                    const rect = el.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    gsap.to(el, { x: x * 0.5, y: y * 0.5, duration: 0.3 });
+                    cursor.classList.add('hovered');
+                });
+                el.addEventListener('mouseleave', () => {
+                    gsap.to(el, { x: 0, y: 0, duration: 0.3 });
+                    cursor.classList.remove('hovered');
+                });
+            });
+        }
 
         // Parallax Images
-        document.addEventListener('mousemove', (e) => {
-            const x = (e.clientX / window.innerWidth - 0.5) * 20;
-            const y = (e.clientY / window.innerHeight - 0.5) * 20;
-            gsap.to('[data-speed]', { x: x, y: y, duration: 1 });
-        });
+        if (window.matchMedia("(pointer: fine)").matches) {
+            document.addEventListener('mousemove', (e) => {
+                const x = (e.clientX / window.innerWidth - 0.5) * 20;
+                const y = (e.clientY / window.innerHeight - 0.5) * 20;
+                gsap.to('[data-speed]', { x: x, y: y, duration: 1 });
+            });
+        }
 
-        // Calculator
+        // Calculator Logic
         const carSelect = document.getElementById('car-type');
         const sizeSelect = document.getElementById('tire-size');
         const wheelDisplay = document.getElementById('wheel-display');
+        const resCar = document.getElementById('res-car');
+        const resSize = document.getElementById('res-size');
         let wheelCount = 4;
 
         carSelect.addEventListener('change', () => {
             const type = carSelect.value;
+            resCar.innerText = type || '-';
             sizeSelect.innerHTML = '<option value="">—</option>';
             sizeSelect.disabled = true;
             if(priceData[type]) {
@@ -420,7 +447,10 @@
             calculate();
         });
 
-        sizeSelect.addEventListener('change', calculate);
+        sizeSelect.addEventListener('change', () => {
+            resSize.innerText = sizeSelect.value || '-';
+            calculate();
+        });
         document.getElementById('check-moyka').addEventListener('change', calculate);
 
         function changeWheels(d) {
@@ -439,7 +469,7 @@
 
             if(type && size && priceData[type] && priceData[type][size]) {
                 let base = priceData[type][size];
-                total = base * wheelCount; // Base price implies complex
+                total = base * wheelCount; 
                 if(document.getElementById('check-moyka').checked) total += 100 * wheelCount;
                 total = Math.ceil(total / 10) * 10;
             }
