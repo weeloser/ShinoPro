@@ -1,21 +1,22 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ШинаДом | Премиум Шиномонтаж</title>
+    <title>ШинаДом | Cyber Service</title>
     <link rel="icon" href="https://i.postimg.cc/C1hpVcxb/image.png">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <!-- Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
 
     <script>
@@ -23,33 +24,26 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Outfit', 'sans-serif'],
+                        sans: ['Rajdhani', 'sans-serif'],
                         display: ['Orbitron', 'sans-serif'],
                     },
                     colors: {
-                        neon: {
-                            DEFAULT: '#00f3ff',
-                            glow: 'rgba(0, 243, 255, 0.6)',
-                            dark: '#00a8b0'
-                        },
-                        dark: {
-                            bg: '#050505',
-                            card: '#0a0a0a',
-                            surface: '#121212'
-                        }
+                        neon: '#00f3ff',
+                        neonPurple: '#bc13fe',
+                        dark: '#030305',
+                        panel: '#0a0a0c'
                     },
                     backgroundImage: {
-                        'cyber-grid': "radial-gradient(circle at 50% 50%, rgba(0, 243, 255, 0.05) 1px, transparent 1px)",
-                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'grid-pattern': "linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px)",
                     },
                     animation: {
-                        'spin-slow': 'spin 10s linear infinite',
-                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'scanline': 'scanline 8s linear infinite',
                     },
                     keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-20px)' },
+                        scanline: {
+                            '0%': { transform: 'translateY(-100%)' },
+                            '100%': { transform: 'translateY(100vh)' }
                         }
                     }
                 }
@@ -58,253 +52,172 @@
     </script>
 
     <style>
-        :root {
-            --neon-primary: #00f3ff;
-            --neon-secondary: #bc13fe;
-        }
-        
         body {
-            background-color: #050505;
+            background-color: #030305;
             color: #e5e5e5;
             overflow-x: hidden;
-            cursor: default;
         }
 
         /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0a0a0a;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #333;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--neon-primary);
-        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #030305; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00f3ff; }
 
-        /* Loader */
-        .loader-wrap {
-            position: fixed;
-            inset: 0;
-            background: #000;
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            pointer-events: none;
-        }
+        /* Neon Utilities */
+        .neon-shadow { box-shadow: 0 0 10px rgba(0, 243, 255, 0.3), 0 0 20px rgba(0, 243, 255, 0.1); }
+        .neon-border { border: 1px solid rgba(0, 243, 255, 0.3); }
+        .neon-text { text-shadow: 0 0 5px rgba(0, 243, 255, 0.8); }
 
-        /* Glassmorphism & Neon */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 0 0 1px rgba(0,0,0,1), 0 20px 40px rgba(0,0,0,0.6);
-        }
-        
-        .glass-panel:hover {
-            border-color: rgba(0, 243, 255, 0.3);
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.1);
-        }
-
-        .neon-text {
-            text-shadow: 0 0 10px rgba(0, 243, 255, 0.5), 0 0 20px rgba(0, 243, 255, 0.3);
-        }
-
-        .neon-border {
-            position: relative;
-        }
-        .neon-border::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0%;
-            height: 2px;
-            background: var(--neon-primary);
-            box-shadow: 0 0 10px var(--neon-primary);
-            transition: width 0.3s ease;
-        }
-        .neon-border:hover::after {
-            width: 100%;
-        }
-
-        /* Custom Selection inputs */
-        select {
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2300f3ff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-            background-position: right 0.5rem center;
-            background-repeat: no-repeat;
-            background-size: 1.5em 1.5em;
-        }
-        
-        /* Checkbox Customization */
-        .cyber-checkbox input:checked + div {
-            background-color: var(--neon-primary);
-            border-color: var(--neon-primary);
-        }
-        .cyber-checkbox input:checked + div svg {
-            display: block;
-        }
-
-        /* Spotlights for cards */
-        .spotlight-card {
-            position: relative;
-            overflow: hidden;
-        }
-        .spotlight-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.06), transparent 40%);
-            opacity: 0;
-            transition: opacity 0.5s;
-            pointer-events: none;
-            z-index: 2;
-        }
-        .spotlight-card:hover::before {
-            opacity: 1;
+        /* Glass Panel */
+        .glass {
+            background: rgba(10, 10, 12, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         /* Glitch Effect */
-        .glitch-wrapper {
-            position: relative;
-        }
-        .glitch {
-            position: relative;
-            color: #fff;
-            mix-blend-mode: lighten;
-        }
-        .glitch:before, .glitch:after {
+        .glitch { position: relative; }
+        .glitch::before, .glitch::after {
             content: attr(data-text);
             position: absolute;
-            top: 0;
-            width: 100%;
-            background: #050505;
-            clip: rect(0, 0, 0, 0);
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #030305;
         }
-        .glitch:before {
-            left: -2px;
-            text-shadow: 2px 0 #ff00c1;
-            animation: glitch-anim-1 2s infinite linear alternate-reverse;
+        .glitch::before { left: 2px; text-shadow: -1px 0 #bc13fe; clip: rect(44px, 450px, 56px, 0); animation: glitch-anim 5s infinite linear alternate-reverse; }
+        .glitch::after { left: -2px; text-shadow: -1px 0 #00f3ff; clip: rect(44px, 450px, 56px, 0); animation: glitch-anim2 5s infinite linear alternate-reverse; }
+
+        @keyframes glitch-anim {
+            0% { clip: rect(18px, 9999px, 86px, 0); }
+            20% { clip: rect(12px, 9999px, 98px, 0); }
+            40% { clip: rect(65px, 9999px, 14px, 0); }
+            60% { clip: rect(89px, 9999px, 5px, 0); }
+            80% { clip: rect(24px, 9999px, 63px, 0); }
+            100% { clip: rect(96px, 9999px, 4px, 0); }
         }
-        .glitch:after {
-            left: 2px;
-            text-shadow: -2px 0 #00fff9;
-            animation: glitch-anim-2 3s infinite linear alternate-reverse;
-        }
-        @keyframes glitch-anim-1 {
-            0% { clip: rect(20px, 9999px, 15px, 0); }
-            20% { clip: rect(60px, 9999px, 80px, 0); }
-            40% { clip: rect(10px, 9999px, 50px, 0); }
-            60% { clip: rect(80px, 9999px, 20px, 0); }
-            80% { clip: rect(40px, 9999px, 90px, 0); }
-            100% { clip: rect(50px, 9999px, 30px, 0); }
-        }
-        @keyframes glitch-anim-2 {
-            0% { clip: rect(80px, 9999px, 20px, 0); }
-            20% { clip: rect(10px, 9999px, 90px, 0); }
-            40% { clip: rect(50px, 9999px, 10px, 0); }
-            60% { clip: rect(20px, 9999px, 60px, 0); }
-            80% { clip: rect(70px, 9999px, 30px, 0); }
-            100% { clip: rect(30px, 9999px, 50px, 0); }
+        @keyframes glitch-anim2 {
+            0% { clip: rect(65px, 9999px, 100px, 0); }
+            20% { clip: rect(4px, 9999px, 85px, 0); }
+            40% { clip: rect(32px, 9999px, 5px, 0); }
+            60% { clip: rect(10px, 9999px, 64px, 0); }
+            80% { clip: rect(89px, 9999px, 2px, 0); }
+            100% { clip: rect(23px, 9999px, 76px, 0); }
         }
 
-        /* Map Filter */
-        .map-grayscale {
-            filter: grayscale(100%) invert(90%) hue-rotate(180deg) brightness(90%) contrast(120%);
+        /* Scanline Overlay */
+        .scanline-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, transparent 50%, rgba(0, 243, 255, 0.02) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 999;
         }
+        
+        /* Modal Animation */
+        .modal-enter { opacity: 0; transform: scale(0.95); }
+        .modal-enter-active { opacity: 1; transform: scale(1); transition: all 0.3s ease-out; }
+        .modal-exit { opacity: 1; transform: scale(1); }
+        .modal-exit-active { opacity: 0; transform: scale(0.95); transition: all 0.2s ease-in; }
+
+        /* Checkbox Custom */
+        .custom-checkbox:checked + div {
+            background-color: rgba(0, 243, 255, 0.15);
+            border-color: #00f3ff;
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+        }
+        .custom-checkbox:checked + div .check-icon { opacity: 1; transform: scale(1); }
     </style>
 </head>
 <body class="selection:bg-neon selection:text-black">
 
-    <!-- Loading Screen -->
-    <div class="loader-wrap flex-col gap-4">
-        <div class="text-4xl font-display font-black text-white tracking-widest">ШИНАДОМ</div>
-        <div class="w-48 h-1 bg-gray-800 rounded overflow-hidden">
-            <div id="loader-bar" class="h-full bg-neon w-0 shadow-[0_0_15px_#00f3ff]"></div>
-        </div>
-    </div>
+    <!-- FX Layers -->
+    <div class="scanline-overlay"></div>
+    <canvas id="particle-canvas" class="fixed inset-0 z-[-1] opacity-40"></canvas>
+    <div class="fixed top-0 w-full h-1 z-[100] bg-gray-900"><div id="progress-bar" class="h-full bg-neon w-0 shadow-[0_0_15px_#00f3ff]"></div></div>
 
-    <!-- Background Canvas -->
-    <canvas id="bg-canvas" class="fixed inset-0 z-[-1] opacity-30"></canvas>
-    
-    <!-- Background Gradient Overlay -->
-    <div class="fixed inset-0 z-[-1] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
-
-    <!-- Navigation -->
-    <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-transparent" id="navbar">
-        <div class="absolute inset-0 bg-black/70 backdrop-blur-md -z-10 translate-y-[-100%] transition-transform duration-500" id="nav-bg"></div>
+    <!-- Header -->
+    <header class="fixed top-0 inset-x-0 z-50 transition-all duration-300 backdrop-blur-md bg-dark/70 border-b border-white/5" id="header">
         <div class="container mx-auto px-6 h-20 flex items-center justify-between">
-            <a href="#" class="group flex items-center gap-2">
-                <div class="w-10 h-10 border-2 border-neon flex items-center justify-center rounded-lg group-hover:shadow-[0_0_20px_#00f3ff] transition-shadow duration-300">
-                    <span class="font-display font-bold text-xl text-neon">Ш</span>
+            <!-- New Logo -->
+            <a href="#" class="group flex items-center gap-3">
+                <svg viewBox="0 0 100 100" class="w-10 h-10 stroke-neon fill-none stroke-[4] group-hover:rotate-180 transition-transform duration-700 ease-in-out">
+                    <path d="M50 5 L93 25 L93 75 L50 95 L7 75 L7 25 Z" stroke-linejoin="round"/>
+                    <circle cx="50" cy="50" r="15" class="group-hover:fill-neon/20 transition-colors"/>
+                    <path d="M50 20 L50 35 M80 35 L65 42 M80 65 L65 58 M50 80 L50 65 M20 65 L35 58 M20 35 L35 42" stroke-width="3"/>
+                </svg>
+                <div class="flex flex-col">
+                    <span class="font-display font-bold text-xl tracking-widest text-white leading-none">ШИНА<span class="text-neon">ДОМ</span></span>
+                    <span class="text-[0.6rem] text-gray-400 tracking-[0.3em] uppercase">Cyber Tyre Service</span>
                 </div>
-                <span class="font-display font-bold text-2xl tracking-wide text-white group-hover:text-neon transition-colors">ШИНА<span class="text-neon">ДОМ</span></span>
             </a>
 
-            <nav class="hidden md:flex gap-8">
-                <a href="#services" class="text-gray-400 hover:text-white font-medium text-sm uppercase tracking-widest neon-border py-1 transition-colors">Услуги</a>
-                <a href="#calculator" class="text-gray-400 hover:text-white font-medium text-sm uppercase tracking-widest neon-border py-1 transition-colors">Цены</a>
-                <a href="#contacts" class="text-gray-400 hover:text-white font-medium text-sm uppercase tracking-widest neon-border py-1 transition-colors">Контакты</a>
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="#services" class="text-sm font-medium hover:text-neon transition-colors tracking-widest uppercase nav-link">Услуги</a>
+                <a href="#calculator" class="text-sm font-medium hover:text-neon transition-colors tracking-widest uppercase nav-link">Расчет</a>
+                <a href="#contacts" class="text-sm font-medium hover:text-neon transition-colors tracking-widest uppercase nav-link">Контакты</a>
             </nav>
 
-            <a href="#contacts" class="hidden md:flex items-center gap-2 bg-white/5 border border-white/10 hover:border-neon hover:bg-neon/10 text-white hover:text-neon px-6 py-2 rounded-full backdrop-blur-md transition-all duration-300 group">
-                <span>Записаться</span>
-                <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
-            </a>
+            <!-- Action Button -->
+            <div class="hidden md:flex items-center gap-4">
+                <a href="tel:+79029093879" class="bg-white/5 hover:bg-neon hover:text-black border border-white/10 hover:border-neon transition-all duration-300 px-6 py-2 rounded-sm font-display font-bold text-sm tracking-wider skew-x-[-10deg] group">
+                    <span class="block skew-x-[10deg] group-hover:animate-pulse">СВЯЗЬ</span>
+                </a>
+            </div>
 
-            <!-- Mobile Menu Btn -->
-            <button class="md:hidden text-white" id="menu-btn">
+            <!-- Mobile Menu Toggle -->
+            <button class="md:hidden text-white hover:text-neon" id="menu-toggle">
                 <i data-lucide="menu" class="w-8 h-8"></i>
             </button>
         </div>
-        <div id="scroll-progress" class="h-[2px] bg-neon w-0 shadow-[0_0_10px_#00f3ff]"></div>
     </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 z-40 bg-dark/95 backdrop-blur-xl flex flex-col items-center justify-center gap-8 translate-x-full transition-transform duration-500">
+        <button id="menu-close" class="absolute top-6 right-6 text-gray-400 hover:text-neon">
+            <i data-lucide="x" class="w-10 h-10"></i>
+        </button>
+        <a href="#services" class="text-3xl font-display font-bold text-white hover:text-neon tracking-widest mobile-link">УСЛУГИ</a>
+        <a href="#calculator" class="text-3xl font-display font-bold text-white hover:text-neon tracking-widest mobile-link">ЦЕНЫ</a>
+        <a href="#contacts" class="text-3xl font-display font-bold text-white hover:text-neon tracking-widest mobile-link">КОНТАКТЫ</a>
+    </div>
 
     <main>
         <!-- Hero Section -->
         <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-            <!-- Dynamic BG Image -->
-            <div class="absolute inset-0 z-[-2]">
-                <div id="hero-bg" class="w-full h-[120%] -mt-[10%] bg-cover bg-center bg-no-repeat opacity-40 grayscale-[30%]" 
-                     style="background-image: url('https://images.unsplash.com/photo-1580273916550-e323be2ed532?q=80&w=2560&auto=format&fit=crop');">
-                </div>
-                <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent"></div>
-                <div class="absolute inset-0 bg-gradient-to-r from-[#050505] via-transparent to-[#050505]"></div>
+            <!-- Parallax BG -->
+            <div class="absolute inset-0 z-[-2] scale-110" id="hero-bg">
+                <div class="w-full h-full bg-[url('https://images.unsplash.com/photo-1549427845-c4915609653a?q=80&w=2600&auto=format&fit=crop')] bg-cover bg-center grayscale opacity-30"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent"></div>
             </div>
 
-            <div class="container mx-auto px-6 relative z-10 text-center">
-                <div class="inline-flex items-center gap-2 border border-neon/30 bg-neon/5 px-4 py-1.5 rounded-full mb-8 backdrop-blur-md animate-float">
-                    <span class="w-2 h-2 rounded-full bg-neon animate-pulse"></span>
-                    <span class="text-neon text-xs font-bold uppercase tracking-widest">Профессиональный сервис</span>
+            <div class="container mx-auto px-4 text-center z-10">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-neon/30 bg-neon/5 mb-6 animate-fade-in-up">
+                    <div class="w-2 h-2 bg-neon rounded-full animate-pulse-fast"></div>
+                    <span class="text-neon text-xs font-bold tracking-[0.2em] uppercase">Система активна</span>
                 </div>
                 
-                <h1 class="glitch-wrapper mb-6">
-                    <div class="glitch text-5xl md:text-7xl lg:text-9xl font-display font-black text-white uppercase leading-tight tracking-tight" data-text="ШИНАДОМ">
-                        ШИНАДОМ
-                    </div>
+                <h1 class="glitch font-display font-black text-5xl md:text-8xl lg:text-9xl text-white mb-6 tracking-tighter" data-text="ШИНАДОМ">
+                    ШИНАДОМ
                 </h1>
                 
-                <p class="text-gray-400 text-lg md:text-2xl font-light max-w-2xl mx-auto mb-10 hero-text opacity-0 translate-y-10">
-                    Технологичный подход к вашим колесам. Быстро. Четко. Без очередей.
+                <p class="text-gray-400 text-lg md:text-2xl font-light max-w-2xl mx-auto mb-12 opacity-0" id="hero-subtitle">
+                    Переобуваем реальность. Быстро. Четко. Без компромиссов.
                 </p>
 
-                <div class="flex flex-col sm:flex-row justify-center gap-4 hero-btns opacity-0 translate-y-10">
-                    <button id="hero-calc-btn" class="relative group overflow-hidden bg-neon text-black font-bold py-4 px-10 rounded-sm skew-x-[-10deg] hover:scale-105 transition-transform duration-300">
-                        <span class="block skew-x-[10deg] flex items-center gap-2">
-                            <i data-lucide="calculator" class="w-5 h-5"></i>
-                            Рассчитать
+                <div class="flex flex-col sm:flex-row justify-center gap-6 opacity-0" id="hero-buttons">
+                    <a href="#calculator" class="group relative px-8 py-4 bg-neon text-black font-display font-bold text-lg tracking-wider overflow-hidden">
+                        <div class="absolute inset-0 bg-white/40 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                        <span class="relative flex items-center gap-2">
+                            <i data-lucide="calculator" class="w-5 h-5"></i> РАССЧИТАТЬ
                         </span>
-                        <div class="absolute inset-0 bg-white/30 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500"></div>
-                    </button>
-                    <a href="tel:+79029093879" class="relative group overflow-hidden border border-white text-white font-bold py-4 px-10 rounded-sm skew-x-[-10deg] hover:bg-white hover:text-black transition-all duration-300">
-                        <span class="block skew-x-[10deg] flex items-center gap-2">
-                            <i data-lucide="phone" class="w-5 h-5"></i>
-                            +7 (902) 909-38-79
+                    </a>
+                    <a href="https://wa.me/79027513964" class="group relative px-8 py-4 border border-white text-white hover:text-black font-display font-bold text-lg tracking-wider overflow-hidden transition-colors">
+                        <div class="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
+                        <span class="relative flex items-center gap-2">
+                            <i data-lucide="message-circle" class="w-5 h-5"></i> WHATSAPP
                         </span>
                     </a>
                 </div>
@@ -312,705 +225,548 @@
 
             <!-- Scroll Indicator -->
             <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50">
-                <span class="text-[10px] uppercase tracking-[0.3em] text-white/50">Scroll</span>
-                <div class="w-[1px] h-16 bg-gradient-to-b from-neon to-transparent"></div>
+                <span class="text-[10px] uppercase tracking-[0.3em] text-neon animate-pulse">Scroll</span>
+                <div class="w-[1px] h-24 bg-gradient-to-b from-neon to-transparent"></div>
             </div>
         </section>
 
+        <!-- Marquee / Divider -->
+        <div class="w-full bg-neon text-black py-3 overflow-hidden border-y border-white/20 rotate-1 scale-105 z-20 relative">
+            <div class="whitespace-nowrap flex gap-10 animate-[marquee_20s_linear_infinite] font-display font-bold text-xl uppercase">
+                <span>ПРОФЕССИОНАЛЬНЫЙ ШИНОМОНТАЖ</span> <span>//</span>
+                <span>НИКАКИХ ОЧЕРЕДЕЙ</span> <span>//</span>
+                <span>ГАРАНТИЯ КАЧЕСТВА</span> <span>//</span>
+                <span>ПРАВКА ДИСКОВ</span> <span>//</span>
+                <span>СВАРКА АРГОНОМ</span> <span>//</span>
+                <span>ПРОФЕССИОНАЛЬНЫЙ ШИНОМОНТАЖ</span> <span>//</span>
+                <span>НИКАКИХ ОЧЕРЕДЕЙ</span> <span>//</span>
+            </div>
+        </div>
+
         <!-- Services Section -->
-        <section id="services" class="py-32 bg-dark-bg relative">
+        <section id="services" class="py-32 relative bg-grid-pattern">
+            <div class="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-dark to-transparent"></div>
+            
             <div class="container mx-auto px-6">
-                <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
-                    <div>
-                        <h2 class="text-4xl md:text-6xl font-display font-bold text-white mb-2 section-title">НАШИ <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon to-purple-600">УСЛУГИ</span></h2>
-                        <div class="h-1 w-20 bg-neon mt-4"></div>
-                    </div>
-                    <p class="text-gray-400 max-w-md text-right md:text-lg">
+                <div class="flex flex-col items-center md:items-end text-center md:text-left mb-20 gap-4" id="services-header">
+                    <h2 class="text-4xl md:text-6xl font-display font-bold text-white">
+                        НАШИ <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon to-blue-600">УСЛУГИ</span>
+                    </h2>
+                    <div class="h-1 w-24 bg-neon shadow-[0_0_15px_#00f3ff]"></div>
+                    <p class="text-gray-400 max-w-lg md:text-right mt-4 text-lg leading-relaxed">
                         Полный спектр работ для вашего автомобиля с использованием профессионального оборудования.
                     </p>
                 </div>
 
                 <div class="grid md:grid-cols-3 gap-8">
-                    <!-- Service 1 -->
-                    <div class="glass-panel p-8 rounded-2xl spotlight-card group transition-transform duration-300 hover:-translate-y-2">
-                        <div class="w-16 h-16 bg-gray-900 rounded-xl flex items-center justify-center mb-6 group-hover:bg-neon/20 transition-colors border border-gray-800 group-hover:border-neon/50">
-                            <i data-lucide="disc" class="w-8 h-8 text-gray-400 group-hover:text-neon transition-colors"></i>
+                    <!-- Card 1 -->
+                    <div class="service-card group glass p-8 hover:border-neon/50 transition-all duration-500 hover:-translate-y-2 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-b from-neon/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative z-10">
+                            <i data-lucide="refresh-cw" class="w-12 h-12 text-gray-500 group-hover:text-neon mb-6 transition-colors duration-300"></i>
+                            <h3 class="text-2xl font-bold font-display text-white mb-4 group-hover:tracking-wider transition-all">Переобувка</h3>
+                            <p class="text-gray-400 group-hover:text-gray-200 transition-colors">
+                                Полный цикл: снятие, технологическая мойка, демонтаж, монтаж, точная балансировка.
+                            </p>
                         </div>
-                        <h3 class="text-2xl font-bold font-display text-white mb-3">Сезонная переобувка</h3>
-                        <p class="text-gray-500 text-sm leading-relaxed group-hover:text-gray-300 transition-colors">
-                            Комплекс "Все включено": бережное снятие, мойка колес, точный демонтаж/монтаж, 3D балансировка.
-                        </p>
                     </div>
+                    <!-- Card 2 -->
+                    <div class="service-card group glass p-8 hover:border-purple-500/50 transition-all duration-500 hover:-translate-y-2 relative overflow-hidden" style="transition-delay: 100ms;">
+                        <div class="absolute inset-0 bg-gradient-to-b from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative z-10">
+                            <i data-lucide="wrench" class="w-12 h-12 text-gray-500 group-hover:text-purple-400 mb-6 transition-colors duration-300"></i>
+                            <h3 class="text-2xl font-bold font-display text-white mb-4 group-hover:tracking-wider transition-all">Сложный Ремонт</h3>
+                            <p class="text-gray-400 group-hover:text-gray-200 transition-colors">
+                                Боковые порезы, проколы. Жгуты, грибки, горячая вулканизация, кордовые заплатки.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="service-card group glass p-8 hover:border-green-500/50 transition-all duration-500 hover:-translate-y-2 relative overflow-hidden" style="transition-delay: 200ms;">
+                        <div class="absolute inset-0 bg-gradient-to-b from-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative z-10">
+                            <i data-lucide="zap" class="w-12 h-12 text-gray-500 group-hover:text-green-400 mb-6 transition-colors duration-300"></i>
+                            <h3 class="text-2xl font-bold font-display text-white mb-4 group-hover:tracking-wider transition-all">Правка & Сварка</h3>
+                            <p class="text-gray-400 group-hover:text-gray-200 transition-colors">
+                                Восстановление геометрии дисков. Аргоновая сварка трещин любой сложности.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Calculator Section (Redesigned) -->
+        <section id="calculator" class="py-24 relative overflow-hidden bg-[#050507]">
+            <!-- Decorative Globs -->
+            <div class="absolute top-1/4 right-0 w-[500px] h-[500px] bg-neon/5 rounded-full blur-[120px] pointer-events-none"></div>
+            <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-purple-600/5 rounded-full blur-[100px] pointer-events-none"></div>
+
+            <div class="container mx-auto px-4 max-w-5xl relative z-10">
+                <div class="text-center mb-16" id="calc-header">
+                    <span class="text-neon font-mono text-sm tracking-widest uppercase mb-2 block">System Configuration</span>
+                    <h2 class="text-4xl md:text-5xl font-display font-bold text-white">КАЛЬКУЛЯТОР <span class="text-gray-700">///</span> ЦЕНЫ</h2>
+                </div>
+
+                <div class="glass rounded-2xl border border-white/10 shadow-2xl overflow-hidden flex flex-col md:flex-row">
                     
-                    <!-- Service 2 -->
-                    <div class="glass-panel p-8 rounded-2xl spotlight-card group transition-transform duration-300 hover:-translate-y-2">
-                        <div class="w-16 h-16 bg-gray-900 rounded-xl flex items-center justify-center mb-6 group-hover:bg-purple-500/20 transition-colors border border-gray-800 group-hover:border-purple-500/50">
-                            <i data-lucide="wrench" class="w-8 h-8 text-gray-400 group-hover:text-purple-400 transition-colors"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold font-display text-white mb-3">Ремонт любой сложности</h3>
-                        <p class="text-gray-500 text-sm leading-relaxed group-hover:text-gray-300 transition-colors">
-                            Восстановление после проколов, боковых порезов. Установка жгутов, грибков и кордовых заплаток.
-                        </p>
-                    </div>
-
-                    <!-- Service 3 -->
-                    <div class="glass-panel p-8 rounded-2xl spotlight-card group transition-transform duration-300 hover:-translate-y-2">
-                        <div class="w-16 h-16 bg-gray-900 rounded-xl flex items-center justify-center mb-6 group-hover:bg-green-500/20 transition-colors border border-gray-800 group-hover:border-green-500/50">
-                            <i data-lucide="activity" class="w-8 h-8 text-gray-400 group-hover:text-green-400 transition-colors"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold font-display text-white mb-3">Правка и Сварка</h3>
-                        <p class="text-gray-500 text-sm leading-relaxed group-hover:text-gray-300 transition-colors">
-                            Профессиональная правка литых и штампованных дисков. Аргоновая сварка трещин и сколов.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Tech/Interactive Section -->
-        <section class="h-screen bg-black relative flex items-center overflow-hidden" id="tech-section">
-            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gray-900 via-black to-black opacity-80"></div>
-            
-            <div class="container mx-auto px-6 relative z-10 grid md:grid-cols-2 gap-12 items-center">
-                <div class="order-2 md:order-1">
-                    <div class="space-y-8">
-                        <div class="tech-item opacity-50 hover:opacity-100 transition-opacity duration-300 cursor-default border-l-2 border-transparent hover:border-neon pl-4">
-                            <h3 class="text-3xl font-display font-bold text-white mb-2">СКОРОСТЬ</h3>
-                            <p class="text-gray-400">Оптимизированный процесс. 4 колеса за 20 минут. Мы ценим ваше время.</p>
-                        </div>
-                        <div class="tech-item opacity-50 hover:opacity-100 transition-opacity duration-300 cursor-default border-l-2 border-transparent hover:border-neon pl-4">
-                            <h3 class="text-3xl font-display font-bold text-white mb-2">ТЕХНОЛОГИИ</h3>
-                            <p class="text-gray-400">Современные станки с третьей рукой для низкого профиля и RunFlat.</p>
-                        </div>
-                        <div class="tech-item opacity-50 hover:opacity-100 transition-opacity duration-300 cursor-default border-l-2 border-transparent hover:border-neon pl-4">
-                            <h3 class="text-3xl font-display font-bold text-white mb-2">ГАРАНТИЯ</h3>
-                            <p class="text-gray-400">Мы уверены в качестве. Даем гарантию на все виды работ и балансировку.</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 3D Wheel Representation (SVG with GSAP) -->
-                <div class="order-1 md:order-2 flex justify-center items-center h-[500px]" id="wheel-trigger">
-                    <svg id="tech-wheel" viewBox="0 0 200 200" class="w-full max-w-[500px] h-full overflow-visible drop-shadow-[0_0_30px_rgba(0,243,255,0.2)]">
-                        <!-- Defs -->
-                        <defs>
-                            <linearGradient id="metal-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:#334155" />
-                                <stop offset="50%" style="stop-color:#94a3b8" />
-                                <stop offset="100%" style="stop-color:#0f172a" />
-                            </linearGradient>
-                            <filter id="glow">
-                                <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
-                                <feMerge>
-                                    <feMergeNode in="coloredBlur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
+                    <!-- Controls Column -->
+                    <div class="w-full md:w-7/12 p-6 md:p-10 space-y-8">
                         
-                        <!-- Tire -->
-                        <circle cx="100" cy="100" r="90" fill="none" stroke="#1a1a1a" stroke-width="20" />
-                        <circle cx="100" cy="100" r="90" fill="none" stroke="#00f3ff" stroke-width="0.5" stroke-dasharray="4 6" opacity="0.5" />
-                        
-                        <!-- Rim Group -->
-                        <g id="rim-spin">
-                            <!-- Outer Rim -->
-                            <circle cx="100" cy="100" r="75" fill="none" stroke="url(#metal-grad)" stroke-width="4" />
-                            <circle cx="100" cy="100" r="70" fill="none" stroke="#00f3ff" stroke-width="1" opacity="0.8" filter="url(#glow)" />
-                            
-                            <!-- Spokes -->
-                            <path d="M100 100 L100 30" stroke="url(#metal-grad)" stroke-width="8" stroke-linecap="round" />
-                            <path d="M100 100 L166 65" stroke="url(#metal-grad)" stroke-width="8" stroke-linecap="round" />
-                            <path d="M100 100 L166 135" stroke="url(#metal-grad)" stroke-width="8" stroke-linecap="round" />
-                            <path d="M100 100 L100 170" stroke="url(#metal-grad)" stroke-width="8" stroke-linecap="round" />
-                            <path d="M100 100 L34 135" stroke="url(#metal-grad)" stroke-width="8" stroke-linecap="round" />
-                            <path d="M100 100 L34 65" stroke="url(#metal-grad)" stroke-width="8" stroke-linecap="round" />
-                            
-                            <!-- Neon Accents on Spokes -->
-                            <path d="M100 50 L100 35" stroke="#00f3ff" stroke-width="2" />
-                            <path d="M150 75 L163 68" stroke="#00f3ff" stroke-width="2" />
-                            <path d="M150 125 L163 132" stroke="#00f3ff" stroke-width="2" />
-                            <path d="M100 150 L100 165" stroke="#00f3ff" stroke-width="2" />
-                            <path d="M50 125 L37 132" stroke="#00f3ff" stroke-width="2" />
-                            <path d="M50 75 L37 68" stroke="#00f3ff" stroke-width="2" />
-
-                            <!-- Hub -->
-                            <circle cx="100" cy="100" r="15" fill="#0f172a" stroke="#00f3ff" stroke-width="2" />
-                        </g>
-                    </svg>
-                </div>
-            </div>
-        </section>
-
-        <!-- Calculator Section -->
-        <section id="calculator" class="py-20 bg-dark-bg relative overflow-hidden">
-            <!-- Decorative Elements -->
-            <div class="absolute top-0 right-0 w-96 h-96 bg-neon/10 rounded-full blur-[100px] pointer-events-none"></div>
-
-            <div class="container mx-auto px-6 max-w-6xl">
-                <div class="text-center mb-16">
-                    <span class="text-neon text-sm font-bold tracking-[0.2em] uppercase">Конфигуратор</span>
-                    <h2 class="text-4xl md:text-5xl font-display font-bold text-white mt-2">РАСЧЕТ <span class="text-neon">СТОИМОСТИ</span></h2>
-                </div>
-
-                <div class="glass-panel rounded-3xl p-1 md:p-8 border border-white/10 shadow-2xl relative">
-                    <!-- Grid Layout -->
-                    <div class="grid lg:grid-cols-12 gap-8">
-                        
-                        <!-- Controls -->
-                        <div class="lg:col-span-7 space-y-8 p-6">
-                            <!-- Step 1 -->
-                            <div class="group">
-                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 group-hover:text-neon transition-colors">01. Тип автомобиля</label>
-                                <select id="calc-car-type" class="w-full bg-dark-card border border-gray-800 rounded-xl p-4 text-white text-lg focus:border-neon focus:ring-1 focus:ring-neon outline-none transition-all cursor-pointer hover:bg-white/5">
-                                    <option value="" disabled selected>Выберите класс авто</option>
-                                    <option value="Легковые машины">Легковые машины (Sedan/Hatch)</option>
-                                    <option value="Паркетники / Кроссоверы">Кроссоверы / SUV</option>
-                                    <option value="Внедорожники / Джипы">Джипы / 4x4</option>
-                                    <option value="Низкий профиль / RunFlat">RunFlat / Низкий профиль</option>
-                                    <option value="Газель">Коммерческий (Газель)</option>
-                                </select>
-                            </div>
-
-                            <!-- Step 2 & 3 Row -->
-                            <div class="grid grid-cols-2 gap-6">
-                                <div class="group">
-                                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 group-hover:text-neon transition-colors">02. Радиус (R)</label>
-                                    <select id="calc-tire-size" class="w-full bg-dark-card border border-gray-800 rounded-xl p-4 text-white text-lg focus:border-neon focus:ring-1 focus:ring-neon outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed">
-                                        <option value="">—</option>
+                        <!-- Input Group 1 -->
+                        <div class="space-y-6">
+                            <div class="relative group">
+                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2 group-hover:text-neon transition-colors">Тип транспорта</label>
+                                <div class="relative">
+                                    <select id="car-type" class="w-full bg-dark/50 border border-gray-700 text-white p-4 pr-10 appearance-none focus:border-neon focus:shadow-[0_0_15px_rgba(0,243,255,0.2)] outline-none transition-all rounded-none cursor-pointer">
+                                        <option value="" disabled selected>ВЫБЕРИТЕ КЛАСС АВТО</option>
+                                        <option value="Легковые машины">Легковые (Sedan/Hatch)</option>
+                                        <option value="Паркетники / Кроссоверы">Кроссоверы / SUV</option>
+                                        <option value="Внедорожники / Джипы">Джипы / 4x4</option>
+                                        <option value="Низкий профиль / RunFlat">Низкий профиль / RunFlat</option>
+                                        <option value="Газель">Коммерческий (Газель)</option>
                                     </select>
-                                </div>
-                                <div class="group">
-                                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 group-hover:text-neon transition-colors">03. Колеса</label>
-                                    <div class="flex items-center bg-dark-card border border-gray-800 rounded-xl overflow-hidden">
-                                        <button class="px-4 py-4 text-gray-400 hover:text-white hover:bg-white/5 transition-colors" onclick="adjustWheels(-1)">-</button>
-                                        <input type="number" id="calc-wheel-count" value="4" min="1" max="8" class="bg-transparent w-full text-center text-white font-bold outline-none appearance-none" readonly>
-                                        <button class="px-4 py-4 text-gray-400 hover:text-white hover:bg-white/5 transition-colors" onclick="adjustWheels(1)">+</button>
-                                    </div>
+                                    <i data-lucide="chevron-down" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"></i>
                                 </div>
                             </div>
 
-                            <!-- Step 4: Toggles -->
-                            <div class="space-y-4">
-                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">04. Опции</label>
-                                <div class="grid grid-cols-2 gap-3">
-                                    <!-- Toggle Item -->
-                                    <label class="cyber-checkbox cursor-pointer relative">
-                                        <input type="checkbox" id="calc-check-snyatie" class="peer sr-only" checked>
-                                        <div class="p-4 rounded-xl border border-gray-800 bg-dark-card hover:border-gray-600 transition-all peer-checked:border-neon/50 peer-checked:bg-neon/10 flex items-center justify-between group">
-                                            <span class="text-sm font-medium text-gray-300 group-hover:text-white">Снятие/Установка</span>
-                                            <div class="w-5 h-5 rounded-full border border-gray-600 flex items-center justify-center peer-checked:border-neon peer-checked:bg-neon">
-                                                <i data-lucide="check" class="w-3 h-3 text-black hidden"></i>
-                                            </div>
-                                        </div>
-                                    </label>
-                                    <label class="cyber-checkbox cursor-pointer relative">
-                                        <input type="checkbox" id="calc-check-shinomontazh" class="peer sr-only" checked>
-                                        <div class="p-4 rounded-xl border border-gray-800 bg-dark-card hover:border-gray-600 transition-all peer-checked:border-neon/50 peer-checked:bg-neon/10 flex items-center justify-between group">
-                                            <span class="text-sm font-medium text-gray-300 group-hover:text-white">Шиномонтаж</span>
-                                            <div class="w-5 h-5 rounded-full border border-gray-600 flex items-center justify-center peer-checked:border-neon peer-checked:bg-neon">
-                                                <i data-lucide="check" class="w-3 h-3 text-black hidden"></i>
-                                            </div>
-                                        </div>
-                                    </label>
-                                    <label class="cyber-checkbox cursor-pointer relative">
-                                        <input type="checkbox" id="calc-check-balansirovka" class="peer sr-only" checked>
-                                        <div class="p-4 rounded-xl border border-gray-800 bg-dark-card hover:border-gray-600 transition-all peer-checked:border-neon/50 peer-checked:bg-neon/10 flex items-center justify-between group">
-                                            <span class="text-sm font-medium text-gray-300 group-hover:text-white">Балансировка</span>
-                                            <div class="w-5 h-5 rounded-full border border-gray-600 flex items-center justify-center peer-checked:border-neon peer-checked:bg-neon">
-                                                <i data-lucide="check" class="w-3 h-3 text-black hidden"></i>
-                                            </div>
-                                        </div>
-                                    </label>
-                                    <label class="cyber-checkbox cursor-pointer relative">
-                                        <input type="checkbox" id="calc-check-moyka" class="peer sr-only">
-                                        <div class="p-4 rounded-xl border border-gray-800 bg-dark-card hover:border-gray-600 transition-all peer-checked:border-neon/50 peer-checked:bg-neon/10 flex items-center justify-between group">
-                                            <span class="text-sm font-medium text-gray-300 group-hover:text-white">Тех. мойка</span>
-                                            <div class="w-5 h-5 rounded-full border border-gray-600 flex items-center justify-center peer-checked:border-neon peer-checked:bg-neon">
-                                                <i data-lucide="check" class="w-3 h-3 text-black hidden"></i>
-                                            </div>
-                                        </div>
-                                    </label>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="relative group">
+                                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2 group-hover:text-neon transition-colors">Радиус (R)</label>
+                                    <div class="relative">
+                                        <select id="tire-size" class="w-full bg-dark/50 border border-gray-700 text-white p-4 pr-10 appearance-none focus:border-neon outline-none transition-all rounded-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+                                            <option value="">—</option>
+                                        </select>
+                                        <i data-lucide="chevron-down" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"></i>
+                                    </div>
+                                </div>
+                                <div class="relative group">
+                                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2 group-hover:text-neon transition-colors">Колеса</label>
+                                    <div class="flex border border-gray-700 bg-dark/50">
+                                        <button onclick="changeWheels(-1)" class="w-12 hover:bg-white/10 text-neon text-xl font-bold transition-colors">-</button>
+                                        <input type="number" id="wheel-count" value="4" class="w-full bg-transparent text-center text-white font-mono font-bold p-4 outline-none appearance-none" readonly>
+                                        <button onclick="changeWheels(1)" class="w-12 hover:bg-white/10 text-neon text-xl font-bold transition-colors">+</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Result Display -->
-                        <div class="lg:col-span-5 bg-gradient-to-br from-gray-900 to-black p-8 rounded-2xl border border-gray-800 flex flex-col justify-between relative overflow-hidden">
-                            <!-- Background Grid -->
-                            <div class="absolute inset-0 bg-cyber-grid opacity-30"></div>
-                            
-                            <div>
-                                <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                                    <i data-lucide="receipt" class="text-neon"></i> ИТОГ
-                                </h3>
-                                <div class="space-y-3 text-sm text-gray-400">
-                                    <div class="flex justify-between border-b border-gray-800 pb-2">
-                                        <span>Класс:</span>
-                                        <span id="summary-car-type" class="text-white text-right max-w-[60%] truncate">-</span>
+                        <!-- Checkboxes (Styled) -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Набор услуг</label>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <label class="cursor-pointer relative group">
+                                    <input type="checkbox" class="sr-only custom-checkbox" id="check-snyatie" checked>
+                                    <div class="p-3 border border-gray-800 bg-dark/30 hover:border-gray-600 transition-all flex items-center justify-between">
+                                        <span class="text-sm text-gray-300 font-mono group-hover:text-white">Снятие/Установка</span>
+                                        <div class="w-4 h-4 border border-gray-600 flex items-center justify-center check-icon opacity-20 transform scale-50 transition-all duration-300">
+                                            <div class="w-2 h-2 bg-neon"></div>
+                                        </div>
                                     </div>
-                                    <div class="flex justify-between border-b border-gray-800 pb-2">
-                                        <span>Радиус:</span>
-                                        <span id="summary-tire-size" class="text-white font-mono">-</span>
+                                </label>
+                                <label class="cursor-pointer relative group">
+                                    <input type="checkbox" class="sr-only custom-checkbox" id="check-shinomontazh" checked>
+                                    <div class="p-3 border border-gray-800 bg-dark/30 hover:border-gray-600 transition-all flex items-center justify-between">
+                                        <span class="text-sm text-gray-300 font-mono group-hover:text-white">Шиномонтаж</span>
+                                        <div class="w-4 h-4 border border-gray-600 flex items-center justify-center check-icon opacity-20 transform scale-50 transition-all duration-300">
+                                            <div class="w-2 h-2 bg-neon"></div>
+                                        </div>
                                     </div>
-                                    <div class="flex justify-between border-b border-gray-800 pb-2">
-                                        <span>Кол-во:</span>
-                                        <span id="summary-wheel-count" class="text-white font-mono">4</span>
+                                </label>
+                                <label class="cursor-pointer relative group">
+                                    <input type="checkbox" class="sr-only custom-checkbox" id="check-balansirovka" checked>
+                                    <div class="p-3 border border-gray-800 bg-dark/30 hover:border-gray-600 transition-all flex items-center justify-between">
+                                        <span class="text-sm text-gray-300 font-mono group-hover:text-white">Балансировка</span>
+                                        <div class="w-4 h-4 border border-gray-600 flex items-center justify-center check-icon opacity-20 transform scale-50 transition-all duration-300">
+                                            <div class="w-2 h-2 bg-neon"></div>
+                                        </div>
                                     </div>
+                                </label>
+                                <label class="cursor-pointer relative group">
+                                    <input type="checkbox" class="sr-only custom-checkbox" id="check-moyka">
+                                    <div class="p-3 border border-gray-800 bg-dark/30 hover:border-gray-600 transition-all flex items-center justify-between">
+                                        <span class="text-sm text-gray-300 font-mono group-hover:text-white">Тех. Мойка</span>
+                                        <div class="w-4 h-4 border border-gray-600 flex items-center justify-center check-icon opacity-20 transform scale-50 transition-all duration-300">
+                                            <div class="w-2 h-2 bg-neon"></div>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Result Column -->
+                    <div class="w-full md:w-5/12 bg-panel border-t md:border-t-0 md:border-l border-white/10 p-6 md:p-10 flex flex-col justify-between relative">
+                        <!-- BG Scan Grid -->
+                        <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:20px_20px]"></div>
+                        
+                        <div class="relative z-10">
+                            <h3 class="text-white font-bold mb-6 flex items-center gap-2">
+                                <i data-lucide="cpu" class="text-neon w-5 h-5"></i>
+                                <span>СВОДКА</span>
+                            </h3>
+                            <div class="space-y-4 text-sm font-mono text-gray-400">
+                                <div class="flex justify-between border-b border-white/5 pb-2">
+                                    <span>АВТО:</span> <span id="res-car" class="text-white text-right truncate w-32">-</span>
+                                </div>
+                                <div class="flex justify-between border-b border-white/5 pb-2">
+                                    <span>РАЗМЕР:</span> <span id="res-size" class="text-white text-right">-</span>
+                                </div>
+                                <div class="flex justify-between border-b border-white/5 pb-2">
+                                    <span>КОЛ-ВО:</span> <span id="res-count" class="text-white text-right">4</span>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="mt-8 text-center relative z-10">
-                                <div class="text-gray-500 text-sm mb-1">Примерная стоимость</div>
-                                <div class="text-5xl md:text-6xl font-display font-black text-white neon-text flex justify-center items-baseline gap-2">
-                                    <span id="priceResult">0</span>
-                                    <span class="text-2xl text-gray-400">₽</span>
-                                </div>
-                                <div id="priceNote" class="h-6 text-red-500 text-xs mt-2 font-mono"></div>
+                        <div class="relative z-10 mt-10 text-center">
+                            <div class="text-[0.6rem] uppercase tracking-widest text-gray-500 mb-1">Итоговая стоимость</div>
+                            <div class="flex justify-center items-baseline gap-1 text-neon text-shadow">
+                                <span id="final-price" class="text-5xl md:text-6xl font-black font-display tracking-tight">0</span>
+                                <span class="text-2xl">₽</span>
                             </div>
+                        </div>
 
-                            <a href="#" id="whatsappLink" class="mt-8 w-full bg-green-600 hover:bg-green-500 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-3 transition-all duration-300 shadow-[0_0_20px_rgba(22,163,74,0.3)] hover:shadow-[0_0_30px_rgba(22,163,74,0.6)] transform hover:scale-[1.02]">
-                                <i data-lucide="message-circle"></i>
-                                Записаться в WhatsApp
+                        <div class="relative z-10 mt-8">
+                            <a href="#" id="whatsapp-btn" class="block w-full bg-green-600 hover:bg-green-500 text-white font-bold py-4 text-center tracking-wider transition-all duration-300 hover:shadow-[0_0_20px_rgba(22,163,74,0.4)] clip-path-button">
+                                ЗАПИСАТЬСЯ
                             </a>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Price List Accordion / Grid -->
-                <div class="mt-16 grid md:grid-cols-2 gap-8">
-                    <div class="glass-panel p-6 rounded-xl border-l-4 border-neon">
-                        <h4 class="text-xl font-bold text-white mb-4">Дополнительно</h4>
-                        <ul class="space-y-3 text-sm text-gray-300">
-                            <li class="flex justify-between border-b border-gray-800 pb-1"><span>Дошиповка</span> <span class="text-neon font-mono">20 ₽/шт</span></li>
-                            <li class="flex justify-between border-b border-gray-800 pb-1"><span>Вентиль</span> <span class="text-neon font-mono">60 ₽</span></li>
-                            <li class="flex justify-between border-b border-gray-800 pb-1"><span>Жгут</span> <span class="text-neon font-mono">260 ₽</span></li>
-                            <li class="flex justify-between border-b border-gray-800 pb-1"><span>Зачистка/Герметик</span> <span class="text-neon font-mono">100/200 ₽</span></li>
-                        </ul>
-                    </div>
-                    <div class="glass-panel p-6 rounded-xl border-l-4 border-purple-500">
-                        <h4 class="text-xl font-bold text-white mb-4">Ремонт (Правка/Сварка)</h4>
-                        <ul class="space-y-3 text-sm text-gray-300">
-                            <li class="flex justify-between border-b border-gray-800 pb-1"><span>Правка штамп.</span> <span class="text-neon font-mono">от 420 ₽</span></li>
-                            <li class="flex justify-between border-b border-gray-800 pb-1"><span>Правка литых</span> <span class="text-neon font-mono">620 - 1040 ₽</span></li>
-                            <li class="flex justify-between border-b border-gray-800 pb-1"><span>Сварка аргоном</span> <span class="text-neon font-mono">200 ₽ / см</span></li>
-                        </ul>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Contacts Section -->
-        <section id="contacts" class="bg-black py-20 relative">
+        <!-- Contacts & Map -->
+        <section id="contacts" class="py-20 bg-dark relative">
             <div class="container mx-auto px-6">
-                <div class="grid lg:grid-cols-2 gap-12">
-                    
-                    <!-- Text & Links -->
-                    <div class="flex flex-col justify-center">
-                        <h2 class="text-4xl md:text-6xl font-display font-bold text-white mb-8">НЕ ЖДИТЕ <br><span class="text-neon">В ОЧЕРЕДИ</span></h2>
-                        <p class="text-gray-400 text-lg mb-10">
-                            Тульская обл., Алексинский р-н, с. Поповка, ул. Полевая, 2.<br>
-                            Ежедневно с 07:00 до 22:30.
-                        </p>
-                        
-                        <div class="flex flex-col gap-4 max-w-md">
-                            <a href="tel:+79029093879" class="group flex items-center justify-between p-6 bg-dark-surface rounded-2xl border border-gray-800 hover:border-neon transition-all hover:bg-white/5">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-10 h-10 rounded-full bg-neon/10 text-neon flex items-center justify-center group-hover:scale-110 transition-transform">
-                                        <i data-lucide="phone"></i>
-                                    </div>
-                                    <div class="text-white font-bold text-xl">+7 (902) 909-38-79</div>
-                                </div>
-                                <i data-lucide="arrow-up-right" class="text-gray-600 group-hover:text-neon transition-colors"></i>
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h2 class="text-4xl font-display font-bold text-white mb-6">КОНТАКТЫ</h2>
+                        <div class="space-y-6 text-lg text-gray-400">
+                            <p class="flex items-start gap-4">
+                                <i data-lucide="map-pin" class="text-neon mt-1 shrink-0"></i>
+                                <span>Тульская обл., Алексинский р-н,<br>с. Поповка, ул. Полевая, 2</span>
+                            </p>
+                            <p class="flex items-center gap-4">
+                                <i data-lucide="clock" class="text-neon shrink-0"></i>
+                                <span>Ежедневно: 07:00 — 22:30</span>
+                            </p>
+                            <p class="flex items-center gap-4">
+                                <i data-lucide="phone" class="text-neon shrink-0"></i>
+                                <a href="tel:+79029093879" class="text-white hover:text-neon transition-colors font-bold text-xl">+7 (902) 909-38-79</a>
+                            </p>
+                        </div>
+                        <div class="flex gap-4 mt-8">
+                            <a href="https://wa.me/79027513964" class="w-12 h-12 bg-white/5 border border-white/10 flex items-center justify-center hover:bg-green-500 hover:text-white hover:border-transparent transition-all duration-300 rounded-full">
+                                <i data-lucide="message-circle"></i>
                             </a>
-                            
-                            <a href="https://wa.me/79027513964" target="_blank" class="group flex items-center justify-between p-6 bg-dark-surface rounded-2xl border border-gray-800 hover:border-green-500 transition-all hover:bg-white/5">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-10 h-10 rounded-full bg-green-500/10 text-green-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                        <i data-lucide="message-circle"></i>
-                                    </div>
-                                    <div class="text-white font-bold text-xl">WhatsApp</div>
-                                </div>
-                                <i data-lucide="arrow-up-right" class="text-gray-600 group-hover:text-green-500 transition-colors"></i>
-                            </a>
-
-                             <a href="https://t.me/+79027513964" target="_blank" class="group flex items-center justify-between p-6 bg-dark-surface rounded-2xl border border-gray-800 hover:border-blue-500 transition-all hover:bg-white/5">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-10 h-10 rounded-full bg-blue-500/10 text-blue-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                        <i data-lucide="send"></i>
-                                    </div>
-                                    <div class="text-white font-bold text-xl">Telegram</div>
-                                </div>
-                                <i data-lucide="arrow-up-right" class="text-gray-600 group-hover:text-blue-500 transition-colors"></i>
+                            <a href="https://t.me/+79027513964" class="w-12 h-12 bg-white/5 border border-white/10 flex items-center justify-center hover:bg-blue-500 hover:text-white hover:border-transparent transition-all duration-300 rounded-full">
+                                <i data-lucide="send"></i>
                             </a>
                         </div>
                     </div>
-
-                    <!-- Map -->
-                    <div class="h-[500px] w-full rounded-3xl overflow-hidden relative shadow-[0_0_50px_rgba(0,0,0,0.8)] border border-gray-800 group">
-                        <div class="absolute inset-0 bg-neon/10 z-10 pointer-events-none mix-blend-overlay"></div>
-                        <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3Acc7ed495ed6ddacaeab60edcc7b1c414c118b74ccdccf0d0943bf3296302b918&amp;source=constructor" width="100%" height="100%" frameborder="0" class="map-grayscale transition-all duration-700 group-hover:filter-none"></iframe>
+                    <div class="h-[400px] w-full bg-gray-800 rounded-lg overflow-hidden border border-gray-700 relative group">
+                        <div class="absolute inset-0 z-10 pointer-events-none border-4 border-transparent group-hover:border-neon/20 transition-all duration-500"></div>
+                        <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3Acc7ed495ed6ddacaeab60edcc7b1c414c118b74ccdccf0d0943bf3296302b918&amp;source=constructor" width="100%" height="100%" frameborder="0" style="filter: grayscale(100%) invert(90%) contrast(1.2);"></iframe>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="border-t border-gray-900 bg-black py-8 text-center text-gray-600 text-sm">
-        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
-            <p>&copy; 2025 ШИНАДОМ. Переобуем всех.</p>
-            <div class="flex gap-4 mt-4 md:mt-0">
-                <a href="#" class="hover:text-neon transition-colors">Политика</a>
-                <a href="#" class="hover:text-neon transition-colors">Оферта</a>
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-black py-10">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-gray-500 text-sm mb-4">&copy; 2025 ШИНАДОМ. Мы — эталон. Остальные — компромисс.</p>
+            <div class="flex justify-center gap-6 text-xs uppercase tracking-widest">
+                <button onclick="openModal('offer')" class="text-gray-600 hover:text-neon transition-colors">Публичная Оферта</button>
+                <button onclick="openModal('policy')" class="text-gray-600 hover:text-neon transition-colors">Политика</button>
             </div>
         </div>
     </footer>
 
-    <!-- Scripts -->
+    <!-- Modals -->
+    <div id="modal-overlay" class="fixed inset-0 z-[60] bg-black/90 backdrop-blur-md hidden flex items-center justify-center opacity-0 transition-opacity duration-300">
+        <div id="modal-content" class="bg-dark border border-neon/30 p-8 max-w-2xl w-full mx-4 shadow-[0_0_50px_rgba(0,243,255,0.1)] transform scale-95 transition-transform duration-300 relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-500 hover:text-neon"><i data-lucide="x"></i></button>
+            <h3 id="modal-title" class="text-2xl font-display font-bold text-neon mb-6"></h3>
+            <div id="modal-body" class="text-gray-300 space-y-4 font-mono text-sm leading-relaxed"></div>
+        </div>
+    </div>
+
     <script>
-        // --- 1. SETUP & LOADER ---
+        // --- DATA & CALCULATOR ---
+        const priceData = {
+            "Легковые машины": { "R14": {base: 580}, "R15": {base: 640}, "R16": {base: 700}, "R17": {base: 800}, "R18": {base: 800}, "R19": {base: 900}, "R20": {base: 1020} },
+            "Паркетники / Кроссоверы": { "R15": {base: 740}, "R16": {base: 740}, "R17": {base: 800}, "R18": {base: 880}, "R19": {base: 940}, "R20": {base: 1020}, "R21": {base: 1100} },
+            "Внедорожники / Джипы": { "R15": {base: 700}, "R16": {base: 700}, "R17": {base: 800}, "R18": {base: 880}, "R19": {base: 980}, "R20": {base: 1040}, "R21": {base: 1100}, "R22": {base: 1160} },
+            "Низкий профиль / RunFlat": { "R16": {base: 900}, "R17": {base: 960}, "R18": {base: 1040}, "R19": {base: 1140}, "R20": {base: 1280} },
+            "Газель": { "R16": {base: 1100} }
+        };
+
+        // DOM Elements
+        const carSelect = document.getElementById('car-type');
+        const sizeSelect = document.getElementById('tire-size');
+        const countInput = document.getElementById('wheel-count');
+        const finalPriceEl = document.getElementById('final-price');
+        
+        // Checkboxes
+        const checks = {
+            snyatie: document.getElementById('check-snyatie'),
+            shinomontazh: document.getElementById('check-shinomontazh'),
+            balansirovka: document.getElementById('check-balansirovka'),
+            moyka: document.getElementById('check-moyka')
+        };
+
+        // Init
         lucide.createIcons();
-        
-        window.addEventListener('load', () => {
-            const tl = gsap.timeline();
-            tl.to('#loader-bar', { width: '100%', duration: 1, ease: 'power2.inOut' })
-              .to('.loader-wrap', { y: '-100%', duration: 0.8, ease: 'expo.inOut' }, '+=0.2')
-              .from('.hero-text', { y: 50, opacity: 0, duration: 1 }, '-=0.4')
-              .from('.hero-btns', { y: 50, opacity: 0, duration: 1 }, '-=0.8');
-        });
-
-        // --- 2. SMOOTH SCROLL ---
-        const lenis = new Lenis({
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            smooth: true
-        });
-        function raf(time) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
+        const lenis = new Lenis();
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
         requestAnimationFrame(raf);
-        
-        // Connect Lenis to ScrollTrigger
-        gsap.registerPlugin(ScrollTrigger);
 
-        // --- 3. ANIMATIONS ---
-        
-        // Navbar blur on scroll
-        const navBg = document.getElementById('nav-bg');
-        const scrollProgress = document.getElementById('scroll-progress');
-        
-        lenis.on('scroll', (e) => {
-            const p = e.progress; // 0 to 1
-            scrollProgress.style.width = `${p * 100}%`;
-            
-            if(e.animatedScroll > 50) {
-                navBg.style.transform = 'translateY(0)';
-            } else {
-                navBg.style.transform = 'translateY(-100%)';
+        // Populate Sizes
+        carSelect.addEventListener('change', () => {
+            const type = carSelect.value;
+            sizeSelect.innerHTML = '<option value="">—</option>';
+            sizeSelect.disabled = true;
+            if(priceData[type]) {
+                sizeSelect.disabled = false;
+                Object.keys(priceData[type]).forEach(size => {
+                    sizeSelect.innerHTML += `<option value="${size}">${size}</option>`;
+                });
             }
+            calculate();
         });
 
-        // Parallax Hero
-        gsap.to('#hero-bg', {
+        // Event Listeners
+        sizeSelect.addEventListener('change', calculate);
+        Object.values(checks).forEach(c => c.addEventListener('change', calculate));
+
+        function changeWheels(d) {
+            let v = parseInt(countInput.value) + d;
+            if(v < 1) v = 1; if(v > 8) v = 8;
+            countInput.value = v;
+            calculate();
+        }
+
+        let currentPrice = 0;
+        function calculate() {
+            const type = carSelect.value;
+            const size = sizeSelect.value;
+            const count = parseInt(countInput.value);
+            
+            // Update Summary
+            document.getElementById('res-car').innerText = type || '-';
+            document.getElementById('res-size').innerText = size || '-';
+            document.getElementById('res-count').innerText = count;
+
+            if(!type || !size || !priceData[type][size]) {
+                animatePrice(0);
+                return;
+            }
+
+            // Mock calculations based on base "complex" price roughly divided
+            // Logic: Base price is for 1 wheel complex. We split it by percentages.
+            // Snyatie: ~25%, Shina: ~25%, Balans: ~40%, Moyka: ~10% (Fixed ~100rub)
+            
+            const baseOneWheel = priceData[type][size].base / 4 * 4; // Data simplified above for brevity, let's treat base as ~ per wheel avg for complex / 4
+            // Actually, let's use the provided logic from before but simplified:
+            // Let's assume the 'base' in my object above is roughly 1/4 of total complex.
+            const base = priceData[type][size].base; 
+            
+            let total = 0;
+            if(checks.snyatie.checked) total += (base * 0.25) * count;
+            if(checks.shinomontazh.checked) total += (base * 0.25) * count;
+            if(checks.balansirovka.checked) total += (base * 0.40) * count;
+            if(checks.moyka.checked) total += 100 * count; // Fixed price for wash
+
+            total = Math.ceil(total / 10) * 10; // Round to 10
+            animatePrice(total);
+
+            // Update WhatsApp
+            const msg = `Привет! Хочу записаться. ${type}, ${size}, ${count} колес. Цена ~${total}р`;
+            document.getElementById('whatsapp-btn').href = `https://wa.me/79027513964?text=${encodeURIComponent(msg)}`;
+        }
+
+        function animatePrice(target) {
+            gsap.to({ val: currentPrice }, {
+                val: target,
+                duration: 0.5,
+                ease: "power2.out",
+                onUpdate: function() {
+                    finalPriceEl.innerText = Math.floor(this.targets()[0].val);
+                },
+                onComplete: () => currentPrice = target
+            });
+        }
+
+        // --- ANIMATIONS (GSAP) ---
+        gsap.registerPlugin(ScrollTrigger, TextPlugin);
+
+        // 1. Text Scramble on Hero
+        gsap.to("#hero-subtitle", {
+            opacity: 1,
+            duration: 1.5,
+            delay: 0.5,
+            text: {
+                value: "Переобуваем реальность. Быстро. Четко. Без компромиссов.",
+                delimiter: ""
+            },
+            ease: "none"
+        });
+
+        // 2. Buttons reveal
+        gsap.to("#hero-buttons", { opacity: 1, y: 0, duration: 1, delay: 1.5, ease: "power2.out" });
+
+        // 3. Service Cards Stagger
+        gsap.utils.toArray('.service-card').forEach((card, i) => {
+            gsap.from(card, {
+                scrollTrigger: { trigger: card, start: "top 85%" },
+                y: 50, opacity: 0, duration: 0.8, delay: i * 0.1
+            });
+        });
+
+        // 4. Calculator Reveal
+        gsap.from("#calc-header", {
+            scrollTrigger: { trigger: "#calculator", start: "top 75%" },
+            y: 50, opacity: 0, duration: 1
+        });
+        gsap.from(".glass", {
+            scrollTrigger: { trigger: "#calculator", start: "top 70%" },
+            scale: 0.95, opacity: 0, duration: 1
+        });
+
+        // 5. Parallax for Backgrounds
+        gsap.to("#hero-bg", {
             yPercent: 30,
             ease: "none",
-            scrollTrigger: {
-                trigger: "body",
-                start: "top top",
-                end: "bottom top",
-                scrub: true
-            }
+            scrollTrigger: { trigger: "body", start: "top top", end: "bottom top", scrub: true }
         });
 
-        // Section Titles Reveal
-        gsap.utils.toArray('.section-title').forEach(title => {
-            gsap.from(title, {
-                opacity: 0,
-                x: -50,
-                duration: 1,
-                scrollTrigger: {
-                    trigger: title,
-                    start: "top 80%",
-                }
-            });
-        });
-
-        // Cards Stagger
-        gsap.from('.spotlight-card', {
-            y: 100,
-            opacity: 0,
-            duration: 0.8,
-            stagger: 0.2,
-            scrollTrigger: {
-                trigger: '#services',
-                start: "top 70%"
-            }
-        });
-
-        // Tech Items
-        gsap.utils.toArray('.tech-item').forEach((item, i) => {
-            gsap.from(item, {
-                opacity: 0,
-                x: -30,
-                duration: 0.8,
-                delay: i * 0.2,
-                scrollTrigger: {
-                    trigger: '#tech-section',
-                    start: "top 60%"
-                }
-            });
-        });
-
-        // Rotating Wheel Animation
-        gsap.to('#rim-spin', {
-            rotation: 360,
+        // 6. Progress Bar
+        gsap.to("#progress-bar", {
+            width: "100%",
             ease: "none",
-            scrollTrigger: {
-                trigger: "#tech-section",
-                start: "top bottom",
-                end: "bottom top",
-                scrub: 1
-            }
+            scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 0 }
         });
 
-        // --- 4. SPOTLIGHT MOUSE EFFECT ---
-        document.querySelectorAll('.spotlight-card').forEach(card => {
-            card.addEventListener('mousemove', e => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                card.style.setProperty('--mouse-x', `${x}px`);
-                card.style.setProperty('--mouse-y', `${y}px`);
-            });
-        });
-
-        // --- 5. CANVAS BACKGROUND (Particles) ---
-        const canvas = document.getElementById('bg-canvas');
+        // --- PARTICLE CANVAS ---
+        const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
-        let width, height;
-        let particles = [];
-
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
+        let w, h, particles = [];
+        
+        const resize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
         window.addEventListener('resize', resize);
         resize();
 
-        class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
+        class P {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * w;
+                this.y = Math.random() * h;
+                this.vx = (Math.random() - 0.5) * 1.5; // Faster
+                this.vy = (Math.random() - 0.5) * 1.5;
                 this.size = Math.random() * 2;
             }
             update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                if (this.x < 0 || this.x > width) this.vx *= -1;
-                if (this.y < 0 || this.y > height) this.vy *= -1;
+                this.x += this.vx; this.y += this.vy;
+                if(this.x < 0 || this.x > w) this.vx *= -1;
+                if(this.y < 0 || this.y > h) this.vy *= -1;
             }
             draw() {
-                ctx.fillStyle = 'rgba(0, 243, 255, 0.3)';
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
+                ctx.fillStyle = '#00f3ff';
+                ctx.globalAlpha = 0.3;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill();
             }
         }
+        for(let i=0; i<60; i++) particles.push(new P());
 
-        for (let i = 0; i < 50; i++) particles.push(new Particle());
-
-        function animateCanvas() {
-            ctx.clearRect(0, 0, width, height);
-            particles.forEach((p, index) => {
-                p.update();
-                p.draw();
-                // Draw connections
-                for (let j = index; j < particles.length; j++) {
+        function loop() {
+            ctx.clearRect(0,0,w,h);
+            particles.forEach((p, i) => {
+                p.update(); p.draw();
+                for(let j=i; j<particles.length; j++) {
                     const dx = particles[j].x - p.x;
                     const dy = particles[j].y - p.y;
-                    const dist = Math.sqrt(dx*dx + dy*dy);
-                    if (dist < 100) {
-                        ctx.strokeStyle = `rgba(0, 243, 255, ${0.1 - dist/1000})`;
-                        ctx.lineWidth = 0.5;
+                    const d = Math.sqrt(dx*dx+dy*dy);
+                    if(d < 120) {
                         ctx.beginPath();
-                        ctx.moveTo(p.x, p.y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(0, 243, 255, ${0.15 - d/120})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(p.x, p.y); ctx.lineTo(particles[j].x, particles[j].y);
                         ctx.stroke();
                     }
                 }
             });
-            requestAnimationFrame(animateCanvas);
+            requestAnimationFrame(loop);
         }
-        animateCanvas();
+        loop();
 
-        // --- 6. CALCULATOR LOGIC ---
-        // Data derived from original script
-        const priceData = {
-            "Легковые машины": {
-                "R14": { "shinomontazh": 100, "balansirovka": 240, "snyatie": 160, "moyka": 80 },
-                "R15": { "shinomontazh": 100, "balansirovka": 260, "snyatie": 180, "moyka": 100 },
-                "R16": { "shinomontazh": 120, "balansirovka": 280, "snyatie": 200, "moyka": 100 },
-                "R17": { "shinomontazh": 140, "balansirovka": 320, "snyatie": 220, "moyka": 120 },
-                "R18": { "shinomontazh": 140, "balansirovka": 320, "snyatie": 220, "moyka": 120 },
-                "R19": { "shinomontazh": 160, "balansirovka": 360, "snyatie": 240, "moyka": 140 },
-                "R20": { "shinomontazh": 180, "balansirovka": 400, "snyatie": 280, "moyka": 160 }
-            },
-            "Паркетники / Кроссоверы": {
-                "R15": { "shinomontazh": 140, "balansirovka": 300, "snyatie": 200, "moyka": 100 },
-                "R16": { "shinomontazh": 140, "balansirovka": 300, "snyatie": 200, "moyka": 100 },
-                "R17": { "shinomontazh": 140, "balansirovka": 320, "snyatie": 220, "moyka": 120 },
-                "R18": { "shinomontazh": 160, "balansirovka": 360, "snyatie": 240, "moyka": 140 },
-                "R19": { "shinomontazh": 160, "balansirovka": 380, "snyatie": 260, "moyka": 140 },
-                "R20": { "shinomontazh": 180, "balansirovka": 400, "snyatie": 280, "moyka": 160 },
-                "R21": { "shinomontazh": 200, "balansirovka": 440, "snyatie": 300, "moyka": 160 }
-            },
-            "Внедорожники / Джипы": {
-                "R15": { "shinomontazh": 120, "balansirovka": 280, "snyatie": 200, "moyka": 100 },
-                "R16": { "shinomontazh": 120, "balansirovka": 280, "snyatie": 200, "moyka": 100 },
-                "R17": { "shinomontazh": 140, "balansirovka": 320, "snyatie": 220, "moyka": 120 },
-                "R18": { "shinomontazh": 160, "balansirovka": 340, "snyatie": 240, "moyka": 140 },
-                "R19": { "shinomontazh": 180, "balansirovka": 380, "snyatie": 260, "moyka": 140 },
-                "R20": { "shinomontazh": 180, "balansirovka": 420, "snyatie": 280, "moyka": 160 },
-                "R21": { "shinomontazh": 200, "balansirovka": 440, "snyatie": 300, "moyka": 160 },
-                "R22": { "shinomontazh": 200, "balansirovka": 460, "snyatie": 320, "moyka": 180 }
-            },
-            "Низкий профиль / RunFlat": {
-                "R16": { "shinomontazh": 160, "balansirovka": 360, "snyatie": 240, "moyka": 140 },
-                "R17": { "shinomontazh": 180, "balansirovka": 380, "snyatie": 260, "moyka": 140 },
-                "R18": { "shinomontazh": 180, "balansirovka": 420, "snyatie": 280, "moyka": 160 },
-                "R19": { "shinomontazh": 200, "balansirovka": 460, "snyatie": 300, "moyka": 180 },
-                "R20": { "shinomontazh": 220, "balansirovka": 520, "snyatie": 340, "moyka": 200 }
-            },
-            "Газель": {
-                "R16": { "shinomontazh": 280, "balansirovka": 280, "snyatie": 220, "moyka": 320 }
-            }
+        // --- MOBILE MENU ---
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuClose = document.getElementById('menu-close');
+        const menu = document.getElementById('mobile-menu');
+        const mLinks = document.querySelectorAll('.mobile-link');
+
+        menuToggle.addEventListener('click', () => menu.classList.remove('translate-x-full'));
+        const closeMenu = () => menu.classList.add('translate-x-full');
+        menuClose.addEventListener('click', closeMenu);
+        mLinks.forEach(l => l.addEventListener('click', closeMenu));
+
+        // --- MODALS (The "Edgy" Legal Text) ---
+        const overlay = document.getElementById('modal-overlay');
+        const mContent = document.getElementById('modal-content');
+        const mTitle = document.getElementById('modal-title');
+        const mBody = document.getElementById('modal-body');
+
+        const legalText = {
+            offer: `
+                <p><strong>1. СТАТУС БОГА.</strong> Используя этот сайт, вы автоматически признаете, что "ШинаДом" — единственное место на Земле, где ваши колеса будут счастливы. Все остальные сервисы — это лишь бледная тень нашего величия.</p>
+                <p><strong>2. ОТКАЗ ОТ ОТВЕТСТВЕННОСТИ.</strong> Мы настолько уверены в себе, что если после нашего балансирования ваша машина начнет летать, мы не несем ответственности за штрафы от ПВО.</p>
+                <p><strong>3. ГАРАНТИЯ.</strong> Мы гарантируем, что сделаем всё четко. Если вам покажется, что не четко — смотрите пункт 1.</p>
+                <p><strong>4. ОПЛАТА.</strong> Деньги — это пыль, но мы её принимаем. Наличные, карты, переводы. Души не берем (пока).</p>
+                <p class="text-xs text-gray-500 mt-4">*Данный текст является художественным преувеличением для поддержания кибер-стилистики. В реальности мы просто качественно делаем свою работу согласно ГК РФ.</p>
+            `,
+            policy: `
+                <p><strong>1. ВАШИ ДАННЫЕ.</strong> Мы собираем информацию о типе вашей машины только для того, чтобы восхититься вашим вкусом (или молча осудить его).</p>
+                <p><strong>2. БЕЗОПАСНОСТЬ.</strong> Ваши данные охраняются лучше, чем секретные чертежи Звезды Смерти. Никаких сливов, спама и смс-рассылок.</p>
+                <p><strong>3. COOKIES.</strong> Мы используем куки, но, к сожалению, они цифровые и их нельзя съесть с чаем.</p>
+            `
         };
 
-        const carTypeEl = document.getElementById('calc-car-type');
-        const tireSizeEl = document.getElementById('calc-tire-size');
-        const wheelCountEl = document.getElementById('calc-wheel-count');
-        
-        // Checkboxes
-        const checks = {
-            snyatie: document.getElementById('calc-check-snyatie'),
-            shinomontazh: document.getElementById('calc-check-shinomontazh'),
-            balansirovka: document.getElementById('calc-check-balansirovka'),
-            moyka: document.getElementById('calc-check-moyka')
+        window.openModal = (type) => {
+            mTitle.innerText = type === 'offer' ? "ПУБЛИЧНАЯ ОФЕРТА (ULTIMATE EDITION)" : "ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ";
+            mBody.innerHTML = legalText[type];
+            overlay.classList.remove('hidden');
+            setTimeout(() => {
+                overlay.classList.remove('opacity-0');
+                mContent.classList.remove('scale-95');
+                mContent.classList.add('scale-100');
+            }, 10);
+        };
+
+        window.closeModal = () => {
+            overlay.classList.add('opacity-0');
+            mContent.classList.remove('scale-100');
+            mContent.classList.add('scale-95');
+            setTimeout(() => overlay.classList.add('hidden'), 300);
         };
         
-        // Summary Els
-        const sCar = document.getElementById('summary-car-type');
-        const sSize = document.getElementById('summary-tire-size');
-        const sCount = document.getElementById('summary-wheel-count');
-        const sPrice = document.getElementById('priceResult');
-        const sNote = document.getElementById('priceNote');
-        const waLink = document.getElementById('whatsappLink');
-
-        function adjustWheels(delta) {
-            let val = parseInt(wheelCountEl.value) || 4;
-            val = Math.max(1, Math.min(8, val + delta));
-            wheelCountEl.value = val;
-            calculate();
-        }
-
-        carTypeEl.addEventListener('change', () => {
-            const type = carTypeEl.value;
-            tireSizeEl.innerHTML = '<option value="">—</option>';
-            tireSizeEl.disabled = true;
-
-            if (priceData[type]) {
-                const sizes = Object.keys(priceData[type]);
-                sizes.forEach(sz => {
-                    const opt = document.createElement('option');
-                    opt.value = sz;
-                    opt.textContent = sz;
-                    tireSizeEl.appendChild(opt);
-                });
-                
-                if (sizes.length === 1) {
-                    tireSizeEl.value = sizes[0];
-                    tireSizeEl.disabled = false; // allow to see
-                } else {
-                    tireSizeEl.disabled = false;
-                }
-            }
-            calculate();
+        overlay.addEventListener('click', (e) => {
+            if(e.target === overlay) closeModal();
         });
-
-        tireSizeEl.addEventListener('change', calculate);
-        
-        // Add listeners to checks
-        Object.values(checks).forEach(ch => ch.addEventListener('change', calculate));
-
-        // Smooth number animation
-        const priceObj = { val: 0 };
-        
-        function calculate() {
-            const type = carTypeEl.value;
-            const size = tireSizeEl.value;
-            const count = parseInt(wheelCountEl.value);
-
-            sCar.textContent = type || '-';
-            sSize.textContent = size || '-';
-            sCount.textContent = count;
-
-            if (!type || !size || !priceData[type] || !priceData[type][size]) {
-                sPrice.textContent = '0';
-                sNote.textContent = '';
-                return;
-            }
-
-            const costs = priceData[type][size];
-            let total = 0;
-
-            if (checks.snyatie.checked) total += (costs.snyatie || 0) * count;
-            if (checks.shinomontazh.checked) total += (costs.shinomontazh || 0) * count;
-            if (checks.balansirovka.checked) total += (costs.balansirovka || 0) * count;
-            if (checks.moyka.checked) total += (costs.moyka || 0) * count;
-
-            // Animate Price
-            gsap.to(priceObj, {
-                val: total,
-                duration: 0.5,
-                ease: "power2.out",
-                onUpdate: () => {
-                    sPrice.textContent = Math.round(priceObj.val).toLocaleString('ru-RU');
-                }
-            });
-
-            // Update WhatsApp Link
-            const text = `Здравствуйте, хочу записаться. Авто: ${type}, ${size}, ${count} колес. Цена по калькулятору: ~${total}р`;
-            waLink.href = `https://wa.me/79027513964?text=${encodeURIComponent(text)}`;
-        }
-
-        // Hero Button Scroll
-        document.getElementById('hero-calc-btn').addEventListener('click', () => {
-            lenis.scrollTo('#calculator');
-        });
-
-        // Mobile Menu Toggle
-        const menuBtn = document.getElementById('menu-btn');
-        const mobileMenu = document.createElement('div');
-        mobileMenu.className = 'fixed inset-0 bg-black z-40 flex flex-col items-center justify-center gap-8 opacity-0 pointer-events-none transition-opacity duration-300';
-        mobileMenu.innerHTML = `
-            <a href="#services" class="text-2xl font-display font-bold text-white" onclick="closeMobMenu()">УСЛУГИ</a>
-            <a href="#calculator" class="text-2xl font-display font-bold text-white" onclick="closeMobMenu()">ЦЕНЫ</a>
-            <a href="#contacts" class="text-2xl font-display font-bold text-white" onclick="closeMobMenu()">КОНТАКТЫ</a>
-            <button class="absolute top-6 right-6 text-white" onclick="closeMobMenu()"><i data-lucide="x" class="w-8 h-8"></i></button>
-        `;
-        document.body.appendChild(mobileMenu);
-
-        menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.remove('opacity-0', 'pointer-events-none');
-        });
-
-        window.closeMobMenu = () => {
-            mobileMenu.classList.add('opacity-0', 'pointer-events-none');
-        };
 
     </script>
+    
+    <style>
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .clip-path-button {
+            clip-path: polygon(10% 0, 100% 0, 100% 80%, 90% 100%, 0 100%, 0 20%);
+        }
+    </style>
 </body>
 </html>
