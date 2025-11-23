@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ШинаДом | Cyber Service</title>
+    <title>ШинаДом | Professional Service</title>
     <link rel="icon" href="https://i.postimg.cc/C1hpVcxb/image.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Manrope:wght@200;300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -19,7 +19,7 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Rajdhani', 'sans-serif'],
+                        sans: ['Manrope', 'sans-serif'],
                         display: ['Orbitron', 'sans-serif'],
                         mono: ['Share Tech Mono', 'monospace'],
                     },
@@ -27,22 +27,27 @@
                         neon: '#00f3ff',
                         neonPurple: '#bc13fe',
                         neonGreen: '#0aff0a',
-                        dark: '#020203',
-                        panel: '#08080a'
+                        dark: '#050505',
+                        panel: '#0a0a0c'
                     },
                     backgroundImage: {
-                        'grid-pattern': "linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px)",
-                        'dots': "radial-gradient(rgba(0, 243, 255, 0.2) 1px, transparent 1px)"
+                        'grid-pattern': "linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px)",
+                        'radial-glow': "radial-gradient(circle at center, rgba(0, 243, 255, 0.15) 0%, transparent 70%)"
                     },
                     animation: {
                         'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'spin-slow': 'spin 10s linear infinite',
+                        'spin-slow': 'spin 20s linear infinite',
                         'float': 'float 6s ease-in-out infinite',
+                        'scan': 'scan 4s linear infinite',
                     },
                     keyframes: {
                         float: {
                             '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-20px)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        },
+                        scan: {
+                            '0%': { transform: 'translateY(-100%)' },
+                            '100%': { transform: 'translateY(100%)' },
                         }
                     }
                 }
@@ -50,334 +55,365 @@
         }
     </script>
     <style>
-        :root { --cursor-size: 20px; }
-        body { background-color: #020203; color: #e5e5e5; overflow-x: hidden; cursor: none; }
+        :root { --cursor-size: 10px; }
+        body { background-color: #050505; color: #e5e5e5; overflow-x: hidden; cursor: none; }
         ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #020203; }
+        ::-webkit-scrollbar-track { background: #050505; }
         ::-webkit-scrollbar-thumb { background: #00f3ff; }
         
         #custom-cursor {
             position: fixed; top: 0; left: 0; width: var(--cursor-size); height: var(--cursor-size);
-            border: 1px solid #00f3ff; border-radius: 50%; pointer-events: none; z-index: 9999;
+            background: #00f3ff; border-radius: 50%; pointer-events: none; z-index: 9999;
             transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s, background 0.2s;
-            mix-blend-mode: difference;
+            mix-blend-mode: exclusion; box-shadow: 0 0 10px #00f3ff;
         }
-        #custom-cursor.hovered { width: 50px; height: 50px; background: rgba(0, 243, 255, 0.1); border-style: dashed; animation: spin-slow 4s linear infinite; }
-        #custom-cursor::after {
-            content: ''; position: absolute; top: 50%; left: 50%; width: 4px; height: 4px;
-            background: #00f3ff; transform: translate(-50%, -50%); border-radius: 50%;
-        }
-
-        .glass { background: rgba(8, 8, 10, 0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); }
-        .glass-panel { background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%); backdrop-filter: blur(20px); border: 1px solid rgba(0, 243, 255, 0.1); position: relative; }
-        .glass-panel::before { content: ''; position: absolute; top: 0; left: 0; width: 10px; height: 10px; border-top: 1px solid #00f3ff; border-left: 1px solid #00f3ff; }
-        .glass-panel::after { content: ''; position: absolute; bottom: 0; right: 0; width: 10px; height: 10px; border-bottom: 1px solid #00f3ff; border-right: 1px solid #00f3ff; }
-
-        .glitch-text { position: relative; color: #fff; mix-blend-mode: lighten; }
-        .glitch-text::before, .glitch-text::after { content: attr(data-text); position: absolute; top: 0; width: 100%; height: 100%; background: #020203; }
-        .glitch-text::before { left: 2px; text-shadow: -1px 0 #ff00c1; clip: rect(44px, 450px, 56px, 0); animation: glitch-anim 5s infinite linear alternate-reverse; }
-        .glitch-text::after { left: -2px; text-shadow: -1px 0 #00fff9; clip: rect(44px, 450px, 56px, 0); animation: glitch-anim2 5s infinite linear alternate-reverse; }
+        #custom-cursor.hovered { width: 60px; height: 60px; background: transparent; border: 1px solid #00f3ff; mix-blend-mode: normal; }
+        
+        .glass-panel { background: rgba(10, 10, 12, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); position: relative; overflow: hidden; }
+        .glass-panel::before { content: ''; position: absolute; inset: 0; background: linear-gradient(120deg, rgba(255,255,255,0.05), transparent 40%); opacity: 0.5; pointer-events: none; }
+        
+        .glitch-text { position: relative; color: #fff; }
+        .glitch-text::before, .glitch-text::after { content: attr(data-text); position: absolute; top: 0; width: 100%; height: 100%; background: #050505; opacity: 0.8; }
+        .glitch-text:hover::before { left: 2px; text-shadow: -1px 0 #ff00c1; clip: rect(44px, 450px, 56px, 0); animation: glitch-anim 2s infinite linear alternate-reverse; }
+        .glitch-text:hover::after { left: -2px; text-shadow: -1px 0 #00fff9; clip: rect(44px, 450px, 56px, 0); animation: glitch-anim2 2s infinite linear alternate-reverse; }
 
         @keyframes glitch-anim { 0% { clip: rect(31px, 9999px, 94px, 0); } 20% { clip: rect(6px, 9999px, 7px, 0); } 40% { clip: rect(51px, 9999px, 90px, 0); } 60% { clip: rect(82px, 9999px, 86px, 0); } 80% { clip: rect(8px, 9999px, 60px, 0); } 100% { clip: rect(47px, 9999px, 8px, 0); } }
         @keyframes glitch-anim2 { 0% { clip: rect(84px, 9999px, 54px, 0); } 20% { clip: rect(21px, 9999px, 68px, 0); } 40% { clip: rect(6px, 9999px, 97px, 0); } 60% { clip: rect(10px, 9999px, 88px, 0); } 80% { clip: rect(69px, 9999px, 18px, 0); } 100% { clip: rect(5px, 9999px, 32px, 0); } }
 
-        .scanline { width: 100%; height: 100px; z-index: 10; background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0, 243, 255, 0.1) 50%, rgba(0,0,0,0) 100%); opacity: 0.1; position: fixed; bottom: 100%; animation: scanline 10s linear infinite; pointer-events: none; }
-        @keyframes scanline { 0% { bottom: 100%; } 100% { bottom: -100%; } }
+        .scanline { width: 100%; height: 2px; z-index: 10; background: rgba(0, 243, 255, 0.3); opacity: 0.1; position: fixed; top: 0; left: 0; animation: scan 3s linear infinite; pointer-events: none; box-shadow: 0 0 10px rgba(0, 243, 255, 0.5); }
+        .noise { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 50; opacity: 0.03; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E"); }
 
-        .crt::before { content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); z-index: 2; background-size: 100% 2px, 3px 100%; pointer-events: none; }
-        
-        .btn-cyber { position: relative; overflow: hidden; transition: all 0.3s; clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); }
-        .btn-cyber::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: 0.5s; }
+        .btn-cyber { position: relative; overflow: hidden; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px); }
+        .btn-cyber::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); transition: 0.6s; z-index: 1; }
         .btn-cyber:hover::before { left: 100%; }
+        .btn-cyber:active { transform: scale(0.98); }
         
-        #preloader { position: fixed; inset: 0; background: #000; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .loader-bar { width: 300px; height: 2px; background: #111; position: relative; overflow: hidden; }
-        .loader-progress { position: absolute; top: 0; left: 0; height: 100%; background: #00f3ff; width: 0%; box-shadow: 0 0 10px #00f3ff; }
+        #preloader { position: fixed; inset: 0; background: #050505; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .loader-bar { width: 300px; height: 1px; background: #222; position: relative; overflow: hidden; margin-top: 20px; }
+        .loader-progress { position: absolute; top: 0; left: 0; height: 100%; background: #00f3ff; width: 0%; box-shadow: 0 0 20px #00f3ff; }
 
-        .service-card { transform-style: preserve-3d; transform: perspective(1000px); }
-        .card-inner { transform: translateZ(20px); }
+        .service-card { transform-style: preserve-3d; transition: transform 0.1s; }
+        .service-card:hover { z-index: 20; }
         
-        input[type="checkbox"]:checked + div { background-color: rgba(0, 243, 255, 0.1); border-color: #00f3ff; box-shadow: 0 0 15px rgba(0, 243, 255, 0.15); }
-        input[type="checkbox"]:checked + div .check-icon { opacity: 1; transform: scale(1); background: #00f3ff; box-shadow: 0 0 10px #00f3ff; }
+        .corner-border { position: absolute; width: 10px; height: 10px; border-color: #00f3ff; transition: all 0.3s; opacity: 0.5; }
+        .group:hover .corner-border { opacity: 1; width: 100%; height: 100%; }
+        .c-tl { top: 0; left: 0; border-top: 1px solid; border-left: 1px solid; }
+        .c-br { bottom: 0; right: 0; border-bottom: 1px solid; border-right: 1px solid; }
+
+        .magnetic-wrap { display: inline-block; }
+        .magnetic-area { padding: 20px; margin: -20px; }
+        
+        input[type="checkbox"]:checked + div { background-color: rgba(0, 243, 255, 0.05); border-color: #00f3ff; box-shadow: inset 0 0 20px rgba(0, 243, 255, 0.1); }
+        input[type="checkbox"]:checked + div .check-icon { background: #00f3ff; border-color: #00f3ff; color: #000; }
+        
+        .reveal-text { overflow: hidden; display: block; }
+        .reveal-text span { transform: translateY(100%); display: block; transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .is-visible .reveal-text span { transform: translateY(0); }
     </style>
 </head>
-<body class="crt selection:bg-neon selection:text-black">
+<body class="selection:bg-neon selection:text-black antialiased">
 
     <div id="preloader">
-        <div class="font-display font-bold text-4xl text-white mb-4 tracking-widest glitch-text" data-text="ШИНАДОМ">ШИНАДОМ</div>
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 border-2 border-neon border-t-transparent rounded-full animate-spin"></div>
+            <div class="font-display font-bold text-3xl text-white tracking-[0.2em] glitch-text" data-text="SYSTEM_BOOT">SYSTEM_BOOT</div>
+        </div>
         <div class="loader-bar"><div class="loader-progress" id="loader-progress"></div></div>
-        <div class="mt-2 font-mono text-neon text-xs" id="loader-text">INITIALIZING...</div>
+        <div class="mt-4 font-mono text-gray-500 text-xs tracking-widest" id="loader-text">LOADING ASSETS...</div>
     </div>
 
     <div id="custom-cursor"></div>
     <div class="scanline"></div>
-    <canvas id="particle-canvas" class="fixed inset-0 z-[-1] opacity-30"></canvas>
-    <div class="fixed top-0 w-full h-0.5 z-[100] bg-gray-900"><div id="scroll-progress" class="h-full bg-neon w-0 shadow-[0_0_10px_#00f3ff]"></div></div>
+    <div class="noise"></div>
+    <canvas id="particle-canvas" class="fixed inset-0 z-[-1] opacity-40"></canvas>
+    <div class="fixed top-0 w-full h-0.5 z-[100] bg-gray-900/50"><div id="scroll-progress" class="h-full bg-gradient-to-r from-neon via-white to-neon w-0 shadow-[0_0_15px_#00f3ff]"></div></div>
 
-    <header class="fixed top-0 inset-x-0 z-50 transition-all duration-300 border-b border-transparent" id="header">
-        <div class="absolute inset-0 bg-dark/80 backdrop-blur-md translate-y-[-100%] transition-transform duration-500" id="header-bg"></div>
+    <header class="fixed top-0 inset-x-0 z-50 transition-all duration-500 border-b border-transparent" id="header">
+        <div class="absolute inset-0 bg-dark/80 backdrop-blur-xl translate-y-[-100%] transition-transform duration-500" id="header-bg"></div>
         <div class="container mx-auto px-6 h-24 flex items-center justify-between relative">
-            <a href="#" class="group flex items-center gap-4 relative z-10">
-                <div class="relative w-12 h-12 flex items-center justify-center">
-                    <div class="absolute inset-0 border-2 border-neon/30 rounded-full group-hover:scale-110 transition-transform duration-500 border-dashed animate-[spin_10s_linear_infinite]"></div>
-                    <svg viewBox="0 0 100 100" class="w-8 h-8 stroke-neon fill-none stroke-[3] group-hover:rotate-180 transition-transform duration-500">
+            <a href="#" class="group flex items-center gap-4 relative z-10 magnetic-wrap">
+                <div class="relative w-10 h-10 flex items-center justify-center bg-white/5 border border-white/10 overflow-hidden">
+                    <div class="absolute inset-0 bg-neon/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                    <svg viewBox="0 0 100 100" class="w-6 h-6 stroke-white group-hover:stroke-neon fill-none stroke-[2] transition-colors relative z-10">
                         <path d="M50 5 L93 25 L93 75 L50 95 L7 75 L7 25 Z"/>
-                        <circle cx="50" cy="50" r="12" class="fill-neon/10"/>
-                        <path d="M50 17 L50 32 M50 68 L50 83 M22 35 L34 42 M66 58 L78 65 M22 65 L34 58 M66 42 L78 35"/>
+                        <circle cx="50" cy="50" r="15"/>
                     </svg>
                 </div>
                 <div class="flex flex-col">
-                    <span class="font-display font-bold text-2xl tracking-widest text-white leading-none hover-scramble" data-value="ШИНАДОМ">ШИНАДОМ</span>
-                    <span class="font-mono text-[0.6rem] text-neon tracking-[0.4em] uppercase">Cyber Tyre Service</span>
+                    <span class="font-display font-bold text-xl tracking-widest text-white leading-none group-hover:text-neon transition-colors duration-300">ШИНАДОМ</span>
+                    <span class="font-mono text-[0.6rem] text-gray-400 tracking-[0.3em] uppercase group-hover:text-white transition-colors">Professional Service</span>
                 </div>
             </a>
 
-            <nav class="hidden md:flex items-center gap-10 relative z-10">
-                <a href="#services" class="text-sm font-medium text-gray-400 hover:text-neon transition-colors tracking-widest uppercase hover-scramble" data-value="УСЛУГИ">УСЛУГИ</a>
-                <a href="#calculator" class="text-sm font-medium text-gray-400 hover:text-neon transition-colors tracking-widest uppercase hover-scramble" data-value="РАСЧЕТ">РАСЧЕТ</a>
-                <a href="#contacts" class="text-sm font-medium text-gray-400 hover:text-neon transition-colors tracking-widest uppercase hover-scramble" data-value="КОНТАКТЫ">КОНТАКТЫ</a>
+            <nav class="hidden md:flex items-center gap-12 relative z-10">
+                <a href="#services" class="text-xs font-bold text-gray-400 hover:text-white transition-colors tracking-[0.2em] uppercase relative group">
+                    Услуги
+                    <span class="absolute -bottom-2 left-0 w-0 h-[1px] bg-neon transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#calculator" class="text-xs font-bold text-gray-400 hover:text-white transition-colors tracking-[0.2em] uppercase relative group">
+                    Калькулятор
+                    <span class="absolute -bottom-2 left-0 w-0 h-[1px] bg-neon transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#contacts" class="text-xs font-bold text-gray-400 hover:text-white transition-colors tracking-[0.2em] uppercase relative group">
+                    Контакты
+                    <span class="absolute -bottom-2 left-0 w-0 h-[1px] bg-neon transition-all duration-300 group-hover:w-full"></span>
+                </a>
             </nav>
 
             <div class="hidden md:flex items-center gap-4 relative z-10">
-                <a href="tel:+79029093879" class="btn-cyber bg-white/5 hover:bg-neon hover:text-black border border-white/10 hover:border-neon px-8 py-3 text-sm font-display font-bold tracking-wider group">
-                    <span class="relative z-10 group-hover:animate-pulse">СВЯЗЬ</span>
+                <a href="tel:+79029093879" class="btn-cyber bg-white/5 hover:bg-neon hover:text-black border border-white/10 hover:border-neon px-8 py-3 text-xs font-display font-bold tracking-widest group transition-all duration-300">
+                    <span class="relative z-10">СВЯЗЬ С МАСТЕРОМ</span>
                 </a>
             </div>
 
             <button class="md:hidden text-white hover:text-neon relative z-10" id="menu-toggle">
-                <i data-lucide="menu" class="w-8 h-8"></i>
+                <i data-lucide="menu" class="w-6 h-6"></i>
             </button>
         </div>
     </header>
 
-    <div id="mobile-menu" class="fixed inset-0 z-[60] bg-dark/95 backdrop-blur-xl flex flex-col items-center justify-center gap-10 translate-x-full transition-transform duration-500">
-        <div class="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none"></div>
-        <button id="menu-close" class="absolute top-8 right-8 text-gray-400 hover:text-neon p-2 border border-transparent hover:border-neon rounded-full transition-all">
+    <div id="mobile-menu" class="fixed inset-0 z-[60] bg-dark/98 backdrop-blur-2xl flex flex-col items-center justify-center gap-8 translate-x-full transition-transform duration-700 cubic-bezier(0.7, 0, 0.3, 1)">
+        <div class="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none"></div>
+        <button id="menu-close" class="absolute top-8 right-8 text-gray-400 hover:text-neon p-2 border border-transparent hover:border-neon rounded-none transition-all">
             <i data-lucide="x" class="w-8 h-8"></i>
         </button>
-        <a href="#services" class="text-4xl font-display font-bold text-white hover:text-neon tracking-widest mobile-link glitch-text" data-text="УСЛУГИ">УСЛУГИ</a>
-        <a href="#calculator" class="text-4xl font-display font-bold text-white hover:text-neon tracking-widest mobile-link glitch-text" data-text="ЦЕНЫ">ЦЕНЫ</a>
-        <a href="#contacts" class="text-4xl font-display font-bold text-white hover:text-neon tracking-widest mobile-link glitch-text" data-text="КОНТАКТЫ">КОНТАКТЫ</a>
+        <a href="#services" class="text-3xl font-display font-bold text-white hover:text-neon tracking-widest mobile-link reveal-text"><span>УСЛУГИ</span></a>
+        <a href="#calculator" class="text-3xl font-display font-bold text-white hover:text-neon tracking-widest mobile-link reveal-text"><span>РАСЧЕТ СТОИМОСТИ</span></a>
+        <a href="#contacts" class="text-3xl font-display font-bold text-white hover:text-neon tracking-widest mobile-link reveal-text"><span>КОНТАКТЫ</span></a>
     </div>
 
     <main>
         <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
             <div class="absolute inset-0 z-[-2]">
-                <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-neon/10 via-dark to-dark opacity-60"></div>
-                <div class="w-full h-full bg-[url('https://images.unsplash.com/photo-1549427845-c4915609653a?q=80&w=2600&auto=format&fit=crop')] bg-cover bg-center grayscale opacity-20 mix-blend-overlay"></div>
-                <div class="absolute inset-0 bg-grid-pattern opacity-30"></div>
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gray-800/30 via-dark to-dark opacity-80"></div>
+                <div class="absolute inset-0 bg-grid-pattern opacity-20 animate-[pulse_4s_infinite]"></div>
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-dark/50 to-dark"></div>
+            </div>
+
+            <div class="absolute inset-0 overflow-hidden pointer-events-none">
+                <div class="absolute top-[20%] left-[10%] w-[500px] h-[500px] bg-neon/5 rounded-full blur-[100px] animate-float"></div>
+                <div class="absolute bottom-[20%] right-[10%] w-[500px] h-[500px] bg-neonPurple/5 rounded-full blur-[100px] animate-float" style="animation-delay: -3s;"></div>
             </div>
 
             <div class="container mx-auto px-4 text-center z-10 relative">
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-neon/5 rounded-full animate-[spin_20s_linear_infinite] pointer-events-none"></div>
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] border border-neon/10 rounded-full animate-[spin_15s_linear_infinite_reverse] pointer-events-none"></div>
-
-                <div class="inline-flex items-center gap-3 px-4 py-1.5 rounded-none border-l-2 border-neon bg-white/5 backdrop-blur-sm mb-8 animate-fade-in-up hover:bg-white/10 transition-colors cursor-crosshair">
+                <div class="inline-flex items-center gap-4 px-6 py-2 border border-neon/30 bg-neon/5 backdrop-blur-md mb-12 rounded-full animate-fade-in-up hover:border-neon/60 transition-colors duration-500">
                     <span class="relative flex h-2 w-2">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-neon"></span>
                     </span>
-                    <span class="text-neon text-xs font-mono font-bold tracking-[0.3em] uppercase">System Online v2.5</span>
+                    <span class="text-neon text-[10px] font-mono font-bold tracking-[0.2em] uppercase">Status: Fully Operational</span>
                 </div>
                 
-                <h1 class="font-display font-black text-6xl md:text-8xl lg:text-9xl text-white mb-6 tracking-tighter leading-none mix-blend-screen relative group cursor-default">
-                    <span class="inline-block hover:text-neon transition-colors duration-300">ШИНА</span><span class="inline-block text-transparent bg-clip-text bg-gradient-to-r from-neon to-purple-500 group-hover:text-white transition-colors duration-300">ДОМ</span>
+                <h1 class="font-display font-black text-5xl md:text-7xl lg:text-9xl text-white mb-8 tracking-tight leading-none relative z-10">
+                    <div class="reveal-text overflow-visible">
+                        <span class="inline-block bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-gray-500 pb-2">ПРОФЕССИОНАЛЬНЫЙ</span>
+                    </div>
+                    <div class="reveal-text overflow-visible">
+                        <span class="inline-block text-transparent bg-clip-text bg-gradient-to-r from-neon via-white to-neon bg-[length:200%_auto] animate-gradient glitch-text" data-text="ШИНОМОНТАЖ">ШИНОМОНТАЖ</span>
+                    </div>
                 </h1>
                 
-                <p class="text-gray-400 text-lg md:text-2xl font-light max-w-2xl mx-auto mb-12 opacity-0 font-mono" id="hero-subtitle">
-                    > Инициализация протокола качественного сервиса...
+                <p class="text-gray-400 text-sm md:text-lg font-light max-w-2xl mx-auto mb-16 opacity-0 translate-y-10 leading-relaxed font-sans" id="hero-subtitle">
+                    Комплексное обслуживание колес вашего автомобиля с применением высокоточного оборудования. Гарантия качества, скорости и надежности на каждом этапе работ.
                 </p>
 
-                <div class="flex flex-col sm:flex-row justify-center gap-6 opacity-0" id="hero-buttons">
-                    <a href="#calculator" class="btn-cyber relative px-10 py-5 bg-neon text-black font-display font-bold text-lg tracking-wider group">
-                        <span class="relative flex items-center gap-2 group-hover:scale-105 transition-transform">
-                            <i data-lucide="calculator" class="w-5 h-5"></i> РАССЧИТАТЬ
+                <div class="flex flex-col sm:flex-row justify-center gap-6 opacity-0 translate-y-10" id="hero-buttons">
+                    <a href="#calculator" class="btn-cyber relative px-12 py-5 bg-neon text-black font-display font-bold text-sm tracking-widest group overflow-hidden">
+                        <span class="absolute inset-0 bg-white opacity-0 group-hover:opacity-50 transition-opacity duration-300"></span>
+                        <span class="relative flex items-center gap-3">
+                            РАССЧИТАТЬ СТОИМОСТЬ <i data-lucide="arrow-right" class="w-4 h-4"></i>
                         </span>
                     </a>
-                    <a href="https://wa.me/79027513964" class="btn-cyber relative px-10 py-5 border border-white text-white hover:text-black hover:bg-white transition-colors font-display font-bold text-lg tracking-wider group">
-                        <span class="relative flex items-center gap-2 group-hover:scale-105 transition-transform">
-                            <i data-lucide="message-circle" class="w-5 h-5"></i> WHATSAPP
+                    <a href="https://wa.me/79027513964" class="btn-cyber relative px-12 py-5 border border-white/30 text-white hover:border-neon hover:text-neon transition-all font-display font-bold text-sm tracking-widest group">
+                        <span class="relative flex items-center gap-3">
+                            WHATSAPP
                         </span>
                     </a>
                 </div>
             </div>
 
-            <div class="absolute bottom-10 left-6 hidden md:block font-mono text-xs text-gray-600 vertical-rl tracking-widest">
-                COORDINATES: 54.5501° N, 37.0699° E
-            </div>
-            
-            <div class="absolute bottom-10 right-6 hidden md:block w-24 h-24 border border-white/10 rounded-full flex items-center justify-center animate-spin-slow">
-                <div class="w-20 h-20 border-t border-neon rounded-full"></div>
+            <div class="absolute bottom-10 left-10 hidden lg:flex items-center gap-4">
+                <div class="w-12 h-[1px] bg-white/20"></div>
+                <div class="font-mono text-[10px] text-gray-500 tracking-widest">SCROLL TO EXPLORE</div>
             </div>
         </section>
 
-        <div class="w-full bg-neon text-black py-4 overflow-hidden border-y-2 border-white relative z-20">
-            <div class="whitespace-nowrap flex gap-12 font-display font-black text-2xl italic tracking-wider" id="marquee-content">
-                <span>ПРОФЕССИОНАЛЬНЫЙ ШИНОМОНТАЖ</span> <span class="text-white stroked">///</span>
-                <span>НИКАКИХ ОЧЕРЕДЕЙ</span> <span class="text-white stroked">///</span>
-                <span>ГАРАНТИЯ КАЧЕСТВА</span> <span class="text-white stroked">///</span>
-                <span>ПРАВКА ДИСКОВ</span> <span class="text-white stroked">///</span>
-                <span>СВАРКА АРГОНОМ</span> <span class="text-white stroked">///</span>
-                <span>ПРОФЕССИОНАЛЬНЫЙ ШИНОМОНТАЖ</span> <span class="text-white stroked">///</span>
-                <span>НИКАКИХ ОЧЕРЕДЕЙ</span> <span class="text-white stroked">///</span>
-                <span>ГАРАНТИЯ КАЧЕСТВА</span> <span class="text-white stroked">///</span>
+        <div class="w-full bg-dark border-y border-white/5 py-6 overflow-hidden relative z-20">
+            <div class="absolute inset-0 bg-neon/5"></div>
+            <div class="whitespace-nowrap flex gap-16 font-display font-bold text-lg text-gray-400 tracking-[0.2em] opacity-80" id="marquee-content">
+                <span class="flex items-center gap-4"><i data-lucide="star" class="w-4 h-4 text-neon"></i> ГАРАНТИЯ КАЧЕСТВА</span>
+                <span class="flex items-center gap-4"><i data-lucide="shield-check" class="w-4 h-4 text-neon"></i> СОВРЕМЕННОЕ ОБОРУДОВАНИЕ</span>
+                <span class="flex items-center gap-4"><i data-lucide="clock" class="w-4 h-4 text-neon"></i> ОПЕРАТИВНОСТЬ</span>
+                <span class="flex items-center gap-4"><i data-lucide="tool" class="w-4 h-4 text-neon"></i> КВАЛИФИЦИРОВАННЫЙ ПЕРСОНАЛ</span>
+                <span class="flex items-center gap-4"><i data-lucide="star" class="w-4 h-4 text-neon"></i> ГАРАНТИЯ КАЧЕСТВА</span>
+                <span class="flex items-center gap-4"><i data-lucide="shield-check" class="w-4 h-4 text-neon"></i> СОВРЕМЕННОЕ ОБОРУДОВАНИЕ</span>
+                <span class="flex items-center gap-4"><i data-lucide="clock" class="w-4 h-4 text-neon"></i> ОПЕРАТИВНОСТЬ</span>
+                <span class="flex items-center gap-4"><i data-lucide="tool" class="w-4 h-4 text-neon"></i> КВАЛИФИЦИРОВАННЫЙ ПЕРСОНАЛ</span>
             </div>
         </div>
 
-        <section id="services" class="py-32 relative bg-dark">
-            <div class="absolute inset-0 bg-dots bg-[size:30px_30px] opacity-20"></div>
+        <section id="services" class="py-32 relative bg-dark overflow-hidden">
+            <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-gray-900 to-transparent pointer-events-none"></div>
             
             <div class="container mx-auto px-6 relative z-10">
-                <div class="flex flex-col md:flex-row items-end justify-between mb-20 pb-4 border-b border-white/10">
+                <div class="flex flex-col md:flex-row items-end justify-between mb-24 pb-6 border-b border-white/10" data-gsap="fade-up">
                     <div>
-                        <span class="text-neon font-mono text-xs tracking-widest block mb-2">// SERVICES_LIST</span>
-                        <h2 class="text-4xl md:text-6xl font-display font-bold text-white">
-                            НАШИ <span class="text-neon">УСЛУГИ</span>
+                        <span class="text-neon font-mono text-[10px] tracking-[0.4em] uppercase block mb-4 border-l-2 border-neon pl-3">Catalog</span>
+                        <h2 class="text-4xl md:text-5xl font-display font-bold text-white tracking-tight">
+                            НАШИ <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon to-white">УСЛУГИ</span>
                         </h2>
                     </div>
                     <div class="text-right hidden md:block">
-                        <div class="flex gap-1 mb-1 justify-end">
-                            <div class="w-2 h-2 bg-neon"></div><div class="w-2 h-2 bg-neon/50"></div><div class="w-2 h-2 bg-neon/20"></div>
-                        </div>
-                        <p class="text-gray-400 font-mono text-sm max-w-xs">Автоматизированная диагностика и ремонт ходовой части колес.</p>
+                        <p class="text-gray-400 font-sans text-sm max-w-sm leading-relaxed">
+                            Полный спектр работ по обслуживанию колес: от сезонной смены шин до сложного ремонта дисков с использованием аргонной сварки.
+                        </p>
                     </div>
                 </div>
 
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div class="service-card glass-panel p-1 group hover:border-neon/50 transition-all duration-300">
-                        <div class="bg-dark/40 h-full p-8 relative overflow-hidden">
-                            <div class="absolute top-0 right-0 p-4 opacity-50 font-mono text-xs text-neon">01</div>
-                            <div class="card-inner relative z-10">
-                                <div class="w-16 h-16 bg-gradient-to-br from-neon/20 to-transparent mb-6 flex items-center justify-center border border-white/5 group-hover:border-neon/50 transition-colors">
-                                    <i data-lucide="refresh-cw" class="w-8 h-8 text-white group-hover:text-neon transition-colors"></i>
+                <div class="grid md:grid-cols-3 gap-8 perspective-1000">
+                    <!-- Service 1 -->
+                    <div class="service-card glass-panel group p-1 h-full cursor-none">
+                        <div class="corner-border c-tl"></div>
+                        <div class="corner-border c-br"></div>
+                        <div class="bg-dark/80 h-full p-10 relative overflow-hidden transition-colors hover:bg-white/5">
+                            <div class="absolute top-0 right-0 p-6 opacity-30 font-display font-bold text-4xl text-transparent stroke-text" style="-webkit-text-stroke: 1px rgba(255,255,255,0.3);">01</div>
+                            <div class="relative z-10 h-full flex flex-col">
+                                <div class="w-16 h-16 bg-white/5 border border-white/10 mb-8 flex items-center justify-center group-hover:border-neon/50 group-hover:shadow-[0_0_30px_rgba(0,243,255,0.2)] transition-all duration-500">
+                                    <i data-lucide="refresh-cw" class="w-8 h-8 text-gray-400 group-hover:text-neon transition-colors"></i>
                                 </div>
-                                <h3 class="text-2xl font-bold font-display text-white mb-4 group-hover:translate-x-2 transition-transform">ПЕРЕОБУВКА</h3>
-                                <p class="text-gray-400 text-sm leading-relaxed font-mono">
-                                    Полный цикл: демонтаж, монтаж, 3D-балансировка. Использование адаптеров Haweka для максимальной точности.
+                                <h3 class="text-xl font-bold font-display text-white mb-4 tracking-wide group-hover:text-neon transition-colors">СЕЗОННАЯ СМЕНА</h3>
+                                <p class="text-gray-400 text-sm leading-relaxed font-sans mb-6 flex-grow">
+                                    Комплекс работ по демонтажу, монтажу и высокоточной 3D-балансировке колес. Использование адаптеров Haweka для идеальной центровки.
                                 </p>
+                                <div class="w-full h-px bg-white/10 group-hover:bg-neon/50 transition-colors"></div>
                             </div>
-                            <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-neon to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
                         </div>
                     </div>
 
-                    <div class="service-card glass-panel p-1 group hover:border-neonPurple/50 transition-all duration-300">
-                        <div class="bg-dark/40 h-full p-8 relative overflow-hidden">
-                            <div class="absolute top-0 right-0 p-4 opacity-50 font-mono text-xs text-neonPurple">02</div>
-                            <div class="card-inner relative z-10">
-                                <div class="w-16 h-16 bg-gradient-to-br from-neonPurple/20 to-transparent mb-6 flex items-center justify-center border border-white/5 group-hover:border-neonPurple/50 transition-colors">
-                                    <i data-lucide="wrench" class="w-8 h-8 text-white group-hover:text-neonPurple transition-colors"></i>
+                    <!-- Service 2 -->
+                    <div class="service-card glass-panel group p-1 h-full cursor-none">
+                        <div class="corner-border c-tl"></div>
+                        <div class="corner-border c-br"></div>
+                        <div class="bg-dark/80 h-full p-10 relative overflow-hidden transition-colors hover:bg-white/5">
+                            <div class="absolute top-0 right-0 p-6 opacity-30 font-display font-bold text-4xl text-transparent stroke-text" style="-webkit-text-stroke: 1px rgba(255,255,255,0.3);">02</div>
+                            <div class="relative z-10 h-full flex flex-col">
+                                <div class="w-16 h-16 bg-white/5 border border-white/10 mb-8 flex items-center justify-center group-hover:border-neonPurple/50 group-hover:shadow-[0_0_30px_rgba(188,19,254,0.2)] transition-all duration-500">
+                                    <i data-lucide="wrench" class="w-8 h-8 text-gray-400 group-hover:text-neonPurple transition-colors"></i>
                                 </div>
-                                <h3 class="text-2xl font-bold font-display text-white mb-4 group-hover:translate-x-2 transition-transform">РЕМОНТ ШИН</h3>
-                                <p class="text-gray-400 text-sm leading-relaxed font-mono">
-                                    Лечение грыж, боковых порезов. Горячая вулканизация. Пожизненная гарантия на место ремонта.
+                                <h3 class="text-xl font-bold font-display text-white mb-4 tracking-wide group-hover:text-neonPurple transition-colors">СЛОЖНЫЙ РЕМОНТ</h3>
+                                <p class="text-gray-400 text-sm leading-relaxed font-sans mb-6 flex-grow">
+                                    Устранение грыж, боковых порезов любой сложности методом горячей вулканизации. Предоставляем бессрочную гарантию на место ремонта.
                                 </p>
+                                <div class="w-full h-px bg-white/10 group-hover:bg-neonPurple/50 transition-colors"></div>
                             </div>
-                            <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-neonPurple to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
                         </div>
                     </div>
 
-                    <div class="service-card glass-panel p-1 group hover:border-neonGreen/50 transition-all duration-300">
-                        <div class="bg-dark/40 h-full p-8 relative overflow-hidden">
-                            <div class="absolute top-0 right-0 p-4 opacity-50 font-mono text-xs text-neonGreen">03</div>
-                            <div class="card-inner relative z-10">
-                                <div class="w-16 h-16 bg-gradient-to-br from-neonGreen/20 to-transparent mb-6 flex items-center justify-center border border-white/5 group-hover:border-neonGreen/50 transition-colors">
-                                    <i data-lucide="zap" class="w-8 h-8 text-white group-hover:text-neonGreen transition-colors"></i>
+                    <!-- Service 3 -->
+                    <div class="service-card glass-panel group p-1 h-full cursor-none">
+                        <div class="corner-border c-tl"></div>
+                        <div class="corner-border c-br"></div>
+                        <div class="bg-dark/80 h-full p-10 relative overflow-hidden transition-colors hover:bg-white/5">
+                            <div class="absolute top-0 right-0 p-6 opacity-30 font-display font-bold text-4xl text-transparent stroke-text" style="-webkit-text-stroke: 1px rgba(255,255,255,0.3);">03</div>
+                            <div class="relative z-10 h-full flex flex-col">
+                                <div class="w-16 h-16 bg-white/5 border border-white/10 mb-8 flex items-center justify-center group-hover:border-neonGreen/50 group-hover:shadow-[0_0_30px_rgba(10,255,10,0.2)] transition-all duration-500">
+                                    <i data-lucide="zap" class="w-8 h-8 text-gray-400 group-hover:text-neonGreen transition-colors"></i>
                                 </div>
-                                <h3 class="text-2xl font-bold font-display text-white mb-4 group-hover:translate-x-2 transition-transform">ПРАВКА & СВАРКА</h3>
-                                <p class="text-gray-400 text-sm leading-relaxed font-mono">
-                                    Восстановление геометрии литых и кованых дисков. Аргоновая сварка трещин. Покраска.
+                                <h3 class="text-xl font-bold font-display text-white mb-4 tracking-wide group-hover:text-neonGreen transition-colors">ПРАВКА И СВАРКА</h3>
+                                <p class="text-gray-400 text-sm leading-relaxed font-sans mb-6 flex-grow">
+                                    Восстановление геометрии литых и кованых дисков. Профессиональная аргоновая сварка трещин и наплавка недостающих фрагментов.
                                 </p>
+                                <div class="w-full h-px bg-white/10 group-hover:bg-neonGreen/50 transition-colors"></div>
                             </div>
-                            <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-neonGreen to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="calculator" class="py-24 relative overflow-hidden bg-black">
-            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_0%,_#1a1a1a_0%,_transparent_70%)]"></div>
-            <div class="absolute top-0 w-full h-px bg-gradient-to-r from-transparent via-neon to-transparent opacity-50"></div>
+        <section id="calculator" class="py-24 relative bg-black">
+            <div class="absolute top-0 w-full h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+            <div class="absolute bottom-0 w-full h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+            <div class="absolute inset-0 bg-grid-pattern opacity-10"></div>
 
             <div class="container mx-auto px-4 max-w-6xl relative z-10">
-                <div class="text-center mb-16">
-                    <span class="text-neon font-mono text-sm tracking-[0.5em] uppercase mb-4 block animate-pulse">Configuration // Terminal</span>
-                    <h2 class="text-4xl md:text-5xl font-display font-black text-white uppercase tracking-tight">Калькулятор</h2>
+                <div class="text-center mb-20" data-gsap="fade-up">
+                    <span class="text-neon font-mono text-[10px] tracking-[0.5em] uppercase mb-4 block">System Interface</span>
+                    <h2 class="text-4xl md:text-5xl font-display font-bold text-white uppercase tracking-tight">Калькулятор Стоимости</h2>
                 </div>
 
-                <div class="grid lg:grid-cols-12 gap-8">
-                    <div class="lg:col-span-7 glass-panel p-8 md:p-10 relative group">
-                        <div class="absolute -top-1 -left-1 w-4 h-4 border-t-2 border-l-2 border-neon opacity-50 group-hover:opacity-100 transition-opacity"></div>
-                        <div class="absolute -bottom-1 -right-1 w-4 h-4 border-b-2 border-r-2 border-neon opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                <div class="grid lg:grid-cols-12 gap-8 items-start">
+                    <div class="lg:col-span-7 glass-panel p-8 md:p-12 relative group" data-gsap="fade-right">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-neon via-transparent to-transparent opacity-50"></div>
                         
-                        <div class="space-y-8">
-                            <div class="relative">
-                                <label class="block text-xs font-mono text-neon mb-2 uppercase tracking-widest">Класс транспорта</label>
-                                <select id="car-type" class="w-full bg-dark border border-white/20 text-white p-4 font-mono focus:border-neon focus:ring-1 focus:ring-neon outline-none transition-all cursor-pointer hover:bg-white/5 appearance-none">
-                                    <option value="" disabled selected>/// SELECT VEHICLE TYPE</option>
-                                    <option value="Легковые машины">Легковые (Sedan/Hatch)</option>
+                        <div class="space-y-10">
+                            <div class="relative group/input">
+                                <label class="block text-[10px] font-mono text-gray-400 mb-3 uppercase tracking-widest group-hover/input:text-neon transition-colors">Класс автотранспорта</label>
+                                <select id="car-type" class="w-full bg-dark/50 border border-white/10 text-white p-5 font-mono text-sm focus:border-neon focus:shadow-[0_0_20px_rgba(0,243,255,0.1)] outline-none transition-all cursor-pointer hover:bg-white/5 appearance-none rounded-none">
+                                    <option value="" disabled selected>/// ВЫБЕРИТЕ ТИП КУЗОВА</option>
+                                    <option value="Легковые машины">Легковые (Sedan / Hatchback)</option>
                                     <option value="Паркетники / Кроссоверы">Кроссоверы / SUV</option>
-                                    <option value="Внедорожники / Джипы">Джипы / 4x4 / Big SUV</option>
+                                    <option value="Внедорожники / Джипы">Внедорожники / 4x4 / Jeep</option>
                                     <option value="Низкий профиль / RunFlat">RunFlat / Низкий профиль</option>
-                                    <option value="Газель">Коммерческий (Газель)</option>
+                                    <option value="Газель">Коммерческий транспорт (Газель)</option>
                                 </select>
-                                <i data-lucide="chevron-down" class="absolute right-4 top-[42px] text-neon pointer-events-none w-5 h-5"></i>
+                                <div class="absolute right-5 top-[52px] pointer-events-none text-neon"><i data-lucide="chevron-down" class="w-4 h-4"></i></div>
                             </div>
 
                             <div class="grid grid-cols-2 gap-6">
-                                <div class="relative">
-                                    <label class="block text-xs font-mono text-neon mb-2 uppercase tracking-widest">Диаметр (R)</label>
-                                    <select id="tire-size" class="w-full bg-dark border border-white/20 text-white p-4 font-mono focus:border-neon outline-none transition-all cursor-pointer hover:bg-white/5 appearance-none disabled:opacity-50 disabled:cursor-not-allowed">
+                                <div class="relative group/input">
+                                    <label class="block text-[10px] font-mono text-gray-400 mb-3 uppercase tracking-widest group-hover/input:text-neon transition-colors">Диаметр (R)</label>
+                                    <select id="tire-size" class="w-full bg-dark/50 border border-white/10 text-white p-5 font-mono text-sm focus:border-neon outline-none transition-all cursor-pointer hover:bg-white/5 appearance-none rounded-none disabled:opacity-50 disabled:cursor-not-allowed">
                                         <option value="">—</option>
                                     </select>
-                                    <i data-lucide="chevron-down" class="absolute right-4 top-[42px] text-neon pointer-events-none w-5 h-5"></i>
+                                    <div class="absolute right-5 top-[52px] pointer-events-none text-neon"><i data-lucide="chevron-down" class="w-4 h-4"></i></div>
                                 </div>
-                                <div>
-                                    <label class="block text-xs font-mono text-neon mb-2 uppercase tracking-widest">Количество</label>
-                                    <div class="flex border border-white/20 bg-dark">
-                                        <button onclick="changeWheels(-1)" class="w-12 hover:bg-neon hover:text-black text-white text-xl font-bold transition-colors flex items-center justify-center">-</button>
-                                        <input type="number" id="wheel-count" value="4" class="w-full bg-transparent text-center text-white font-mono font-bold p-4 outline-none appearance-none" readonly>
-                                        <button onclick="changeWheels(1)" class="w-12 hover:bg-neon hover:text-black text-white text-xl font-bold transition-colors flex items-center justify-center">+</button>
+                                <div class="group/input">
+                                    <label class="block text-[10px] font-mono text-gray-400 mb-3 uppercase tracking-widest group-hover/input:text-neon transition-colors">Количество колес</label>
+                                    <div class="flex border border-white/10 bg-dark/50">
+                                        <button onclick="changeWheels(-1)" class="w-14 hover:bg-neon hover:text-black text-white transition-all flex items-center justify-center border-r border-white/10"><i data-lucide="minus" class="w-4 h-4"></i></button>
+                                        <input type="number" id="wheel-count" value="4" class="w-full bg-transparent text-center text-white font-mono font-bold p-5 outline-none appearance-none" readonly>
+                                        <button onclick="changeWheels(1)" class="w-14 hover:bg-neon hover:text-black text-white transition-all flex items-center justify-center border-l border-white/10"><i data-lucide="plus" class="w-4 h-4"></i></button>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="pt-6 border-t border-white/10">
-                                <label class="block text-xs font-mono text-neon mb-4 uppercase tracking-widest">Операции</label>
+                            <div class="pt-8 border-t border-white/5">
+                                <label class="block text-[10px] font-mono text-gray-400 mb-6 uppercase tracking-widest">Перечень работ</label>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <label class="cursor-pointer relative group">
+                                    <label class="cursor-pointer relative group block">
                                         <input type="checkbox" class="sr-only custom-checkbox" id="check-snyatie" checked>
-                                        <div class="p-4 border border-white/10 bg-white/5 transition-all flex items-center justify-between group-hover:border-white/30">
-                                            <span class="text-sm text-gray-300 font-mono tracking-wide">Снятие/Установка</span>
-                                            <div class="w-5 h-5 border border-gray-600 rounded-sm flex items-center justify-center check-icon opacity-20 transition-all duration-300">
-                                                <i data-lucide="check" class="w-3 h-3 text-black"></i>
+                                        <div class="p-4 border border-white/10 bg-white/[0.02] transition-all flex items-center justify-between group-hover:border-white/30">
+                                            <span class="text-xs text-gray-300 font-mono tracking-wide">Снятие / Установка</span>
+                                            <div class="w-4 h-4 border border-gray-600 flex items-center justify-center check-icon transition-all duration-300">
+                                                <i data-lucide="check" class="w-3 h-3 text-transparent transition-colors"></i>
                                             </div>
                                         </div>
                                     </label>
-                                    <label class="cursor-pointer relative group">
+                                    <label class="cursor-pointer relative group block">
                                         <input type="checkbox" class="sr-only custom-checkbox" id="check-shinomontazh" checked>
-                                        <div class="p-4 border border-white/10 bg-white/5 transition-all flex items-center justify-between group-hover:border-white/30">
-                                            <span class="text-sm text-gray-300 font-mono tracking-wide">Шиномонтаж</span>
-                                            <div class="w-5 h-5 border border-gray-600 rounded-sm flex items-center justify-center check-icon opacity-20 transition-all duration-300">
-                                                <i data-lucide="check" class="w-3 h-3 text-black"></i>
+                                        <div class="p-4 border border-white/10 bg-white/[0.02] transition-all flex items-center justify-between group-hover:border-white/30">
+                                            <span class="text-xs text-gray-300 font-mono tracking-wide">Демонтаж / Монтаж</span>
+                                            <div class="w-4 h-4 border border-gray-600 flex items-center justify-center check-icon transition-all duration-300">
+                                                <i data-lucide="check" class="w-3 h-3 text-transparent transition-colors"></i>
                                             </div>
                                         </div>
                                     </label>
-                                    <label class="cursor-pointer relative group">
+                                    <label class="cursor-pointer relative group block">
                                         <input type="checkbox" class="sr-only custom-checkbox" id="check-balansirovka" checked>
-                                        <div class="p-4 border border-white/10 bg-white/5 transition-all flex items-center justify-between group-hover:border-white/30">
-                                            <span class="text-sm text-gray-300 font-mono tracking-wide">Балансировка</span>
-                                            <div class="w-5 h-5 border border-gray-600 rounded-sm flex items-center justify-center check-icon opacity-20 transition-all duration-300">
-                                                <i data-lucide="check" class="w-3 h-3 text-black"></i>
+                                        <div class="p-4 border border-white/10 bg-white/[0.02] transition-all flex items-center justify-between group-hover:border-white/30">
+                                            <span class="text-xs text-gray-300 font-mono tracking-wide">3D Балансировка</span>
+                                            <div class="w-4 h-4 border border-gray-600 flex items-center justify-center check-icon transition-all duration-300">
+                                                <i data-lucide="check" class="w-3 h-3 text-transparent transition-colors"></i>
                                             </div>
                                         </div>
                                     </label>
-                                    <label class="cursor-pointer relative group">
+                                    <label class="cursor-pointer relative group block">
                                         <input type="checkbox" class="sr-only custom-checkbox" id="check-moyka">
-                                        <div class="p-4 border border-white/10 bg-white/5 transition-all flex items-center justify-between group-hover:border-white/30">
-                                            <span class="text-sm text-gray-300 font-mono tracking-wide">Тех. Мойка</span>
-                                            <div class="w-5 h-5 border border-gray-600 rounded-sm flex items-center justify-center check-icon opacity-20 transition-all duration-300">
-                                                <i data-lucide="check" class="w-3 h-3 text-black"></i>
+                                        <div class="p-4 border border-white/10 bg-white/[0.02] transition-all flex items-center justify-between group-hover:border-white/30">
+                                            <span class="text-xs text-gray-300 font-mono tracking-wide">Техническая Мойка</span>
+                                            <div class="w-4 h-4 border border-gray-600 flex items-center justify-center check-icon transition-all duration-300">
+                                                <i data-lucide="check" class="w-3 h-3 text-transparent transition-colors"></i>
                                             </div>
                                         </div>
                                     </label>
@@ -386,48 +422,47 @@
                         </div>
                     </div>
 
-                    <div class="lg:col-span-5 flex flex-col gap-4">
-                        <div class="bg-panel border border-white/10 p-8 flex-grow relative overflow-hidden flex flex-col justify-between">
-                            <div class="absolute inset-0 bg-[linear-gradient(rgba(0,243,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,243,255,0.03)_1px,transparent_1px)] bg-[size:10px_10px]"></div>
+                    <div class="lg:col-span-5 flex flex-col gap-4" data-gsap="fade-left">
+                        <div class="bg-panel border border-white/10 p-10 flex-grow relative overflow-hidden flex flex-col justify-between min-h-[400px]">
+                            <div class="absolute inset-0 bg-radial-glow opacity-20 animate-pulse"></div>
+                            <div class="absolute top-0 right-0 w-20 h-20 border-t border-r border-neon opacity-50"></div>
+                            <div class="absolute bottom-0 left-0 w-20 h-20 border-b border-l border-neon opacity-50"></div>
                             
                             <div class="relative z-10">
-                                <div class="flex items-center gap-2 mb-6 border-b border-white/10 pb-4">
-                                    <div class="w-2 h-2 bg-neon animate-pulse"></div>
-                                    <h3 class="text-white font-bold font-display tracking-widest">СВОДКА ДАННЫХ</h3>
+                                <div class="flex items-center gap-3 mb-8 border-b border-white/10 pb-6">
+                                    <div class="w-1.5 h-1.5 bg-neon shadow-[0_0_10px_#00f3ff]"></div>
+                                    <h3 class="text-white font-bold font-display tracking-[0.2em] text-sm">СВОДКА РАСЧЕТА</h3>
                                 </div>
                                 
-                                <div class="space-y-4 font-mono text-sm">
-                                    <div class="flex justify-between items-center text-gray-400">
-                                        <span>VEHICLE:</span>
-                                        <span id="res-car" class="text-neon text-right truncate max-w-[150px]">-</span>
+                                <div class="space-y-6 font-mono text-xs">
+                                    <div class="flex justify-between items-center text-gray-500 border-b border-white/5 pb-2">
+                                        <span class="tracking-widest">АВТОМОБИЛЬ</span>
+                                        <span id="res-car" class="text-white text-right truncate max-w-[150px] font-bold">-</span>
                                     </div>
-                                    <div class="flex justify-between items-center text-gray-400">
-                                        <span>SIZE:</span>
-                                        <span id="res-size" class="text-neon">-</span>
+                                    <div class="flex justify-between items-center text-gray-500 border-b border-white/5 pb-2">
+                                        <span class="tracking-widest">ДИАМЕТР</span>
+                                        <span id="res-size" class="text-white font-bold">-</span>
                                     </div>
-                                    <div class="flex justify-between items-center text-gray-400">
-                                        <span>COUNT:</span>
-                                        <span id="res-count" class="text-neon">4</span>
-                                    </div>
-                                    <div class="flex justify-between items-center text-gray-400">
-                                        <span>STATUS:</span>
-                                        <span class="text-neonGreen animate-pulse">ACTIVE</span>
+                                    <div class="flex justify-between items-center text-gray-500 border-b border-white/5 pb-2">
+                                        <span class="tracking-widest">КОЛИЧЕСТВО</span>
+                                        <span id="res-count" class="text-white font-bold">4</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="relative z-10 mt-10">
-                                <div class="text-[0.6rem] uppercase tracking-widest text-gray-500 mb-1">Estimated Cost</div>
+                            <div class="relative z-10 mt-12">
+                                <div class="text-[10px] uppercase tracking-[0.3em] text-gray-500 mb-2">Итоговая стоимость</div>
                                 <div class="flex items-baseline gap-2 text-neon" id="price-container">
-                                    <span class="text-2xl">₽</span>
-                                    <span id="final-price" class="text-6xl md:text-7xl font-mono font-bold tracking-tighter tabular-nums">0</span>
+                                    <span class="text-3xl font-light text-gray-400">RUB</span>
+                                    <span id="final-price" class="text-7xl font-mono font-bold tracking-tighter tabular-nums text-white" style="text-shadow: 0 0 30px rgba(0,243,255,0.3);">0</span>
                                 </div>
+                                <p class="text-[10px] text-gray-600 mt-4">* Стоимость является предварительной и может корректироваться в зависимости от состояния крепежных элементов.</p>
                             </div>
                         </div>
 
-                        <a href="#" id="whatsapp-btn" class="btn-cyber block w-full bg-green-600 hover:bg-green-500 text-black font-display font-bold py-6 text-center tracking-widest transition-all duration-300 text-xl relative overflow-hidden group">
+                        <a href="#" id="whatsapp-btn" class="btn-cyber block w-full bg-white text-black hover:bg-neon transition-colors duration-300 font-display font-bold py-6 text-center tracking-widest text-sm relative overflow-hidden group">
                             <span class="relative z-10 flex items-center justify-center gap-3">
-                                ЗАПИСАТЬСЯ <i data-lucide="arrow-right" class="w-6 h-6 group-hover:translate-x-2 transition-transform"></i>
+                                ЗАПИСАТЬСЯ ОНЛАЙН <i data-lucide="arrow-up-right" class="w-5 h-5 group-hover:rotate-45 transition-transform duration-300"></i>
                             </span>
                         </a>
                     </div>
@@ -435,98 +470,112 @@
             </div>
         </section>
 
-        <section id="contacts" class="py-20 bg-dark relative border-t border-white/5">
-            <div class="container mx-auto px-6">
-                <div class="grid lg:grid-cols-2 gap-12 items-center">
-                    <div>
-                        <div class="flex items-center gap-2 mb-8">
-                             <span class="w-10 h-[2px] bg-neon"></span>
-                             <h2 class="text-4xl font-display font-bold text-white">КОНТАКТЫ</h2>
+        <section id="contacts" class="py-24 bg-dark relative border-t border-white/5 overflow-hidden">
+            <div class="absolute right-0 bottom-0 w-[600px] h-[600px] bg-neon/5 rounded-full blur-[120px] pointer-events-none"></div>
+            
+            <div class="container mx-auto px-6 relative z-10">
+                <div class="grid lg:grid-cols-2 gap-16 items-center">
+                    <div data-gsap="fade-right">
+                        <div class="flex items-center gap-3 mb-10">
+                             <div class="w-8 h-[1px] bg-neon"></div>
+                             <span class="text-neon font-mono text-xs tracking-[0.3em]">LOCATION DATA</span>
                         </div>
-                        <div class="space-y-8 text-lg text-gray-400 font-mono">
-                            <div class="flex items-start gap-6 group">
-                                <div class="w-12 h-12 bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-neon transition-colors">
-                                    <i data-lucide="map-pin" class="text-neon"></i>
+                        <h2 class="text-4xl font-display font-bold text-white mb-12">КОНТАКТНАЯ<br>ИНФОРМАЦИЯ</h2>
+                        
+                        <div class="space-y-10">
+                            <div class="flex gap-8 group">
+                                <div class="w-12 h-12 bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-neon transition-colors shrink-0">
+                                    <i data-lucide="map-pin" class="text-gray-400 group-hover:text-neon transition-colors w-5 h-5"></i>
                                 </div>
                                 <div>
-                                    <p class="text-xs text-gray-600 uppercase mb-1">Location</p>
-                                    <p class="text-white group-hover:text-neon transition-colors">Тульская обл., Алексинский р-н,<br>с. Поповка, ул. Полевая, 2</p>
+                                    <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-2 font-mono">Адрес центра</p>
+                                    <p class="text-white text-lg font-sans leading-relaxed group-hover:text-neon transition-colors">Тульская обл., Алексинский р-н,<br>с. Поповка, ул. Полевая, 2</p>
                                 </div>
                             </div>
-                            <div class="flex items-start gap-6 group">
-                                <div class="w-12 h-12 bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-neon transition-colors">
-                                    <i data-lucide="clock" class="text-neon"></i>
+                            
+                            <div class="flex gap-8 group">
+                                <div class="w-12 h-12 bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-neon transition-colors shrink-0">
+                                    <i data-lucide="clock" class="text-gray-400 group-hover:text-neon transition-colors w-5 h-5"></i>
                                 </div>
                                 <div>
-                                    <p class="text-xs text-gray-600 uppercase mb-1">Working Hours</p>
-                                    <p class="text-white group-hover:text-neon transition-colors">Ежедневно: 07:00 — 22:30</p>
+                                    <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-2 font-mono">Режим работы</p>
+                                    <p class="text-white text-lg font-sans leading-relaxed group-hover:text-neon transition-colors">Ежедневно<br>07:00 — 22:30</p>
                                 </div>
                             </div>
-                            <div class="flex items-start gap-6 group">
-                                <div class="w-12 h-12 bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-neon transition-colors">
-                                    <i data-lucide="phone" class="text-neon"></i>
+                            
+                            <div class="flex gap-8 group">
+                                <div class="w-12 h-12 bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-neon transition-colors shrink-0">
+                                    <i data-lucide="phone" class="text-gray-400 group-hover:text-neon transition-colors w-5 h-5"></i>
                                 </div>
                                 <div>
-                                    <p class="text-xs text-gray-600 uppercase mb-1">Direct Line</p>
-                                    <a href="tel:+79029093879" class="text-white hover:text-neon transition-colors font-bold text-2xl tracking-wider">+7 (902) 909-38-79</a>
+                                    <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-2 font-mono">Прямая связь</p>
+                                    <a href="tel:+79029093879" class="text-white text-2xl font-display font-bold hover:text-neon transition-colors tracking-wide">+7 (902) 909-38-79</a>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="flex gap-4 mt-10">
-                            <a href="https://wa.me/79027513964" class="w-14 h-14 bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#25D366] hover:text-white hover:border-transparent transition-all duration-300 hover:-translate-y-1">
-                                <i data-lucide="message-circle"></i>
+                        <div class="flex gap-4 mt-12">
+                            <a href="https://wa.me/79027513964" class="px-8 py-4 bg-white/5 border border-white/10 hover:bg-[#25D366] hover:text-white hover:border-[#25D366] transition-all duration-300 flex items-center gap-3 group text-xs font-bold tracking-widest uppercase text-gray-400">
+                                <i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp
                             </a>
-                            <a href="https://t.me/+79027513964" class="w-14 h-14 bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#0088cc] hover:text-white hover:border-transparent transition-all duration-300 hover:-translate-y-1">
-                                <i data-lucide="send"></i>
+                            <a href="https://t.me/+79027513964" class="px-8 py-4 bg-white/5 border border-white/10 hover:bg-[#0088cc] hover:text-white hover:border-[#0088cc] transition-all duration-300 flex items-center gap-3 group text-xs font-bold tracking-widest uppercase text-gray-400">
+                                <i data-lucide="send" class="w-4 h-4"></i> Telegram
                             </a>
                         </div>
                     </div>
                     
-                    <div class="h-[450px] w-full bg-gray-800 relative group overflow-hidden border border-white/10">
-                        <div class="absolute inset-0 z-10 pointer-events-none border-[20px] border-dark/30 group-hover:border-dark/0 transition-all duration-500"></div>
-                        <div class="absolute inset-0 z-10 pointer-events-none bg-neon/5 mix-blend-overlay"></div>
-                        <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3Acc7ed495ed6ddacaeab60edcc7b1c414c118b74ccdccf0d0943bf3296302b918&amp;source=constructor" width="100%" height="100%" frameborder="0" style="filter: grayscale(100%) invert(90%) contrast(1.1) brightness(0.9);"></iframe>
+                    <div class="relative group h-[500px]" data-gsap="fade-left">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-neon to-purple-600 rounded-lg opacity-20 group-hover:opacity-100 blur transition duration-1000"></div>
+                        <div class="relative h-full w-full bg-dark border border-white/10 overflow-hidden rounded-sm">
+                            <div class="absolute inset-0 z-10 pointer-events-none mix-blend-overlay bg-blue-900/20"></div>
+                            <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3Acc7ed495ed6ddacaeab60edcc7b1c414c118b74ccdccf0d0943bf3296302b918&amp;source=constructor" width="100%" height="100%" frameborder="0" style="filter: grayscale(100%) invert(90%) contrast(1.2) brightness(0.8);"></iframe>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="border-t border-white/10 bg-black py-12 relative overflow-hidden">
-        <div class="absolute inset-0 bg-grid-pattern opacity-10"></div>
-        <div class="container mx-auto px-6 text-center relative z-10">
-            <div class="flex items-center justify-center gap-2 mb-6 opacity-50">
-                 <svg viewBox="0 0 100 100" class="w-8 h-8 stroke-white fill-none stroke-[2]">
+    <footer class="border-t border-white/10 bg-black py-16 relative overflow-hidden">
+        <div class="absolute inset-0 bg-grid-pattern opacity-5"></div>
+        <div class="container mx-auto px-6 relative z-10 flex flex-col items-center">
+            <div class="w-12 h-12 mb-8 relative flex items-center justify-center">
+                 <svg viewBox="0 0 100 100" class="w-8 h-8 stroke-white fill-none stroke-[2] opacity-50">
                     <path d="M50 5 L93 25 L93 75 L50 95 L7 75 L7 25 Z"/>
                 </svg>
             </div>
-            <p class="text-gray-500 text-sm mb-6 font-mono">&copy; 2025 ШИНАДОМ. SYSTEM INTEGRITY VERIFIED.</p>
-            <div class="flex justify-center gap-8 text-xs uppercase tracking-widest font-bold">
-                <button onclick="openModal('offer')" class="text-gray-600 hover:text-neon transition-colors relative group">
+            
+            <p class="text-gray-600 text-xs mb-8 font-mono text-center tracking-widest">&copy; 2025 ШИНАДОМ<br>PROFESSIONAL TIRE SERVICE SOLUTIONS</p>
+            
+            <div class="flex flex-wrap justify-center gap-10 text-[10px] uppercase tracking-[0.2em] font-bold">
+                <button onclick="openModal('offer')" class="text-gray-500 hover:text-neon transition-colors relative group py-2">
                     Публичная Оферта
-                    <span class="absolute -bottom-1 left-0 w-0 h-px bg-neon transition-all group-hover:w-full"></span>
+                    <span class="absolute bottom-0 left-0 w-0 h-px bg-neon transition-all duration-300 group-hover:w-full"></span>
                 </button>
-                <button onclick="openModal('policy')" class="text-gray-600 hover:text-neon transition-colors relative group">
-                    Политика
-                    <span class="absolute -bottom-1 left-0 w-0 h-px bg-neon transition-all group-hover:w-full"></span>
+                <button onclick="openModal('policy')" class="text-gray-500 hover:text-neon transition-colors relative group py-2">
+                    Политика Конфиденциальности
+                    <span class="absolute bottom-0 left-0 w-0 h-px bg-neon transition-all duration-300 group-hover:w-full"></span>
                 </button>
             </div>
         </div>
     </footer>
 
-    <div id="modal-overlay" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md hidden flex items-center justify-center opacity-0 transition-opacity duration-300">
-        <div id="modal-content" class="glass-panel p-8 max-w-2xl w-full mx-4 shadow-[0_0_50px_rgba(0,243,255,0.1)] transform scale-95 transition-transform duration-300 relative max-h-[80vh] overflow-y-auto custom-scrollbar">
-            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-500 hover:text-neon transition-colors"><i data-lucide="x"></i></button>
-            <h3 id="modal-title" class="text-2xl font-display font-bold text-neon mb-6 tracking-widest"></h3>
-            <div id="modal-body" class="text-gray-300 space-y-4 font-mono text-sm leading-relaxed text-justify"></div>
-            <div class="mt-8 pt-4 border-t border-white/10 text-center">
-                <button onclick="closeModal()" class="px-8 py-2 border border-neon text-neon hover:bg-neon hover:text-black transition-colors font-bold tracking-widest uppercase text-xs">Acknowledge</button>
+    <div id="modal-overlay" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md hidden flex items-center justify-center opacity-0 transition-opacity duration-500">
+        <div id="modal-content" class="glass-panel p-8 md:p-12 max-w-3xl w-full mx-4 shadow-[0_0_50px_rgba(0,0,0,0.8)] transform scale-95 transition-all duration-500 relative max-h-[85vh] overflow-y-auto custom-scrollbar border-neon/20">
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-neon to-transparent"></div>
+            <button onclick="closeModal()" class="absolute top-6 right-6 text-gray-500 hover:text-white transition-colors group">
+                <div class="group-hover:rotate-90 transition-transform duration-300"><i data-lucide="x"></i></div>
+            </button>
+            <h3 id="modal-title" class="text-2xl font-display font-bold text-white mb-8 tracking-widest border-l-4 border-neon pl-4"></h3>
+            <div id="modal-body" class="text-gray-400 space-y-6 font-sans text-sm leading-7 text-justify pr-2"></div>
+            <div class="mt-10 pt-6 border-t border-white/5 flex justify-end">
+                <button onclick="closeModal()" class="px-10 py-3 bg-white/5 text-white hover:bg-neon hover:text-black transition-colors font-mono font-bold tracking-widest uppercase text-xs border border-white/10">Закрыть</button>
             </div>
         </div>
     </div>
 
     <script>
+        // Data Configuration
         const priceData = {
             "Легковые машины": { "R14": 580, "R15": 640, "R16": 700, "R17": 800, "R18": 800, "R19": 900, "R20": 1020 },
             "Паркетники / Кроссоверы": { "R15": 740, "R16": 740, "R17": 800, "R18": 880, "R19": 940, "R20": 1020, "R21": 1100 },
@@ -535,11 +584,11 @@
             "Газель": { "R16": 1100 }
         };
 
+        // DOM Elements
         const carSelect = document.getElementById('car-type');
         const sizeSelect = document.getElementById('tire-size');
         const countInput = document.getElementById('wheel-count');
         const finalPriceEl = document.getElementById('final-price');
-        
         const checks = {
             snyatie: document.getElementById('check-snyatie'),
             shinomontazh: document.getElementById('check-shinomontazh'),
@@ -547,11 +596,15 @@
             moyka: document.getElementById('check-moyka')
         };
 
+        // Initialize Icons
         lucide.createIcons();
-        const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+
+        // Smooth Scroll
+        const lenis = new Lenis({ duration: 1.5, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
         function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
         requestAnimationFrame(raf);
 
+        // Calculator Logic
         carSelect.addEventListener('change', () => {
             const type = carSelect.value;
             sizeSelect.innerHTML = '<option value="">—</option>';
@@ -594,145 +647,112 @@
             }
 
             const basePerWheel = priceData[type][size];
-            
             let total = 0;
+            
             if(checks.snyatie.checked) total += (basePerWheel * 0.25);
             if(checks.shinomontazh.checked) total += (basePerWheel * 0.25);
             if(checks.balansirovka.checked) total += (basePerWheel * 0.50);
             
             total = total * count;
-            
             if(checks.moyka.checked) total += 100 * count;
-
+            
             total = Math.ceil(total / 10) * 10;
             animatePrice(total);
 
-            const msg = `Заявка с сайта:\nАвто: ${type}\nРадиус: ${size}\nКолес: ${count}\nЦена: ~${total}р`;
+            const msg = `Здравствуйте! Интересует запись.\nАвто: ${type}\nРазмер: ${size}\nКол-во: ${count}\nРасчетная стоимость: ~${total}р`;
             document.getElementById('whatsapp-btn').href = `https://wa.me/79027513964?text=${encodeURIComponent(msg)}`;
         }
 
         function animatePrice(target) {
-            const el = document.getElementById('price-container');
-            el.classList.add('scale-110', 'text-white');
-            setTimeout(() => el.classList.remove('scale-110', 'text-white'), 200);
-
             gsap.to({ val: currentPrice }, {
                 val: target,
-                duration: 0.8,
-                ease: "power3.out",
+                duration: 1,
+                ease: "power4.out",
                 onUpdate: function() {
-                    finalPriceEl.innerText = Math.floor(this.targets()[0].val);
+                    finalPriceEl.innerText = Math.floor(this.targets()[0].val).toLocaleString();
                 },
                 onComplete: () => currentPrice = target
             });
         }
 
+        // GSAP Animations
         gsap.registerPlugin(ScrollTrigger, TextPlugin);
 
-        const tl = gsap.timeline();
+        // Preloader
         const loadBar = document.getElementById('loader-progress');
         const loadText = document.getElementById('loader-text');
-        
         let progress = 0;
-        const interval = setInterval(() => {
-            progress += Math.random() * 5;
+        
+        const loaderInterval = setInterval(() => {
+            progress += Math.random() * 8;
             if(progress > 100) progress = 100;
             loadBar.style.width = progress + '%';
-            loadText.innerText = `INITIALIZING... ${Math.floor(progress)}%`;
+            
             if(progress === 100) {
-                clearInterval(interval);
-                setTimeout(revealSite, 500);
+                clearInterval(loaderInterval);
+                loadText.innerText = "SYSTEM READY";
+                setTimeout(revealSite, 400);
             }
-        }, 30);
+        }, 50);
 
         function revealSite() {
-            gsap.to('#preloader', {
-                yPercent: -100,
-                duration: 0.8,
-                ease: "power4.inOut"
-            });
-            
-            gsap.to("#hero-subtitle", {
-                opacity: 1,
-                duration: 2,
-                delay: 0.5,
-                text: { value: "Переобуваем реальность. Быстро. Четко. Без компромиссов.", delimiter: "" },
-                ease: "none"
-            });
-
-            gsap.to("#hero-buttons", { opacity: 1, y: 0, duration: 1, delay: 2, ease: "power2.out" });
+            const tl = gsap.timeline();
+            tl.to('#preloader', { yPercent: -100, duration: 1, ease: "power4.inOut" })
+              .to('.reveal-text span', { y: 0, duration: 1.2, stagger: 0.1, ease: "power3.out" }, "-=0.5")
+              .to("#hero-subtitle", { opacity: 1, y: 0, duration: 1, ease: "power2.out" }, "-=0.8")
+              .to("#hero-buttons", { opacity: 1, y: 0, duration: 1, ease: "power2.out" }, "-=0.6");
         }
 
-        gsap.utils.toArray('.service-card').forEach((card, i) => {
-            gsap.from(card, {
-                scrollTrigger: { trigger: card, start: "top 90%" },
-                y: 100, opacity: 0, duration: 0.8, delay: i * 0.15, ease: "back.out(1.7)"
+        // Scroll Triggers
+        gsap.utils.toArray('[data-gsap="fade-up"]').forEach(el => {
+            gsap.from(el, {
+                scrollTrigger: { trigger: el, start: "top 85%" },
+                y: 50, opacity: 0, duration: 1, ease: "power3.out"
             });
-            
+        });
+
+        gsap.utils.toArray('[data-gsap="fade-right"]').forEach(el => {
+            gsap.from(el, {
+                scrollTrigger: { trigger: el, start: "top 80%" },
+                x: -50, opacity: 0, duration: 1, ease: "power3.out"
+            });
+        });
+
+        gsap.utils.toArray('[data-gsap="fade-left"]').forEach(el => {
+            gsap.from(el, {
+                scrollTrigger: { trigger: el, start: "top 80%" },
+                x: 50, opacity: 0, duration: 1, ease: "power3.out"
+            });
+        });
+
+        // 3D Card Effect
+        document.querySelectorAll('.service-card').forEach(card => {
             card.addEventListener('mousemove', (e) => {
                 const rect = card.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
-                const rotateX = (y - centerY) / 20;
-                const rotateY = (centerX - x) / 20;
+                const rotateX = ((y - centerY) / centerY) * -10;
+                const rotateY = ((x - centerX) / centerX) * 10;
                 
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
             });
             
             card.addEventListener('mouseleave', () => {
-                card.style.transform = `perspective(1000px) rotateX(0) rotateY(0)`;
+                card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)`;
             });
         });
 
-        gsap.from("#calculator .glass-panel", {
-            scrollTrigger: { trigger: "#calculator", start: "top 80%" },
-            x: -50, opacity: 0, duration: 1
-        });
-        
-        gsap.from("#calculator .bg-panel", {
-            scrollTrigger: { trigger: "#calculator", start: "top 80%" },
-            x: 50, opacity: 0, duration: 1, delay: 0.2
-        });
-
-        gsap.to("#scroll-progress", {
-            width: "100%",
-            ease: "none",
-            scrollTrigger: { trigger: "body", start: "top top", end: "bottom bottom", scrub: 0 }
-        });
-
-        const header = document.getElementById('header');
-        const headerBg = document.getElementById('header-bg');
-        window.addEventListener('scroll', () => {
-            if(window.scrollY > 50) {
-                headerBg.classList.remove('translate-y-[-100%]');
-                header.classList.add('border-white/10');
-                header.classList.remove('border-transparent');
-            } else {
-                headerBg.classList.add('translate-y-[-100%]');
-                header.classList.remove('border-white/10');
-                header.classList.add('border-transparent');
-            }
-        });
-
+        // Marquee
         const marqueeContent = document.getElementById('marquee-content');
         const marqueeClone = marqueeContent.cloneNode(true);
-        document.querySelector('.bg-neon > div').appendChild(marqueeClone);
+        marqueeContent.parentElement.appendChild(marqueeClone);
         
-        gsap.to("#marquee-content", {
-            x: "-100%",
-            repeat: -1,
-            duration: 20,
-            ease: "linear"
-        });
-        gsap.to(marqueeClone, {
-            x: "-100%",
-            repeat: -1,
-            duration: 20,
-            ease: "linear"
-        });
+        gsap.to("#marquee-content", { x: "-100%", repeat: -1, duration: 25, ease: "linear" });
+        gsap.to(marqueeClone, { x: "-100%", repeat: -1, duration: 25, ease: "linear" });
 
+        // Particles
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let w, h, particles = [];
@@ -741,14 +761,15 @@
         window.addEventListener('resize', resize);
         resize();
 
-        class P {
+        class Particle {
             constructor() { this.reset(); }
             reset() {
                 this.x = Math.random() * w;
                 this.y = Math.random() * h;
-                this.vx = (Math.random() - 0.5) * 1; 
-                this.vy = (Math.random() - 0.5) * 1;
-                this.size = Math.random() * 1.5;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2;
+                this.alpha = Math.random() * 0.5 + 0.1;
             }
             update() {
                 this.x += this.vx; this.y += this.vy;
@@ -756,12 +777,12 @@
                 if(this.y < 0 || this.y > h) this.vy *= -1;
             }
             draw() {
-                ctx.fillStyle = '#00f3ff';
-                ctx.globalAlpha = 0.4;
+                ctx.fillStyle = `rgba(0, 243, 255, ${this.alpha})`;
                 ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill();
             }
         }
-        for(let i=0; i<80; i++) particles.push(new P());
+        
+        for(let i=0; i<100; i++) particles.push(new Particle());
 
         function loop() {
             ctx.clearRect(0,0,w,h);
@@ -771,9 +792,9 @@
                     const dx = particles[j].x - p.x;
                     const dy = particles[j].y - p.y;
                     const d = Math.sqrt(dx*dx+dy*dy);
-                    if(d < 100) {
+                    if(d < 120) {
                         ctx.beginPath();
-                        ctx.strokeStyle = `rgba(0, 243, 255, ${0.15 - d/100})`;
+                        ctx.strokeStyle = `rgba(0, 243, 255, ${0.1 * (1 - d/120)})`;
                         ctx.lineWidth = 0.5;
                         ctx.moveTo(p.x, p.y); ctx.lineTo(particles[j].x, particles[j].y);
                         ctx.stroke();
@@ -784,6 +805,7 @@
         }
         loop();
 
+        // Custom Cursor
         const cursor = document.getElementById('custom-cursor');
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
@@ -795,36 +817,42 @@
             el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
         });
 
-        const scrambleElements = document.querySelectorAll('.hover-scramble');
-        const cyrillic = 'АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ';
-        
-        scrambleElements.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                let iteration = 0;
-                const originalText = el.dataset.value;
-                const interval = setInterval(() => {
-                    el.innerText = originalText.split('')
-                        .map((letter, index) => {
-                            if(index < iteration) return originalText[index];
-                            return cyrillic[Math.floor(Math.random() * 30)];
-                        }).join('');
-                    
-                    if(iteration >= originalText.length) clearInterval(interval);
-                    iteration += 1/3;
-                }, 30);
-            });
+        // Header Scroll
+        const header = document.getElementById('header');
+        const headerBg = document.getElementById('header-bg');
+        window.addEventListener('scroll', () => {
+            if(window.scrollY > 50) {
+                headerBg.classList.remove('translate-y-[-100%]');
+                header.classList.add('border-white/10');
+            } else {
+                headerBg.classList.add('translate-y-[-100%]');
+                header.classList.remove('border-white/10');
+            }
+            
+            const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            document.getElementById('scroll-progress').style.width = scrolled + '%';
         });
 
+        // Mobile Menu
         const menuToggle = document.getElementById('menu-toggle');
         const menuClose = document.getElementById('menu-close');
         const menu = document.getElementById('mobile-menu');
         const mLinks = document.querySelectorAll('.mobile-link');
 
-        menuToggle.addEventListener('click', () => menu.classList.remove('translate-x-full'));
-        const closeMenu = () => menu.classList.add('translate-x-full');
+        menuToggle.addEventListener('click', () => {
+            menu.classList.remove('translate-x-full');
+            setTimeout(() => menu.classList.add('is-visible'), 300);
+        });
+        
+        const closeMenu = () => {
+            menu.classList.remove('is-visible');
+            setTimeout(() => menu.classList.add('translate-x-full'), 300);
+        };
+        
         menuClose.addEventListener('click', closeMenu);
         mLinks.forEach(l => l.addEventListener('click', closeMenu));
 
+        // Modals
         const overlay = document.getElementById('modal-overlay');
         const mContent = document.getElementById('modal-content');
         const mTitle = document.getElementById('modal-title');
@@ -832,17 +860,19 @@
 
         const legalText = {
             offer: `
-                <p class="mb-2 text-neon">// PROTOCOL 1: СТАТУС</p>
-                <p class="mb-4">Используя данный интерфейс, вы подтверждаете, что ваш автомобиль нуждается в профессиональном вмешательстве. Мы не несем ответственности за то, что после нашего сервиса вы откажетесь обслуживаться в других местах.</p>
-                <p class="mb-2 text-neon">// PROTOCOL 2: ГАРАНТИИ</p>
-                <p class="mb-4">Наши мастера сертифицированы по высшим стандартам. Балансировка производится с точностью до грамма. Если руль бьет после нас — проверьте подвеску или геометрию дисков.</p>
-                <p class="text-xs text-gray-500 mt-4 border-t border-white/10 pt-2">* Данный сайт является витриной услуг. Окончательная стоимость может варьироваться в зависимости от сложности работ (ржавые болты, кривые диски).</p>
+                <p class="mb-4 text-neon font-mono text-xs">// ОФИЦИАЛЬНЫЙ ДОКУМЕНТ</p>
+                <p class="mb-4">1. Настоящая публичная оферта представляет собой официальное предложение ИП/Сервиса «ШИНАДОМ» оказать услуги шиномонтажа, балансировки и ремонта колес любому физическому или юридическому лицу.</p>
+                <p class="mb-4">2. Акцептом оферты считается передача транспортного средства сотрудникам сервиса для проведения работ.</p>
+                <p class="mb-4">3. Исполнитель обязуется выполнить работы с надлежащим качеством, соответствующим техническим нормам. Клиент обязуется оплатить работы согласно утвержденному прейскуранту.</p>
+                <p class="mb-4">4. Гарантийные обязательства распространяются на балансировку (3 дня) и герметичность ремонтных зон (весь срок службы шины при соблюдении условий эксплуатации).</p>
+                <p class="mb-4">5. Сервис не несет ответственности за скрытые дефекты дисков и шин, выявленные в процессе работы, а также за срыв резьбовых соединений, имеющих следы коррозии или усталости металла.</p>
             `,
             policy: `
-                <p class="mb-2 text-neon">// DATA_PROTECTION_LAYER</p>
-                <p class="mb-4">1. Мы собираем только технические данные вашего авто для точного расчета.</p>
-                <p class="mb-4">2. Ваши контактные данные используются исключительно для связи по заказу. Никакого спама, только по делу.</p>
-                <p class="mb-4">3. Данный сайт использует локальные хранилища для улучшения UX (мы запоминаем, что вы выбрали в калькуляторе, чтобы вы не мучались снова).</p>
+                <p class="mb-4 text-neon font-mono text-xs">// ЗАЩИТА ДАННЫХ</p>
+                <p class="mb-4">1. Политика конфиденциальности действует в отношении всей информации, которую сайт «ШИНАДОМ» может получить о пользователе во время использования сайта.</p>
+                <p class="mb-4">2. Мы собираем только те технические данные, которые необходимы для предварительного расчета стоимости услуг (тип автомобиля, радиус колес).</p>
+                <p class="mb-4">3. Сайт использует технологию «cookies» для сохранения выбранных пользователем параметров калькулятора с целью улучшения пользовательского опыта.</p>
+                <p class="mb-4">4. Контактные данные (при переходе в мессенджеры) используются исключительно для обратной связи по вопросам записи и обслуживания. Передача данных третьим лицам исключена.</p>
             `
         };
 
@@ -861,7 +891,7 @@
             overlay.classList.add('opacity-0');
             mContent.classList.remove('scale-100');
             mContent.classList.add('scale-95');
-            setTimeout(() => overlay.classList.add('hidden'), 300);
+            setTimeout(() => overlay.classList.add('hidden'), 500);
         };
         
         overlay.addEventListener('click', (e) => {
