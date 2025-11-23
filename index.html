@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SHINADOM | AUTO FACTS</title>
+    <title>ШинаДом - Шиномонтаж мечты</title>
+    <meta name="description" content="Профессиональный шиномонтаж ШинаДом. Полный комплекс услуг: правка дисков, сварка аргоном, дошиповка, сезонная переобувка. Тула, Алексин, Поповка. Качественный ремонт шин и дисков.">
+    <meta name="keywords" content="шиномонтаж Тула, шиномонтаж Алексин, шиномонтаж Поповка, правка дисков цена, сварка аргоном, ремонт боковых порезов, дошиповка зимних шин, сезонная переобувка, ремонт колес, вулканизация, балансировка колес, снятие установка колес, ремонт грыжи, заплатка кордовая, услуги шиномонтажа, автосервис Тула, ШинаДом, Shinadom, качественный шиномонтаж, шинный сервис, правка литых дисков, правка штампованных дисков, ремонт проколов, накачка шин, хранение шин, замена резины, шиномонтаж рядом, круглосуточный шиномонтаж запись, балансировка цена, ремонт дисков аргоном, горячая вулканизация, шиномонтаж недорого, автосервис Алексин цены, переобуть машину, сколько стоит шиномонтаж, ремонт бескамерных шин, жгут на колесо, грибок для шины, обслуживание авто, колесный сервис">
     <link rel="icon" href="https://i.postimg.cc/BZPV0C6F/1763922392546.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,7 +40,9 @@
     <style>
         :root { --cursor-size: 20px; }
         body { background-color: #050505; color: #f2f2f2; overflow-x: hidden; cursor: none; }
-        ::-webkit-scrollbar { width: 0px; background: transparent; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
         .noise-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; opacity: 0.05; background-image: var(--tw-bg-noise); }
         
         #cursor {
@@ -46,6 +50,7 @@
             background: #fff; border-radius: 50%; pointer-events: none; z-index: 99999;
             transform: translate(-50%, -50%); mix-blend-mode: exclusion;
             transition: width 0.3s cubic-bezier(0.19, 1, 0.22, 1), height 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+            will-change: transform, width, height;
         }
         #cursor.hovered { width: 80px; height: 80px; background: #fff; mix-blend-mode: exclusion; }
 
@@ -54,555 +59,608 @@
             body { cursor: auto !important; }
         }
 
-        .char { display: inline-block; transform-origin: 50% 100%; }
-        .toggle-checkbox:checked { right: 0; border-color: #fff; }
-        .toggle-checkbox:checked + .toggle-label { background-color: #fff; }
-        .toggle-checkbox:checked + .toggle-label:before { transform: translateX(100%); background-color: #000; }
+        .char { display: inline-block; transform-origin: 50% 100%; will-change: transform, opacity; }
         
         .glass-panel { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
         select option { background: #000; color: #fff; }
         
-        /* Стили для карточки фактов */
         .fact-card {
             box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.15);
             transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            width: 100%;
+            max-width: 100%;
+            will-change: transform;
         }
         .fact-card:hover { transform: translateY(-5px); }
+        
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #888; border-radius: 2px; }
+
+        .switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 34px; border: 1px solid #444; }
+        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: #3b82f6; border-color: #3b82f6; }
+        input:checked + .slider:before { transform: translateX(22px); }
+
+        .price-row { display: flex; justify-content: space-between; align-items: baseline; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .price-row:last-child { border-bottom: none; }
+        .price-name { font-family: 'Inter', sans-serif; color: #ccc; font-size: 0.95rem; }
+        .price-val { font-family: 'Unbounded', sans-serif; font-weight: 700; color: #fff; white-space: nowrap; margin-left: 1rem; }
+        
+        .fact-text-container { min-height: 200px; }
+        @media (min-width: 768px) { .fact-text-container { min-height: 240px; } }
     </style>
 </head>
 <body class="antialiased selection:bg-white selection:text-black">
 
-    <div id="preloader" class="fixed inset-0 z-[100] bg-light flex items-center justify-center px-4">
-        <div class="overflow-hidden">
-            <h1 class="text-dark font-display font-black text-5xl md:text-9xl tracking-tighter translate-y-[100%]" id="preloader-text">SHINADOM</h1>
-        </div>
+<div id="preloader" class="fixed inset-0 z-[100] bg-light flex items-center justify-center px-4">
+    <div class="overflow-hidden">
+        <h1 class="text-dark font-display font-black text-5xl md:text-9xl tracking-tighter translate-y-[100%]" id="preloader-text">SHINADOM</h1>
     </div>
+</div>
 
-    <div id="cursor"></div>
-    <div class="noise-overlay"></div>
+<div id="cursor"></div>
+<div class="noise-overlay"></div>
 
-    <header class="fixed top-0 w-full z-50 mix-blend-difference text-white py-6 px-6 md:px-12 flex justify-between items-center transform transition-all duration-500" id="main-header">
-        <a href="https://шинадом.рф" class="font-display font-bold text-xl tracking-tighter z-50 magnetic-wrap" data-strength="20">SHINADOM®</a>
-        
-        <nav class="hidden md:flex gap-12 font-sans text-xs font-medium uppercase tracking-widest">
-            <a href="#facts-section" class="hover:text-accent transition-colors magnetic-wrap">Факты</a>
-            <a href="#calculator" class="hover:text-accent transition-colors magnetic-wrap">Расчет</a>
-            <a href="#contacts" class="hover:text-accent transition-colors magnetic-wrap">Контакты</a>
-        </nav>
+<!-- Изменена шапка: добавлен фон, блюр и бордер -->
+<header class="fixed top-0 w-full z-50 bg-black/40 backdrop-blur-md border-b border-white/10 text-white py-4 px-6 md:px-12 flex justify-between items-center transform transition-all duration-500" id="main-header">
+    <a href="https://шинадом.рф" class="font-display font-bold text-xl tracking-tighter z-50 magnetic-wrap" data-strength="20">SHINADOM</a>
+    
+    <nav class="hidden md:flex gap-12 font-sans text-xs font-medium uppercase tracking-widest">
+        <a href="#facts-section" class="hover:text-accent transition-colors magnetic-wrap">Факты</a>
+        <a href="#calculator" class="hover:text-accent transition-colors magnetic-wrap">Расчет</a>
+        <a href="#prices" class="hover:text-accent transition-colors magnetic-wrap">Услуги</a>
+        <a href="#contacts" class="hover:text-accent transition-colors magnetic-wrap">Контакты</a>
+    </nav>
 
-        <button id="menu-btn" class="md:hidden z-50 magnetic-wrap">
-            <i data-lucide="menu" class="w-8 h-8"></i>
-        </button>
-    </header>
+    <button id="menu-btn" class="md:hidden z-50 magnetic-wrap p-2">
+        <i data-lucide="menu" class="w-8 h-8"></i>
+    </button>
+</header>
 
-    <div id="mobile-menu" class="fixed inset-0 bg-white z-40 flex flex-col justify-center px-6 translate-y-full transition-transform duration-700 ease-[0.76,0,0.24,1]">
-        <div class="flex flex-col gap-4">
-            <a href="#facts-section" class="text-dark font-display font-black text-5xl menu-link overflow-hidden"><span class="block translate-y-full">ФАКТЫ</span></a>
-            <a href="#calculator" class="text-dark font-display font-black text-5xl menu-link overflow-hidden"><span class="block translate-y-full">РАСЧЕТ</span></a>
-            <a href="#contacts" class="text-dark font-display font-black text-5xl menu-link overflow-hidden"><span class="block translate-y-full">КОНТАКТЫ</span></a>
-        </div>
+<div id="mobile-menu" class="fixed inset-0 bg-white z-40 flex flex-col justify-center px-6 translate-y-full transition-transform duration-700 ease-[0.76,0,0.24,1]">
+    <div class="flex flex-col gap-2">
+        <a href="#facts-section" class="text-dark font-display font-black text-[12vw] leading-none menu-link overflow-hidden"><span class="block translate-y-full">ФАКТЫ</span></a>
+        <a href="#calculator" class="text-dark font-display font-black text-[12vw] leading-none menu-link overflow-hidden"><span class="block translate-y-full">РАСЧЕТ</span></a>
+        <a href="#prices" class="text-dark font-display font-black text-[12vw] leading-none menu-link overflow-hidden"><span class="block translate-y-full">УСЛУГИ</span></a>
+        <a href="#contacts" class="text-dark font-display font-black text-[12vw] leading-none menu-link overflow-hidden"><span class="block translate-y-full">КОНТАКТЫ</span></a>
     </div>
+</div>
 
-    <main>
-        <!-- Hero section cleared as requested, keeping bg for atmosphere -->
-        <section class="relative h-[60vh] w-full flex flex-col justify-center items-center px-4 overflow-hidden perspective-1000" id="hero">
-            <div class="absolute inset-0 z-0 opacity-60">
-                <img src="https://i.postimg.cc/mr4dNxyT/Picsart-25-11-23-21-36-32-574.png" class="w-full h-full object-cover scale-110" data-speed="0.2">
+<main>
+    <section class="relative h-[60vh] w-full flex flex-col justify-center items-center px-4 overflow-hidden perspective-1000" id="hero">
+        <div class="absolute inset-0 z-0 opacity-60">
+            <img src="https://i.postimg.cc/mr4dNxyT/Picsart-25-11-23-21-36-32-574.png" class="w-full h-full object-cover scale-110" data-speed="0.2" alt="Шиномонтаж фон">
+        </div>
+        <div class="relative z-10 text-center mix-blend-difference text-white">
+            <p class="font-sans text-xs uppercase tracking-[0.3em] mb-4 opacity-80">Welcome to</p>
+            <h2 class="font-display font-bold text-3xl md:text-5xl tracking-widest">SHINADOM</h2>
+        </div>
+    </section>
+
+    <section id="facts-section" class="bg-light text-dark relative rounded-t-[40px] -mt-20 z-30 min-h-[80vh] flex items-center overflow-hidden">
+        <div class="container mx-auto px-4 md:px-6 py-24">
+            <div class="flex flex-col items-center justify-center text-center mb-12">
+                <h2 class="font-display font-black text-4xl md:text-7xl tracking-tighter uppercase mb-6 split-text">АВТО ФАКТЫ</h2>
+                <p class="max-w-md font-sans text-gray-500 text-sm md:text-base">Уникальная коллекция интересных фактов из мира автомобилей.</p>
             </div>
-            
-            <div class="relative z-10 text-center mix-blend-difference text-white">
-                <p class="font-sans text-xs uppercase tracking-[0.3em] mb-4 opacity-80">Welcome to</p>
-                <h2 class="font-display font-bold text-3xl md:text-5xl tracking-widest">SHINADOM®</h2>
-            </div>
-        </section>
 
-        <!-- Services Removed. Replaced with Facts Section -->
-        <section id="facts-section" class="bg-light text-dark relative rounded-t-[40px] -mt-20 z-30 min-h-[80vh] flex items-center">
-            <div class="container mx-auto px-6 py-24">
-                <div class="flex flex-col items-center justify-center text-center mb-16">
-                    <h2 class="font-display font-black text-5xl md:text-7xl tracking-tighter uppercase mb-6 split-text" data-animation="slide-up">АВТО ФАКТЫ</h2>
-                    <p class="max-w-md font-sans text-gray-500">Уникальная коллекция интересных фактов из мира автомобилей. Нажми кнопку, чтобы узнать новое.</p>
-                </div>
+            <div class="max-w-4xl mx-auto w-full relative px-2 md:px-0">
+                <div class="fact-card bg-white border border-gray-200 rounded-3xl p-6 md:p-16 text-center relative overflow-hidden group w-full">
+                    <div class="absolute top-0 right-0 p-4 md:p-8 opacity-10 pointer-events-none">
+                        <i data-lucide="quote" class="w-16 h-16 md:w-24 md:h-24 rotate-180"></i>
+                    </div>
 
-                <div class="max-w-4xl mx-auto relative">
-                    <!-- Fact Card -->
-                    <div class="fact-card bg-white border border-gray-200 rounded-3xl p-8 md:p-16 text-center relative overflow-hidden group">
+                    <div class="relative z-10 w-full">
+                        <span id="fact-counter" class="inline-block py-1 px-3 border border-black/10 rounded-full text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-6 md:mb-8">Факт #1</span>
                         
-                        <div class="absolute top-0 right-0 p-8 opacity-10">
-                            <i data-lucide="quote" class="w-24 h-24 rotate-180"></i>
+                        <div class="fact-text-container flex items-center justify-center w-full overflow-hidden">
+                            <h3 id="fact-text" class="font-display font-bold text-xl md:text-3xl lg:text-4xl leading-tight break-words w-full px-2">
+                                Нажмите кнопку ниже, чтобы получить случайный факт об автомобилях.
+                            </h3>
                         </div>
 
-                        <div class="relative z-10">
-                            <span id="fact-counter" class="inline-block py-1 px-3 border border-black/10 rounded-full text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-8">Факт #1</span>
-                            
-                            <div class="min-h-[120px] flex items-center justify-center">
-                                <h3 id="fact-text" class="font-display font-bold text-2xl md:text-4xl leading-tight">
-                                    Нажмите кнопку ниже, чтобы получить случайный факт об автомобилях.
-                                </h3>
-                            </div>
-
-                            <div class="mt-12 flex justify-center">
-                                <button onclick="generateFact()" class="group relative px-8 py-4 bg-dark text-white rounded-xl overflow-hidden magnetic-wrap">
-                                    <div class="absolute inset-0 w-full h-full bg-accent translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
-                                    <span class="relative flex items-center gap-3 font-display font-bold text-sm uppercase tracking-widest">
-                                        <i data-lucide="refresh-cw" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-500"></i>
-                                        Следующий факт
-                                    </span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="text-center mt-8">
-                         <p class="text-[10px] uppercase tracking-widest text-gray-400">Факты не повторяются, пока не закончатся</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="calculator" class="py-40 px-4 bg-[#080808] relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none"></div>
-            <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-white/5 rounded-full blur-[100px] pointer-events-none"></div>
-
-            <div class="container mx-auto max-w-7xl relative z-10">
-                <div class="text-center mb-20" data-animation="fade-up">
-                    <h2 class="font-display font-bold text-5xl md:text-7xl mb-4">КАЛЬКУЛЯТОР</h2>
-                    <p class="text-gray-400 font-sans tracking-widest uppercase text-xs">Точный расчет стоимости услуг</p>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-                    <div class="lg:col-span-7 space-y-6">
-                        <div class="glass-panel p-8 md:p-10 rounded-3xl space-y-8 shadow-2xl transition-transform hover:scale-[1.01] duration-500">
-                            <div class="relative">
-                                <label class="block text-[10px] uppercase tracking-[0.2em] text-accent mb-3 font-bold">Тип автомобиля</label>
-                                <div class="relative group">
-                                    <select id="car-type" class="w-full bg-[#0a0a0a] border border-white/10 rounded-xl py-5 px-6 text-lg md:text-xl font-display focus:outline-none focus:border-accent transition-all appearance-none cursor-pointer hover:bg-[#111]">
-                                        <option value="" class="text-gray-500">/// Выберите класс авто</option>
-                                        <option value="Легковые машины">Легковой (Sedan)</option>
-                                        <option value="Паркетники / Кроссоверы">Кроссовер (SUV)</option>
-                                        <option value="Внедорожники / Джипы">Джип (4x4)</option>
-                                        <option value="Низкий профиль / RunFlat">RunFlat / Low Profile</option>
-                                        <option value="Газель">Коммерческий (Газель)</option>
-                                    </select>
-                                    <div class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none group-hover:translate-y-[calc(-50%+5px)] transition-transform">
-                                        <i data-lucide="chevron-down" class="text-white/50"></i>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div class="relative">
-                                    <label class="block text-[10px] uppercase tracking-[0.2em] text-accent mb-3 font-bold">Радиус (R)</label>
-                                    <div class="relative group">
-                                        <select id="tire-size" class="w-full bg-[#0a0a0a] border border-white/10 rounded-xl py-5 px-6 text-xl font-display focus:outline-none focus:border-accent transition-all appearance-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#111]">
-                                            <option value="">—</option>
-                                        </select>
-                                        <div class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none">
-                                            <i data-lucide="circle-dashed" class="text-white/50 w-5 h-5"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="relative">
-                                    <label class="block text-[10px] uppercase tracking-[0.2em] text-accent mb-3 font-bold">Колеса</label>
-                                    <div class="flex items-center justify-between bg-[#0a0a0a] border border-white/10 rounded-xl p-2">
-                                        <button onclick="changeWheels(-1)" class="w-12 h-12 flex items-center justify-center rounded-lg hover:bg-white/10 active:scale-90 transition-all text-2xl font-light text-white">-</button>
-                                        <span id="wheel-display" class="text-2xl font-display font-bold w-12 text-center">4</span>
-                                        <button onclick="changeWheels(1)" class="w-12 h-12 flex items-center justify-center rounded-lg hover:bg-white/10 active:scale-90 transition-all text-2xl font-light text-white">+</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="glass-panel p-8 rounded-3xl space-y-6">
-                            <label class="flex items-center justify-between group cursor-pointer p-2 hover:bg-white/5 rounded-xl transition-colors">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
-                                        <i data-lucide="wrench" class="w-5 h-5"></i>
-                                    </div>
-                                    <span class="font-sans text-sm md:text-base font-medium">Комплекс (Монтаж, Балансировка)</span>
-                                </div>
-                                <div class="relative inline-block w-14 h-8 align-middle select-none">
-                                    <input type="checkbox" id="check-complex" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-not-allowed transition-all duration-300 top-1 left-1" checked disabled>
-                                    <label for="check-complex" class="toggle-label block overflow-hidden h-8 rounded-full bg-gray-800 cursor-not-allowed transition-colors duration-300"></label>
-                                </div>
-                            </label>
-                            
-                            <label class="flex items-center justify-between group cursor-pointer p-2 hover:bg-white/5 rounded-xl transition-colors">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
-                                        <i data-lucide="droplets" class="w-5 h-5"></i>
-                                    </div>
-                                    <span class="font-sans text-sm md:text-base font-medium">Техническая Мойка</span>
-                                </div>
-                                <div class="relative inline-block w-14 h-8 align-middle select-none">
-                                    <input type="checkbox" id="check-moyka" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-[#333] border-4 border-[#555] appearance-none cursor-pointer transition-all duration-300 top-1 left-1 checked:bg-white checked:border-white">
-                                    <label for="check-moyka" class="toggle-label block overflow-hidden h-8 rounded-full bg-gray-800 cursor-pointer transition-colors duration-300"></label>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="lg:col-span-5">
-                        <div class="glass-panel h-full rounded-3xl p-8 md:p-12 flex flex-col justify-between relative overflow-hidden group">
-                            <div class="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                            
-                            <div class="flex justify-between items-start relative z-10">
-                                <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-accent/20 border border-accent/20">
-                                    <div class="w-2 h-2 rounded-full bg-accent animate-pulse"></div>
-                                    <span class="text-[10px] uppercase tracking-widest text-accent font-bold">Итого</span>
-                                </div>
-                                <i data-lucide="calculator" class="text-white/20 w-8 h-8"></i>
-                            </div>
-                            
-                            <div class="text-right my-12 relative z-10">
-                                <div class="flex justify-end items-baseline gap-2">
-                                    <div class="text-7xl md:text-8xl lg:text-9xl font-display font-bold tracking-tighter leading-none transition-all duration-300" id="final-price">0</div>
-                                    <div class="text-xl text-white/40 font-display">₽</div>
-                                </div>
-                                <div class="h-px w-full bg-gradient-to-r from-transparent via-white/20 to-transparent mt-8"></div>
-                            </div>
-
-                            <a href="#" id="whatsapp-btn" class="relative z-10 w-full py-6 bg-white text-black font-display font-bold text-center uppercase tracking-[0.2em] rounded-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 overflow-hidden group/btn shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)]">
-                                <span class="relative z-10 group-hover/btn:hidden">Записаться</span>
-                                <div class="absolute inset-0 flex items-center justify-center translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300 bg-[#25D366] text-white z-20 gap-2">
-                                    <i data-lucide="message-circle" class="w-5 h-5"></i>
-                                    <span>WhatsApp</span>
-                                </div>
-                            </a>
+                        <div class="mt-8 md:mt-12 flex justify-center">
+                            <button onclick="generateFact()" class="group relative px-6 md:px-8 py-3 md:py-4 bg-dark text-white rounded-xl overflow-hidden magnetic-wrap active:scale-95 transition-transform">
+                                <div class="absolute inset-0 w-full h-full bg-accent translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
+                                <span class="relative flex items-center gap-3 font-display font-bold text-xs md:text-sm uppercase tracking-widest">
+                                    <i data-lucide="refresh-cw" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-500"></i>
+                                    Следующий факт
+                                </span>
+                            </button>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <section id="contacts" class="min-h-screen bg-white text-black flex flex-col justify-between relative z-10 pt-24 rounded-t-[40px] -mt-10">
-            <div class="container mx-auto px-6 flex-grow">
-                <h2 class="font-display font-black text-[12vw] leading-[0.8] tracking-tighter mb-12 border-b-4 border-black pb-8 split-text" data-animation="slide-up">
-                    СВЯЗЬ
-                </h2>
-                
-                <div class="grid md:grid-cols-2 gap-16">
-                    <div class="space-y-12">
-                        <div class="group cursor-default" data-animation="fade-in">
-                            <p class="text-xs uppercase tracking-widest text-gray-400 mb-4 font-bold">Адрес</p>
-                            <p class="font-display text-3xl md:text-4xl font-bold transition-all duration-300 group-hover:pl-4 border-l-4 border-transparent group-hover:border-black">
-                                Тульская обл., с. Поповка<br>ул. Полевая, 2
-                            </p>
-                        </div>
-                        <div class="group" data-animation="fade-in" style="transition-delay: 0.1s">
-                            <p class="text-xs uppercase tracking-widest text-gray-400 mb-4 font-bold">Телефон</p>
-                            <a href="tel:+79029093879" class="font-display text-3xl md:text-5xl font-bold block hover:opacity-50 transition-opacity">
-                                +7 (902) 909-38-79
-                            </a>
-                        </div>
-                        <div class="flex gap-6 pt-8" data-animation="fade-in" style="transition-delay: 0.2s">
-                            <a href="https://wa.me/79027513964" class="w-20 h-20 rounded-full border-2 border-black flex items-center justify-center hover:bg-black hover:text-white transition-all duration-500 magnetic-wrap group">
-                                <i data-lucide="message-circle" class="w-8 h-8 group-hover:scale-125 transition-transform"></i>
-                            </a>
-                            <a href="https://t.me/+79027513964" class="w-20 h-20 rounded-full border-2 border-black flex items-center justify-center hover:bg-black hover:text-white transition-all duration-500 magnetic-wrap group">
-                                <i data-lucide="send" class="w-8 h-8 group-hover:scale-125 group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform"></i>
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="h-[500px] w-full relative overflow-hidden rounded-3xl shadow-2xl" data-animation="scale-up">
-                        <div class="absolute inset-0 bg-gray-200 animate-pulse z-0"></div>
-                        <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3Acc7ed495ed6ddacaeab60edcc7b1c414c118b74ccdccf0d0943bf3296302b918&amp;source=constructor" width="100%" height="100%" frameborder="0" class="relative z-10 grayscale hover:grayscale-0 transition-all duration-1000"></iframe>
-                    </div>
-                </div>
-            </div>
-
-            <footer class="container mx-auto px-6 py-12 flex flex-col md:flex-row justify-between items-end gap-6 border-t border-black/10 mt-24">
-                <div class="flex flex-col gap-2">
-                    <p class="font-display font-bold text-xl tracking-tighter">SHINADOM®</p>
-                    <p class="font-sans text-xs text-gray-400">© 2025 ALL RIGHTS RESERVED.</p>
-                </div>
-                <div class="flex gap-8 font-sans text-xs font-bold uppercase tracking-widest">
-                    <button onclick="openModal('offer')" class="hover:text-accent transition-colors relative after:content-[''] after:absolute after:w-full after:h-px after:bg-black after:bottom-0 after:left-0 after:scale-x-0 hover:after:scale-x-100 after:transition-transform">Оферта</button>
-                    <button onclick="openModal('policy')" class="hover:text-accent transition-colors relative after:content-[''] after:absolute after:w-full after:h-px after:bg-black after:bottom-0 after:left-0 after:scale-x-0 hover:after:scale-x-100 after:transition-transform">Политика</button>
-                </div>
-            </footer>
-        </section>
-    </main>
-
-    <div id="modal" class="fixed inset-0 z-[100] bg-black/80 hidden opacity-0 transition-opacity duration-500 backdrop-blur-sm">
-        <div class="absolute right-0 top-0 h-full w-full md:w-[600px] bg-white p-12 translate-x-full transition-transform duration-700 ease-expo shadow-[-50px_0_100px_rgba(0,0,0,0.5)]" id="modal-panel">
-            <button onclick="closeModal()" class="absolute top-8 right-8 p-4 hover:bg-black hover:text-white transition-all duration-300 rounded-full group">
-                <i data-lucide="x" class="w-6 h-6 group-hover:rotate-90 transition-transform duration-300"></i>
-            </button>
-            <div class="mt-16">
-                <h3 id="modal-title" class="font-display font-bold text-4xl mb-10 uppercase tracking-tight"></h3>
-                <div id="modal-body" class="font-sans text-base leading-relaxed space-y-6 text-gray-600 h-[70vh] overflow-y-auto pr-6 custom-scrollbar"></div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <script>
-        // --- 40 Random Car Facts ---
-        const carFacts = [
-            "Самый первый штраф за превышение скорости был выписан в 1902 году за езду со скоростью 72 км/ч.",
-            "В современном автомобиле около 30 000 уникальных деталей.",
-            "Volkswagen владеет такими брендами, как Bentley, Bugatti, Lamborghini, Audi, Ducati и Porsche.",
-            "Круиз-контроль был изобретен слепым человеком по имени Ральф Титор в 1945 году.",
-            "В Лос-Анджелесе автомобилей больше, чем людей.",
-            "Первый в мире светофор был установлен в Лондоне в 1868 году и работал на газе.",
-            "Запах новой машины состоит из более чем 50 летучих органических соединений.",
-            "Дворники были изобретены женщиной Мэри Андерсон в 1903 году, заметившей трудности водителей в снег.",
-            "Самый быстрый серийный автомобиль в мире — Bugatti Chiron Super Sport 300+ (490 км/ч).",
-            "95% времени жизни среднестатистический автомобиль просто стоит на парковке.",
-            "В Туркменистане запрещены автомобили черного цвета, так как белый считается цветом удачи.",
-            "Rolls-Royce утверждает, что 75% всех автомобилей, когда-либо произведенных ими, до сих пор на ходу.",
-            "Звук закрытия двери автомобиля специально разрабатывается инженерами для ощущения надежности.",
-            "В среднем водитель тратит около 4 лет своей жизни, находясь за рулем.",
-            "Ferrari производит максимум 14 автомобилей в день, в то время как Toyota — около 13 000.",
-            "Первые автомобильные номера появились в Париже в 1893 году.",
-            "Подушки безопасности раскрываются со скоростью около 300 км/ч.",
-            "Рекорд пробега автомобиля принадлежит Volvo P1800 1966 года — более 5 миллионов километров.",
-            "Самая дорогая серийная деталь автомобиля — это, как правило, гибридная трансмиссия.",
-            "ABS (антиблокировочная система) была впервые разработана для самолетов.",
-            "В 19 веке электромобили были популярнее бензиновых.",
-            "Каждый год в мире производится более 60 миллионов новых автомобилей.",
-            "В ЮАР на автомобили BMW можно легально установить огнеметы для защиты от угона.",
-            "Шины черные из-за добавления углерода, который значительно увеличивает их прочность.",
-            "Ford Model T 1908 года был первым доступным массовым автомобилем.",
-            "Трехточечный ремень безопасности был изобретен Volvo, и они открыли патент для всех ради безопасности.",
-            "Самая длинная пробка в истории была в Китае и длилась 12 дней.",
-            "В двигателе Формулы-1 около 80 000 деталей.",
-            "Самый маленький серийный автомобиль — Peel P50, в него с трудом помещается один человек.",
-            "Tesla Model S была первым электромобилем, ставшим бестселлером в Норвегии.",
-            "В среднем автомобиль состоит из перерабатываемых материалов на 80%.",
-            "Логотип Toyota содержит в себе все буквы названия компании (T-O-Y-O-T-A).",
-            "В Швейцарии запрещено мыть машину в воскресенье.",
-            "Первое автомобильное радио было изобретено в 1929 году.",
-            "Mercedes-Benz первым внедрил тормоза на всех четырех колесах в 1924 году.",
-            "Больше всего автомобилей на душу населения в Сан-Марино.",
-            "В Гонконге самое большое количество автомобилей Rolls-Royce на душу населения.",
-            "Средний автомобиль выбрасывает в воздух свой вес в виде углерода за год.",
-            "F1 болид создает такую прижимную силу, что теоретически мог бы ехать по потолку.",
-            "В Бразилии большинство новых автомобилей могут ездить на чистом этаноле из сахарного тростника."
-        ];
+    <section id="calculator" class="py-24 md:py-40 px-4 bg-[#080808] relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-white/5 rounded-full blur-[100px] pointer-events-none"></div>
 
-        let availableFacts = [...Array(40).keys()]; // Массив индексов [0, 1, ..., 39]
+        <div class="container mx-auto max-w-7xl relative z-10">
+            <div class="text-center mb-16" data-animation="fade-up">
+                <h2 class="font-display font-bold text-4xl md:text-7xl mb-4">КАЛЬКУЛЯТОР</h2>
+                <p class="text-gray-400 font-sans tracking-widest uppercase text-[10px] md:text-xs">Точный расчет стоимости услуг</p>
+            </div>
 
-        function generateFact() {
-            if (availableFacts.length === 0) {
-                // Если факты кончились, заполняем массив заново
-                availableFacts = [...Array(40).keys()];
-            }
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12">
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="glass-panel p-6 md:p-10 rounded-3xl space-y-8 shadow-2xl">
+                        <div class="relative">
+                            <label class="block text-[10px] uppercase tracking-[0.2em] text-accent mb-3 font-bold">Тип автомобиля</label>
+                            <div class="relative group">
+                                <select id="car-type" class="w-full bg-[#0a0a0a] border border-white/10 rounded-xl py-4 md:py-5 px-6 text-base md:text-xl font-display focus:outline-none focus:border-accent transition-all appearance-none cursor-pointer hover:bg-[#111]">
+                                    <option value="" class="text-gray-500">/// Выберите класс авто</option>
+                                    <option value="Легковые машины">Легковой (Sedan)</option>
+                                    <option value="Паркетники / Кроссоверы">Кроссовер (SUV)</option>
+                                    <option value="Внедорожники / Джипы">Джип (4x4)</option>
+                                    <option value="Низкий профиль / RunFlat">RunFlat / Low Profile</option>
+                                    <option value="Газель">Коммерческий (Газель)</option>
+                                </select>
+                                <div class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none">
+                                    <i data-lucide="chevron-down" class="text-white/50"></i>
+                                </div>
+                            </div>
+                        </div>
 
-            // Выбираем случайный индекс из доступных
-            const randomIndex = Math.floor(Math.random() * availableFacts.length);
-            const factIndex = availableFacts[randomIndex];
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="relative">
+                                <label class="block text-[10px] uppercase tracking-[0.2em] text-accent mb-3 font-bold">Радиус (R)</label>
+                                <div class="relative group">
+                                    <select id="tire-size" class="w-full bg-[#0a0a0a] border border-white/10 rounded-xl py-4 md:py-5 px-6 text-xl font-display focus:outline-none focus:border-accent transition-all appearance-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#111]">
+                                        <option value="">—</option>
+                                    </select>
+                                    <div class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none">
+                                        <i data-lucide="circle-dashed" class="text-white/50 w-5 h-5"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <label class="block text-[10px] uppercase tracking-[0.2em] text-accent mb-3 font-bold">Колеса</label>
+                                <div class="flex items-center justify-between bg-[#0a0a0a] border border-white/10 rounded-xl p-2 h-[66px] md:h-[74px]">
+                                    <button onclick="changeWheels(-1)" class="w-12 h-full flex items-center justify-center rounded-lg hover:bg-white/10 active:scale-90 transition-all text-2xl font-light text-white">-</button>
+                                    <span id="wheel-display" class="text-2xl font-display font-bold w-12 text-center">4</span>
+                                    <button onclick="changeWheels(1)" class="w-12 h-full flex items-center justify-center rounded-lg hover:bg-white/10 active:scale-90 transition-all text-2xl font-light text-white">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-6 md:p-8 rounded-3xl space-y-4">
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-accent/20 text-accent flex items-center justify-center">
+                                    <i data-lucide="check" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <span class="font-sans text-sm md:text-base font-bold block">Полный комплекс услуг</span>
+                                    <span class="text-[10px] text-gray-400 uppercase tracking-wider">Снятие, монтаж, балансировка</span>
+                                </div>
+                            </div>
+                            <span class="text-[10px] bg-accent text-white px-2 py-1 rounded font-bold uppercase tracking-widest">Включено</span>
+                        </div>
+                        
+                        <label class="flex items-center justify-between group cursor-pointer p-2 hover:bg-white/5 rounded-xl transition-colors">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                                    <i data-lucide="droplets" class="w-5 h-5"></i>
+                                </div>
+                                <span class="font-sans text-sm md:text-base font-medium">Техническая Мойка</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="check-moyka" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5">
+                    <div class="glass-panel h-full rounded-3xl p-8 md:p-12 flex flex-col justify-between relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                        
+                        <div class="flex justify-between items-start relative z-10">
+                            <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-accent/20 border border-accent/20">
+                                <div class="w-2 h-2 rounded-full bg-accent animate-pulse"></div>
+                                <span class="text-[10px] uppercase tracking-widest text-accent font-bold">Итого</span>
+                            </div>
+                            <i data-lucide="calculator" class="text-white/20 w-8 h-8"></i>
+                        </div>
+                        
+                        <div class="flex flex-col items-center justify-center my-8 md:my-12 relative z-10 flex-grow">
+                            <div class="flex justify-center items-baseline gap-2 w-full">
+                                <div class="text-6xl md:text-7xl lg:text-8xl font-display font-bold tracking-tighter leading-none transition-all duration-300 text-center" id="final-price">0</div>
+                                <div class="text-xl md:text-2xl text-white/40 font-display">₽</div>
+                            </div>
+                            <div class="h-px w-3/4 bg-gradient-to-r from-transparent via-white/20 to-transparent mt-8"></div>
+                        </div>
+
+                        <!-- Исправленная кнопка с фиксированной высотой -->
+                        <a href="#" id="whatsapp-btn" class="relative z-10 w-full h-[80px] flex items-center justify-center bg-white text-black font-display font-bold text-center uppercase tracking-[0.2em] rounded-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 overflow-hidden group/btn shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)]">
+                            <span class="relative z-10 group-hover/btn:hidden">Записаться</span>
+                            <div class="absolute inset-0 flex items-center justify-center translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300 bg-[#25D366] text-white z-20 gap-2">
+                                <i data-lucide="message-circle" class="w-5 h-5"></i>
+                                <span>WhatsApp</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="prices" class="py-24 bg-[#0a0a0a] border-t border-white/5">
+        <div class="container mx-auto px-6 max-w-7xl">
+            <div class="text-center mb-16">
+                <h2 class="font-display font-bold text-3xl md:text-5xl mb-4">УСЛУГИ И МАТЕРИАЛЫ</h2>
+                <div class="w-24 h-1 bg-accent mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-colors duration-500">
+                    <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mb-6 text-accent">
+                        <i data-lucide="layers" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-xl mb-6 uppercase tracking-wide">Ремонт и Материалы</h3>
+                    <div class="space-y-2">
+                        <div class="price-row"><span class="price-name">Дошиповка зимних шин</span><span class="price-val">20 ₽ / шт</span></div>
+                        <div class="price-row"><span class="price-name">Установка вентиля</span><span class="price-val">60 ₽</span></div>
+                        <div class="price-row"><span class="price-name">Установка жгута</span><span class="price-val">260 ₽</span></div>
+                        <div class="price-row"><span class="price-name">Зачистка диска</span><span class="price-val">100 ₽</span></div>
+                        <div class="price-row"><span class="price-name">Обработка герметиком</span><span class="price-val">200 ₽</span></div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-colors duration-500">
+                    <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mb-6 text-accent">
+                        <i data-lucide="circle-dot" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-xl mb-6 uppercase tracking-wide">Сложный Ремонт</h3>
+                    <div class="space-y-2">
+                        <div class="price-row"><span class="price-name">Установка грибка</span><span class="price-val">200 ₽</span></div>
+                        <div class="price-row"><span class="price-name">Установка заплатки (42/60мм)</span><span class="price-val">200 ₽</span></div>
+                        <div class="price-row"><span class="price-name">Установка корд. заплатки (15)</span><span class="price-val">320 ₽</span></div>
+                        <div class="price-row"><span class="price-name">Установка корд. заплатки (19)</span><span class="price-val">420 ₽</span></div>
+                        <div class="price-row"><span class="price-name">Установка корд. заплатки (25)</span><span class="price-val">520 ₽</span></div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="glass-panel p-8 rounded-3xl hover:bg-white/5 transition-colors duration-500 md:col-span-2 lg:col-span-1">
+                    <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mb-6 text-accent">
+                        <i data-lucide="hammer" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-xl mb-6 uppercase tracking-wide">Диски и Сварка</h3>
+                    <div class="space-y-2">
+                        <div class="price-row"><span class="price-name">Правка диска штамп. (R13-R16)</span><span class="price-val">420 ₽</span></div>
+                        <div class="price-row"><span class="price-name">Правка диска литой (R13-R18)</span><span class="price-val">от 620 ₽</span></div>
+                        <div class="price-row"><span class="price-name">Услуга сварки аргоном (см)</span><span class="price-val">200 ₽</span></div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-6 pt-4 border-t border-white/5">* Окончательная стоимость работ определяется мастером после осмотра повреждений.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacts" class="min-h-screen bg-white text-black flex flex-col justify-between relative z-10 pt-24 rounded-t-[40px] -mt-10 overflow-hidden">
+        <div class="container mx-auto px-6 flex-grow">
+            <h2 class="font-display font-black text-[12vw] leading-[0.8] tracking-tighter mb-12 border-b-4 border-black pb-8 split-text" data-animation="slide-up">
+                СВЯЗЬ
+            </h2>
             
-            // Удаляем использованный индекс, чтобы не повторялся
-            availableFacts.splice(randomIndex, 1);
+            <div class="grid md:grid-cols-2 gap-16">
+                <div class="space-y-12">
+                    <div class="group cursor-default" data-animation="fade-in">
+                        <p class="text-xs uppercase tracking-widest text-gray-400 mb-4 font-bold">Адрес</p>
+                        <p class="font-display text-2xl md:text-4xl font-bold transition-all duration-300 group-hover:pl-4 border-l-4 border-transparent group-hover:border-black">
+                            Тульская обл., с. Поповка<br>ул. Полевая, 2
+                        </p>
+                    </div>
+                    <div class="group" data-animation="fade-in" style="transition-delay: 0.1s">
+                        <p class="text-xs uppercase tracking-widest text-gray-400 mb-4 font-bold">Телефон</p>
+                        <a href="tel:+79029093879" class="font-display text-2xl md:text-5xl font-bold block hover:opacity-50 transition-opacity">
+                            +7 (902) 909-38-79
+                        </a>
+                    </div>
+                    <div class="flex gap-6 pt-8" data-animation="fade-in" style="transition-delay: 0.2s">
+                        <a href="https://wa.me/79027513964" class="w-16 h-16 md:w-20 md:h-20 rounded-full border-2 border-black flex items-center justify-center hover:bg-black hover:text-white transition-all duration-500 magnetic-wrap group">
+                            <i data-lucide="message-circle" class="w-6 h-6 md:w-8 md:h-8 group-hover:scale-125 transition-transform"></i>
+                        </a>
+                        <a href="https://t.me/+79027513964" class="w-16 h-16 md:w-20 md:h-20 rounded-full border-2 border-black flex items-center justify-center hover:bg-black hover:text-white transition-all duration-500 magnetic-wrap group">
+                            <i data-lucide="send" class="w-6 h-6 md:w-8 md:h-8 group-hover:scale-125 group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="h-[400px] md:h-[500px] w-full relative overflow-hidden rounded-3xl shadow-2xl" data-animation="scale-up">
+                    <div class="absolute inset-0 bg-gray-200 animate-pulse z-0"></div>
+                    <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3Acc7ed495ed6ddacaeab60edcc7b1c414c118b74ccdccf0d0943bf3296302b918&amp;source=constructor" width="100%" height="100%" frameborder="0" class="relative z-10 grayscale hover:grayscale-0 transition-all duration-1000"></iframe>
+                </div>
+            </div>
+        </div>
 
-            const factText = document.getElementById('fact-text');
-            const factCounter = document.getElementById('fact-counter');
+        <footer class="container mx-auto px-6 py-12 flex flex-col md:flex-row justify-between items-end gap-6 border-t border-black/10 mt-24">
+            <div class="flex flex-col gap-2">
+                <p class="font-display font-bold text-xl tracking-tighter">SHINADOM</p>
+                <p class="font-sans text-xs text-gray-400">© 2025 ALL RIGHTS RESERVED.</p>
+            </div>
+            <div class="flex flex-col md:flex-row gap-4 md:gap-8 font-sans text-xs font-bold uppercase tracking-widest w-full md:w-auto">
+                <button onclick="openModal('offer')" class="hover:text-accent transition-colors text-left md:text-right">Публичная Оферта</button>
+                <button onclick="openModal('policy')" class="hover:text-accent transition-colors text-left md:text-right">Политика Конфиденциальности</button>
+            </div>
+        </footer>
+    </section>
+</main>
 
-            // Анимация смены текста
-            gsap.to(factText, {
-                opacity: 0,
-                y: -20,
-                duration: 0.3,
-                onComplete: () => {
-                    factText.innerText = carFacts[factIndex];
-                    factCounter.innerText = `Факт #${factIndex + 1}`;
-                    gsap.fromTo(factText, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "back.out(1.7)" });
-                }
-            });
-        }
+<div id="modal" class="fixed inset-0 z-[100] bg-black/80 hidden opacity-0 transition-opacity duration-500 backdrop-blur-sm">
+    <div class="absolute right-0 top-0 h-full w-full md:w-[700px] bg-white p-6 md:p-12 translate-x-full transition-transform duration-700 ease-expo shadow-[-50px_0_100px_rgba(0,0,0,0.5)] flex flex-col" id="modal-panel">
+        <div class="flex justify-end mb-4">
+            <button onclick="closeModal()" class="p-3 bg-black text-white rounded-full hover:scale-110 transition-transform z-50">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+        </div>
+        <div class="mt-2 flex-grow overflow-hidden flex flex-col">
+            <h3 id="modal-title" class="font-display font-bold text-2xl md:text-3xl mb-8 uppercase tracking-tight text-black border-b-2 border-black pb-4"></h3>
+            <div id="modal-body" class="font-sans text-xs md:text-sm leading-relaxed space-y-4 text-gray-800 overflow-y-auto pr-2 custom-scrollbar flex-grow text-justify"></div>
+        </div>
+    </div>
+</div>
 
-        // Инициализация первого факта
-        generateFact();
+<script>
+    const carFacts = [
+        "Самый первый штраф за превышение скорости был выписан в 1902 году за езду со скоростью 72 км/ч.",
+        "В современном автомобиле около 30 000 уникальных деталей.",
+        "Volkswagen владеет такими брендами, как Bentley, Bugatti, Lamborghini, Audi, Ducati и Porsche.",
+        "Круиз-контроль был изобретен слепым человеком по имени Ральф Титор в 1945 году.",
+        "В Лос-Анджелесе автомобилей больше, чем людей.",
+        "Первый в мире светофор был установлен в Лондоне в 1868 году и работал на газе.",
+        "Запах новой машины состоит из более чем 50 летучих органических соединений.",
+        "Дворники были изобретены женщиной Мэри Андерсон в 1903 году, заметившей трудности водителей в снег.",
+        "Самый быстрый серийный автомобиль в мире — Bugatti Chiron Super Sport 300+ (490 км/ч).",
+        "95% времени жизни среднестатистический автомобиль просто стоит на парковке.",
+        "Rolls-Royce утверждает, что 75% всех автомобилей, когда-либо произведенных ими, до сих пор на ходу.",
+        "Звук закрытия двери автомобиля специально разрабатывается инженерами для ощущения надежности.",
+        "В среднем водитель тратит около 4 лет своей жизни, находясь за рулем.",
+        "Ferrari производит максимум 14 автомобилей в день, в то время как Toyota — около 13 000.",
+        "Подушки безопасности раскрываются со скоростью около 300 км/ч.",
+        "Рекорд пробега автомобиля принадлежит Volvo P1800 1966 года — более 5 миллионов километров.",
+        "ABS (антиблокировочная система) была впервые разработана для самолетов.",
+        "В 19 веке электромобили были популярнее бензиновых.",
+        "Каждый год в мире производится более 60 миллионов новых автомобилей.",
+        "Шины черные из-за добавления углерода, который значительно увеличивает их прочность.",
+        "Ford Model T 1908 года был первым доступным массовым автомобилем.",
+        "Трехточечный ремень безопасности был изобретен Volvo, и они открыли патент для всех ради безопасности.",
+        "Самая длинная пробка в истории была в Китае и длилась 12 дней.",
+        "В двигателе Формулы-1 около 80 000 деталей.",
+        "Самый маленький серийный автомобиль — Peel P50, в него с трудом помещается один человек.",
+        "Логотип Toyota содержит в себе все буквы названия компании (T-O-Y-O-T-A).",
+        "В Швейцарии запрещено мыть машину в воскресенье.",
+        "Первое автомобильное радио было изобретено в 1929 году.",
+        "Mercedes-Benz первым внедрил тормоза на всех четырех колесах в 1924 году.",
+        "F1 болид создает такую прижимную силу, что теоретически мог бы ехать по потолку."
+    ];
 
+    let availableFacts = [...Array(carFacts.length).keys()];
 
-        // --- Existing Calculator & UI Logic ---
-        const priceData = {
-            "Легковые машины": { "R14": 580, "R15": 640, "R16": 700, "R17": 800, "R18": 800, "R19": 900, "R20": 1020 },
-            "Паркетники / Кроссоверы": { "R15": 740, "R16": 740, "R17": 800, "R18": 880, "R19": 940, "R20": 1020, "R21": 1100 },
-            "Внедорожники / Джипы": { "R15": 700, "R16": 700, "R17": 800, "R18": 880, "R19": 980, "R20": 1040, "R21": 1100, "R22": 1160 },
-            "Низкий профиль / RunFlat": { "R16": 900, "R17": 960, "R18": 1040, "R19": 1140, "R20": 1280 },
-            "Газель": { "R16": 1100 }
-        };
+    function generateFact() {
+        if (availableFacts.length === 0) availableFacts = [...Array(carFacts.length).keys()];
+        const randomIndex = Math.floor(Math.random() * availableFacts.length);
+        const factIndex = availableFacts[randomIndex];
+        availableFacts.splice(randomIndex, 1);
 
-        lucide.createIcons();
-        gsap.registerPlugin(ScrollTrigger);
-        
-        const lenis = new Lenis({ duration: 1.5, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
-        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-        requestAnimationFrame(raf);
+        const factText = document.getElementById('fact-text');
+        const factCounter = document.getElementById('fact-counter');
 
-        window.addEventListener('load', () => {
-            const tl = gsap.timeline();
-            tl.to('#preloader-text', { y: 0, duration: 1, ease: 'power4.out' })
-              .to('#preloader-text', { y: -150, duration: 0.8, delay: 0.2, ease: 'power4.in' })
-              .to('#preloader', { yPercent: -100, duration: 1.2, ease: 'power4.inOut' });
-        });
-
-        const cursor = document.getElementById('cursor');
-        if (window.matchMedia("(pointer: fine)").matches) {
-            document.addEventListener('mousemove', (e) => {
-                gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1, ease: "power2.out" });
-            });
-            document.querySelectorAll('a, button, label, select, input, .fact-card').forEach(el => {
-                el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
-                el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
-            });
-        }
-
-        document.querySelectorAll('.magnetic-wrap').forEach(el => {
-            el.addEventListener('mousemove', (e) => {
-                const rect = el.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                gsap.to(el, { x: x * 0.4, y: y * 0.4, rotate: x * 0.05, duration: 0.5, ease: "power3.out" });
-            });
-            el.addEventListener('mouseleave', () => {
-                gsap.to(el, { x: 0, y: 0, rotate: 0, duration: 0.5, ease: "elastic.out(1, 0.4)" });
-            });
-        });
-
-        document.addEventListener('mousemove', (e) => {
-            const x = (e.clientX / window.innerWidth - 0.5) * 30;
-            const y = (e.clientY / window.innerHeight - 0.5) * 30;
-            gsap.to('[data-speed]', { x: x, y: y, duration: 1.5, ease: "power2.out" });
-        });
-
-        const carSelect = document.getElementById('car-type');
-        const sizeSelect = document.getElementById('tire-size');
-        const wheelDisplay = document.getElementById('wheel-display');
-        let wheelCount = 4;
-        let currentPrice = 0;
-
-        carSelect.addEventListener('change', () => {
-            const type = carSelect.value;
-            sizeSelect.innerHTML = '<option value="">—</option>';
-            sizeSelect.disabled = true;
-            if(priceData[type]) {
-                sizeSelect.disabled = false;
-                Object.keys(priceData[type]).forEach(size => {
-                    const opt = document.createElement('option');
-                    opt.value = size;
-                    opt.innerText = size;
-                    sizeSelect.appendChild(opt);
-                });
-                gsap.from(sizeSelect, { backgroundColor: "#fff", duration: 0.3 });
-            }
-            calculate();
-        });
-
-        sizeSelect.addEventListener('change', calculate);
-        document.getElementById('check-moyka').addEventListener('change', calculate);
-
-        function changeWheels(d) {
-            wheelCount += d;
-            if(wheelCount < 1) wheelCount = 1;
-            if(wheelCount > 8) wheelCount = 8;
-            wheelDisplay.innerText = wheelCount;
-            gsap.from(wheelDisplay, { scale: 1.5, color: "#3b82f6", duration: 0.3 });
-            calculate();
-        }
-
-        function calculate() {
-            const type = carSelect.value;
-            const size = sizeSelect.value;
-            let total = 0;
-
-            if(type && size && priceData[type] && priceData[type][size]) {
-                let base = priceData[type][size];
-                total = base * wheelCount;
-                if(document.getElementById('check-moyka').checked) total += 100 * wheelCount;
-                total = Math.ceil(total / 10) * 10;
-            }
-
-            gsap.to({ val: currentPrice }, {
-                val: total,
-                duration: 1,
-                ease: "power4.out",
-                onUpdate: function() {
-                    document.getElementById('final-price').innerText = Math.floor(this.targets()[0].val).toLocaleString();
-                }
-            });
-            currentPrice = total;
-
-            const msg = `Заявка SHINADOM:\nАвто: ${type}\nРазмер: ${size}\nКол-во: ${wheelCount}\nЦена: ~${total}р`;
-            document.getElementById('whatsapp-btn').href = `https://wa.me/79027513964?text=${encodeURIComponent(msg)}`;
-        }
-
-        const menuBtn = document.getElementById('menu-btn');
-        const menu = document.getElementById('mobile-menu');
-        let isMenuOpen = false;
-
-        menuBtn.addEventListener('click', () => {
-            isMenuOpen = !isMenuOpen;
-            if(isMenuOpen) {
-                menu.classList.remove('translate-y-full');
-                gsap.to('.menu-link span', { y: 0, duration: 0.8, stagger: 0.1, delay: 0.2, ease: 'power3.out' });
-            } else {
-                menu.classList.add('translate-y-full');
-                gsap.to('.menu-link span', { y: '100%', duration: 0.5 });
+        gsap.to(factText, {
+            opacity: 0, y: -20, duration: 0.3,
+            onComplete: () => {
+                factText.innerText = carFacts[factIndex];
+                factCounter.innerText = `Факт #${factIndex + 1}`;
+                gsap.fromTo(factText, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "back.out(1.7)" });
             }
         });
+    }
+    generateFact();
 
-        document.querySelectorAll('.menu-link').forEach(link => {
-            link.addEventListener('click', () => {
-                isMenuOpen = false;
-                menu.classList.add('translate-y-full');
+    const priceData = {
+        "Легковые машины": { "R14": 580, "R15": 640, "R16": 700, "R17": 800, "R18": 800, "R19": 900, "R20": 1020 },
+        "Паркетники / Кроссоверы": { "R15": 740, "R16": 740, "R17": 800, "R18": 880, "R19": 940, "R20": 1020, "R21": 1100 },
+        "Внедорожники / Джипы": { "R15": 700, "R16": 700, "R17": 800, "R18": 880, "R19": 980, "R20": 1040, "R21": 1100, "R22": 1160 },
+        "Низкий профиль / RunFlat": { "R16": 900, "R17": 960, "R18": 1040, "R19": 1140, "R20": 1280 },
+        "Газель": { "R16": 1100 }
+    };
+
+    lucide.createIcons();
+    gsap.registerPlugin(ScrollTrigger);
+    
+    const lenis = new Lenis({ duration: 1.0, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
+    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+
+    window.addEventListener('load', () => {
+        const tl = gsap.timeline();
+        tl.to('#preloader-text', { y: 0, duration: 0.8, ease: 'power4.out' })
+          .to('#preloader-text', { y: -150, duration: 0.6, delay: 0.2, ease: 'power4.in' })
+          .to('#preloader', { yPercent: -100, duration: 1.0, ease: 'power4.inOut' });
+    });
+
+    const cursor = document.getElementById('cursor');
+    if (window.matchMedia("(pointer: fine)").matches) {
+        document.addEventListener('mousemove', (e) => gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 }));
+        document.querySelectorAll('a, button, label, select, input, .fact-card').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+        });
+    }
+
+    document.querySelectorAll('.magnetic-wrap').forEach(el => {
+        el.addEventListener('mousemove', (e) => {
+            const rect = el.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            gsap.to(el, { x: x * 0.4, y: y * 0.4, rotate: x * 0.05, duration: 0.5 });
+        });
+        el.addEventListener('mouseleave', () => gsap.to(el, { x: 0, y: 0, rotate: 0, duration: 0.5, ease: "elastic.out(1, 0.4)" }));
+    });
+
+    const carSelect = document.getElementById('car-type');
+    const sizeSelect = document.getElementById('tire-size');
+    const wheelDisplay = document.getElementById('wheel-display');
+    let wheelCount = 4;
+    let currentPrice = 0;
+
+    carSelect.addEventListener('change', () => {
+        const type = carSelect.value;
+        sizeSelect.innerHTML = '<option value="">—</option>';
+        sizeSelect.disabled = true;
+        if(priceData[type]) {
+            sizeSelect.disabled = false;
+            Object.keys(priceData[type]).forEach(size => {
+                const opt = document.createElement('option');
+                opt.value = size;
+                opt.innerText = size;
+                sizeSelect.appendChild(opt);
             });
+        }
+        calculate();
+    });
+
+    sizeSelect.addEventListener('change', calculate);
+    document.getElementById('check-moyka').addEventListener('change', calculate);
+
+    function changeWheels(d) {
+        wheelCount += d;
+        if(wheelCount < 1) wheelCount = 1;
+        if(wheelCount > 8) wheelCount = 8;
+        wheelDisplay.innerText = wheelCount;
+        calculate();
+    }
+
+    function calculate() {
+        const type = carSelect.value;
+        const size = sizeSelect.value;
+        let total = 0;
+
+        if(type && size && priceData[type] && priceData[type][size]) {
+            let base = priceData[type][size];
+            total = base * wheelCount;
+            if(document.getElementById('check-moyka').checked) total += 100 * wheelCount;
+            total = Math.ceil(total / 10) * 10;
+        }
+
+        gsap.to({ val: currentPrice }, {
+            val: total, duration: 1, ease: "power4.out",
+            onUpdate: function() { document.getElementById('final-price').innerText = Math.floor(this.targets()[0].val).toLocaleString(); }
         });
+        currentPrice = total;
 
-        const splitTypes = document.querySelectorAll('.split-text');
-        splitTypes.forEach((char) => {
-            new SplitType(char, { types: 'chars,words' });
+        const msg = `Заявка SHINADOM:\nАвто: ${type}\nРазмер: ${size}\nКол-во: ${wheelCount}\nЦена: ~${total}р`;
+        document.getElementById('whatsapp-btn').href = `https://wa.me/79027513964?text=${encodeURIComponent(msg)}`;
+    }
+
+    const menuBtn = document.getElementById('menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    let isMenuOpen = false;
+
+    menuBtn.addEventListener('click', () => {
+        isMenuOpen = !isMenuOpen;
+        if(isMenuOpen) {
+            menu.classList.remove('translate-y-full');
+            gsap.to('.menu-link span', { y: 0, duration: 0.8, stagger: 0.1, delay: 0.2, ease: 'power3.out' });
+        } else {
+            menu.classList.add('translate-y-full');
+            gsap.to('.menu-link span', { y: '100%', duration: 0.5 });
+        }
+    });
+
+    document.querySelectorAll('.menu-link').forEach(link => {
+        link.addEventListener('click', () => {
+            isMenuOpen = false;
+            menu.classList.add('translate-y-full');
         });
+    });
 
-        gsap.utils.toArray('[data-animation="slide-up"]').forEach(el => {
-            gsap.from(el.querySelectorAll('.char'), {
-                scrollTrigger: { trigger: el, start: "top 80%" },
-                y: 100, opacity: 0, duration: 1, stagger: 0.05, ease: "power4.out"
-            });
+    const splitTypes = document.querySelectorAll('.split-text');
+    splitTypes.forEach((char) => new SplitType(char, { types: 'chars,words' }));
+
+    gsap.utils.toArray('[data-animation="slide-up"]').forEach(el => {
+        gsap.from(el.querySelectorAll('.char'), {
+            scrollTrigger: { trigger: el, start: "top 80%" },
+            y: 100, opacity: 0, duration: 1, stagger: 0.05, ease: "power4.out"
         });
+    });
 
-        gsap.utils.toArray('[data-animation="fade-in"]').forEach(el => {
-            gsap.from(el, {
-                scrollTrigger: { trigger: el, start: "top 85%" },
-                opacity: 0, y: 30, duration: 1, ease: "power2.out"
-            });
+    gsap.utils.toArray('[data-animation="fade-in"]').forEach(el => {
+        gsap.from(el, {
+            scrollTrigger: { trigger: el, start: "top 85%" },
+            opacity: 0, y: 30, duration: 1, ease: "power2.out"
         });
+    });
 
-        gsap.utils.toArray('[data-animation="scale-up"]').forEach(el => {
-            gsap.from(el, {
-                scrollTrigger: { trigger: el, start: "top 85%" },
-                scale: 0.8, opacity: 0, duration: 1.2, ease: "power3.out"
-            });
+    gsap.utils.toArray('[data-animation="scale-up"]').forEach(el => {
+        gsap.from(el, {
+            scrollTrigger: { trigger: el, start: "top 85%" },
+            scale: 0.95, opacity: 0, duration: 1.2, ease: "power3.out"
         });
+    });
 
-        const modal = document.getElementById('modal');
-        const modalPanel = document.getElementById('modal-panel');
-        const modalTitle = document.getElementById('modal-title');
-        const modalBody = document.getElementById('modal-body');
+    const modal = document.getElementById('modal');
+    const modalPanel = document.getElementById('modal-panel');
+    const modalTitle = document.getElementById('modal-title');
+    const modalBody = document.getElementById('modal-body');
 
-        const texts = {
-            offer: "<strong>1. Общие положения.</strong><br>Настоящая оферта является официальным предложением сервиса «ШИНАДОМ» в адрес любого физического лица заключить договор на оказание услуг шиномонтажа.<br><br><strong>2. Предмет договора.</strong><br>Исполнитель обязуется выполнить работы по шиномонтажу, балансировке и ремонту колес, а Заказчик обязуется оплатить эти работы.<br><br><strong>3. Гарантии.</strong><br>Исполнитель гарантирует качество выполненных работ (балансировка - 3 дня, ремонт камер - 14 дней).",
-            policy: "<strong>1. Сбор данных.</strong><br>Мы собираем только технические параметры автомобиля для расчета стоимости.<br><br><strong>2. Использование.</strong><br>Данные используются исключительно для формирования предварительного заказа.<br><br><strong>3. Безопасность.</strong><br>Мы не передаем данные третьим лицам."
-        };
+    const legalTextOffer = `
+    <strong>1. Общие положения</strong><br>
+    1.1. Настоящая Публичная оферта (далее – «Оферта») представляет собой официальное предложение Самозанятого исполнителя (далее – «Исполнитель») неопределенному кругу лиц (далее – «Заказчик») заключить договор возмездного оказания услуг по техническому обслуживанию автомобилей (шиномонтаж, балансировка, ремонт дисков) на условиях, изложенных ниже.<br>
+    1.2. Акцептом настоящей Оферты является фактическое обращение Заказчика к Исполнителю, передача автомобиля или колес для проведения работ, либо внесение предоплаты.<br><br>
+    <strong>2. Предмет договора и порядок оказания услуг</strong><br>
+    2.1. Исполнитель обязуется оказать услуги по шиномонтажу, правке дисков или ремонту шин в соответствии с прейскурантом, а Заказчик обязуется принять и оплатить услуги.<br>
+    2.2. Исполнитель не несет ответственности за скрытые дефекты колесных дисков и шин (микротрещины, нарушения геометрии корда), выявленные в процессе оказания услуг.<br>
+    2.3. При правке литых и кованых дисков Заказчик уведомлен о риске возникновения трещин или разрушения диска ввиду усталости металла. Исполнитель не предоставляет гарантий на сохранение лакокрасочного покрытия при термическом воздействии и механической правке.<br><br>
+    <strong>3. Ответственность и ограничение гарантий</strong><br>
+    3.1. Гарантийный срок на балансировку колес составляет 3 (три) календарных дня с момента оказания услуги при условии пробега не более 500 км.<br>
+    3.2. Гарантия на установку заплат и жгутов распространяется только на герметичность места ремонта в течение 14 дней.<br>
+    3.3. Исполнитель освобождается от ответственности за ущерб, возникший вследствие предоставления Заказчиком недостоверной информации о состоянии транспортного средства, а также за повреждения, возникшие из-за нарушения Заказчиком правил эксплуатации (езда на спущенных шинах, превышение скоростного режима).<br>
+    3.4. Исполнитель не несет ответственности за сохранность колесных колпаков, секретных болтов и иных аксессуаров, если они имеют износ креплений.<br><br>
+    <strong>4. Заключительные положения</strong><br>
+    4.1. Все споры разрешаются путем переговоров. В случае недостижения согласия – в судебном порядке по месту нахождения Исполнителя.<br>
+    4.2. Исполнитель оставляет за собой право отказать в оказании услуг при наличии технических ограничений оборудования или явной аварийности дисков/шин, угрожающей безопасности.
+    `;
 
-        window.openModal = (type) => {
-            modalTitle.innerText = type === 'offer' ? "Публичная Оферта" : "Политика";
-            modalBody.innerHTML = texts[type];
-            modal.classList.remove('hidden');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                modalPanel.classList.remove('translate-x-full');
-            }, 10);
-        };
+    const legalTextPolicy = `
+    <strong>1. Введение</strong><br>
+    Настоящая Политика конфиденциальности (далее – «Политика») действует в отношении всей информации, которую сервис «ШинаДом» (далее – «Оператор») может получить о пользователе во время использования им сайта шинадом.рф.<br><br>
+    <strong>2. Сбор и обработка данных</strong><br>
+    2.1. Оператор не осуществляет сбор персональных данных, позволяющих идентифицировать личность (ФИО, паспортные данные), за исключением случаев, когда Пользователь добровольно предоставляет контактный номер телефона для связи через мессенджеры.<br>
+    2.2. Технические данные (марка авто, радиус колес), вводимые в калькулятор, используются исключительно для автоматического расчета приблизительной стоимости услуг на стороне клиента и не сохраняются на серверах Оператора.<br><br>
+    <strong>3. Ограничение ответственности</strong><br>
+    3.1. Сайт использует файлы cookie и сервисы веб-аналитики для улучшения работы интерфейса. Продолжая пользоваться сайтом, вы соглашаетесь с использованием данных технологий.<br>
+    3.2. Оператор не несет ответственности за действия третьих лиц (включая мессенджеры WhatsApp и Telegram), чьи виджеты или ссылки могут быть размещены на сайте.<br><br>
+    <strong>4. Изменение политики</strong><br>
+    4.1. Оператор имеет право вносить изменения в настоящую Политику без согласия Пользователя. Новая Политика вступает в силу с момента ее размещения на Сайте.
+    `;
 
-        window.closeModal = () => {
-            modalPanel.classList.add('translate-x-full');
-            modal.classList.add('opacity-0');
-            setTimeout(() => modal.classList.add('hidden'), 500);
-        };
-    </script>
+    window.openModal = (type) => {
+        modalTitle.innerText = type === 'offer' ? "Публичная Оферта" : "Политика Конфиденциальности";
+        modalBody.innerHTML = type === 'offer' ? legalTextOffer : legalTextPolicy;
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+            modal.classList.remove('opacity-0');
+            modalPanel.classList.remove('translate-x-full');
+        }, 10);
+    };
+
+    window.closeModal = () => {
+        modalPanel.classList.add('translate-x-full');
+        modal.classList.add('opacity-0');
+        setTimeout(() => modal.classList.add('hidden'), 500);
+    };
+</script>
 </body>
 </html>
